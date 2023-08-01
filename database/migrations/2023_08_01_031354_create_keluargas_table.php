@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('keluarga', function (Blueprint $table) {
             $table->id();
+            $table->string('uuid')->unique();
+            $table->string('no_kk')->unique();
+            $table->integer('id_pengguna');
+            $table->string('nama_kepala_keluarga');
+            $table->string('dusun');
+            $table->string('desa');
+            $table->string('kecamatan');
             $table->timestamps();
         });
     }

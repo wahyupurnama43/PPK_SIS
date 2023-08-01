@@ -79,7 +79,7 @@ class WilayahController extends Controller
                 return redirect()->route('wilayah.index')->with('error', 'Mohon Hubungi Admin');
             }
         } catch (\Throwable $e) {
-            return redirect()->route('wilayah.index')->with('error', $e);
+            return redirect()->route('wilayah.index')->with('error', $e->errorInfo[2]);;
         }
     }
 
@@ -109,7 +109,7 @@ class WilayahController extends Controller
 
             return redirect()->route('wilayah.index')->with('success', 'Berhasil Diupdate');
         } catch (\Throwable $e) {
-            return redirect()->route('wilayah.index')->with('error', $e);
+            return redirect()->route('wilayah.index')->with('error', $e->errorInfo[2]);;
         }
     }
 
@@ -124,7 +124,7 @@ class WilayahController extends Controller
                 'success' => true
             ]);
         } catch (\Throwable $e) {
-            return redirect()->route('wilayah.index')->with('error', $e);
+            return redirect()->route('wilayah.index')->with('error', $e->errorInfo[2]);;
         }
     }
 }

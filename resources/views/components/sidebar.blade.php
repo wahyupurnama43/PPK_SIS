@@ -40,6 +40,13 @@
         </a>
     </li>
 
+    <li class="nav-item {{ (request()->is('admin/keluarga*')) ? 'active' : '' }}">
+        <a class="nav-link collapsed " href="{{ route('keluarga.index') }}">
+            <i class="fas fa-user-tie"></i>
+            <span>Kepala Keluarga</span>
+        </a>
+    </li>
+
     <li class="nav-item {{ (request()->is('admin/penduduk*')) ? 'active' : '' }}">
         <a class="nav-link collapsed " href="{{ route('penduduk.index') }}">
             <i class="fas fa-users"></i>
