@@ -23,8 +23,29 @@
 
     <!-- Heading -->
     <div class="sidebar-heading">
-        Fitur
+        Fitur Admin
     </div>
+
+    <li class="nav-item {{ (request()->is('admin/pegawai*')) ? 'active' : '' }}">
+        {{-- <a class="nav-link collapsed " href="{{ route('pengguna.index') }}">
+            <i class="fas fa-user"></i>
+            <span>Pegawai</span>
+        </a> --}}
+    </li>
+
+    <li class="nav-item {{ (request()->is('admin/akta-kawin*')) ? 'active' : '' }}">
+        <a class="nav-link collapsed " href="{{ route('akta-kawin.index') }}">
+            <i class="fas fa-file-alt"></i>
+            <span>Akta Kawin</span>
+        </a>
+    </li>
+
+    <li class="nav-item {{ (request()->is('admin/penduduk*')) ? 'active' : '' }}">
+        <a class="nav-link collapsed " href="{{ route('penduduk.index') }}">
+            <i class="fas fa-users"></i>
+            <span>Penduduk</span>
+        </a>
+    </li>
 
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item {{ (request()->is('admin/wilayah*')) ? 'active' : '' }}">
@@ -33,6 +54,8 @@
             <span>Wilayah GIS</span>
         </a>
     </li>
+
+    
 
     <!-- Nav Item - Utilities Collapse Menu -->
     {{-- <li class="nav-item">

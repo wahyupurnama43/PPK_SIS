@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>Dashboards - @yield('title')</title>
     <link rel="shortcut icon" href="{{ asset('images/logo.png') }}" type="image/x-icon">
@@ -20,8 +21,9 @@
 
     <!-- Custom styles for this template-->
     <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <style>
-        .invalid-feedback{
+        .invalid-feedback {
             display: block !important;
         }
     </style>
@@ -62,7 +64,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2021</span>
+                        <span>Copyright &copy; Primakara Unversity & Desa Batur Tengah  2023</span>
                     </div>
                 </div>
             </footer>
@@ -93,7 +95,15 @@
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+                    <a class="dropdown-item" href="{{ route('logout') }}"
+                        onclick="event.preventDefault();
+                    document.getElementById('logout-form').submit();">
+                        {{ __('Logout') }}
+                    </a>
+
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                        @csrf
+                    </form>
                 </div>
             </div>
         </div>
@@ -110,6 +120,30 @@
     <script src="{{ asset('js/sb-admin-2.min.js') }}"></script>
 
     @yield('js')
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+    <script>
+        $(document).ready(function() {
+            @if (Session::has('error'))
+                Toastify({
+                    text: "{!! Session::get('error') !!}",
+                    className: "success",
+                    style: {
+                        background: "#FE0000",
+                    }
+                }).showToast();
+            @elseif (Session::has('success'))
+                Toastify({
+                    text: "{{ Session::get('success') }}",
+                    className: "success",
+                    style: {
+                        background: "#00b09b",
+                    }
+                }).showToast();
+            @endif
+        });
+    </script>
 
 </body>
 

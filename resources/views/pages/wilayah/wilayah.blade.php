@@ -124,12 +124,104 @@
             </div>
         </div>
     </div>
+
+    {{-- Modal Edit --}}
+    <div class="modal fade" id="editWilayah" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <form action="" id="form" method="post" enctype="multipart/form-data">
+                    @method('put')
+                    @csrf
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Edit Data Wilayah GIS</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="nama">Nama Wilayah</label>
+                                    <input type="text" class="form-control" id="namaE" name="nama"
+                                        placeholder="Enter Wilayah" value="{{ old('nama') }}">
+                                    @error('nama')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="alamat">Alamat Wilayah</label>
+                                    <input type="text" class="form-control" id="alamatE"
+                                        value="{{ old('alamat') }}" name="alamat" placeholder="Alamat Wilayah">
+
+                                    @error('alamat')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="lat">Latitude Wilayah</label>
+                                    <input type="text" class="form-control" id="latE"
+                                        value="{{ old('lat') }}" name="lat" placeholder="Latitude Wilayah">
+                                    @error('lat')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="long">Longitude Wilayah</label>
+                                    <input type="text" class="form-control" id="longE"
+                                        value="{{ old('long') }}" name="long" placeholder="Longitude Wilayah">
+                                    @error('long')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                            </div>
+
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label for="img">Foto Wilayah</label>
+                                    <img src="" id="img" alt="" width="80">
+                                    <input type="file" class="form-control" id="imgE" name="img"
+                                        placeholder="Foto Wilayah">
+                                    @error('img')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label for="info">Tentang Wilayah</label>
+                                    <textarea class="form-control" id="infoE" name="info"> {{ old('info') }} </textarea>
+                                    @error('info')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
 @endsection
 
 @section('js')
     <script src="{{ asset('vendor/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
     <script>
         $(document).ready(function() {
 
@@ -179,9 +271,58 @@
         });
     </script>
 
+    <script>
+        $(document).on('click', '.update', function(event) {
+            let url = $(this).attr('data-url');
+            let send = $(this).attr('data-send');
+            $.ajax({
+                url: url,
+                // return the result
+                success: function(res) {
+                    // $('#img').attr('src','{{ asset('') }}');
+                    $('#namaE').val(res.nama);
+                    $('#alamatE').val(res.alamat);
+                    $('#latE').val(res.lat);
+                    $('#longE').val(res.long);
+                    $('#infoE').html(res.info);
+                    $('#form').attr('action', send);
+                },
+            })
+        });
+
+        $(document).on('click', '.deletePost', function(event) {
+            let url = $(this).attr('data-url');
+            let id = $(this).attr('data-id');
+            var token = $("meta[name='csrf-token']").attr("content");
+
+            $.ajax({
+                url: url,
+                type: 'DELETE',
+                data: {
+                    "id": id,
+                    "_token": token,
+                },
+                success: function(res) {
+                    if (res) {
+                        Toastify({
+                            text: 'Data Berhasil Dihapus',
+                            className: "success",
+                            style: {
+                                background: "#00b09b",
+                            }
+                        }).showToast();
+                    }
+                    location.reload();
+                }
+            });
+        });
+    </script>
+
     <script type="text/javascript">
         @if (count($errors) > 0)
             $('#wilayah').modal('show');
         @endif
     </script>
+
+
 @endsection

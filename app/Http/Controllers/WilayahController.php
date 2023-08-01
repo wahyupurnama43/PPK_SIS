@@ -2,27 +2,37 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\wilayah;
+use App\Models\Wilayah;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreWilayahRequest;
+use App\Http\Requests\UpdateWilayahRequest;
 
 class WilayahController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-
         if (request()->ajax()) {
             return DataTables::of(Wilayah::select('*'))
                 ->addColumn('action', function ($row) {
-                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Edit" class="edit btn btn-primary btn-sm editPost">Edit</a>';
-                    $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Delete" class="btn btn-danger btn-sm deletePost">Delete</a>';
+                    $btn =
+                        '<button type="button" class="btn edit btn btn-primary btn-sm update" data-url="' .
+                        route('wilayah.show', $row->uuid) .
+                        '" data-send="' .
+                        route('wilayah.update', $row->uuid) .
+                        '" data-toggle="modal" data-target="#editWilayah">
+                    Edit
+                </button>';
+                    $btn = $btn . ' <a href="javascript:void(0)" data-url="' .
+                        route('wilayah.destroy', $row->uuid) .
+                        '"  data-id="' . $row->uuid .
+                        '" class="btn btn-danger btn-sm deletePost">Delete</a>';
                     return $btn;
                 })
                 ->rawColumns(['action'])
@@ -37,14 +47,6 @@ class WilayahController extends Controller
     {
         $wilayah = Wilayah::all();
         return response()->json($wilayah);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -69,47 +71,60 @@ class WilayahController extends Controller
                 'alamat'      => $alamat,
                 'lat'         => $lat,
                 'long'        => $long,
-                'img'         => $name
+                'img'         => $name,
             ]);
             if ($wilayah) {
-                return redirect()->route('wilayah.index');
+                return redirect()->route('wilayah.index')->with('success', 'Berhasil Ditambahkan');
             } else {
-                dd('error');
+                return redirect()->route('wilayah.index')->with('error', 'Mohon Hubungi Admin');
             }
         } catch (\Throwable $e) {
-            dd($e);
+            return redirect()->route('wilayah.index')->with('error', $e);
         }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(wilayah $wilayah)
+    public function show($id)
     {
-        //
+        $wilayah = Wilayah::where('uuid', $id)->first();
+        return response()->json($wilayah);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(wilayah $wilayah)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, wilayah $wilayah)
+    public function update(UpdateWilayahRequest $request, $id)
     {
-        //
+        try {
+            $wilayah         = Wilayah::where('uuid', $id)->first();
+            $wilayah->nama   = $request->nama;
+            $wilayah->alamat = $request->alamat;
+            $wilayah->lat    = $request->lat;
+            $wilayah->long   = $request->long;
+            $wilayah->info   = $request->info;
+            $wilayah->save();
+
+            return redirect()->route('wilayah.index')->with('success', 'Berhasil Diupdate');
+        } catch (\Throwable $e) {
+            return redirect()->route('wilayah.index')->with('error', $e);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(wilayah $wilayah)
+    public function destroy($id)
     {
-        //
+        try {
+            $wilayah = Wilayah::where('uuid', $id)->delete();
+            return response()->json([
+                'success' => true
+            ]);
+        } catch (\Throwable $e) {
+            return redirect()->route('wilayah.index')->with('error', $e);
+        }
     }
 }
