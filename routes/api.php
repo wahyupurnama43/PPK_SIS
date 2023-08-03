@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PendudukController;
 use App\Http\Controllers\WilayahController;
 use App\Models\Wilayah;
 use Illuminate\Http\Request;
@@ -16,6 +17,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::name('api.')->group(function () {
-    Route::get('/wilayah', [WilayahController::class, 'getWilayah'])->name('wilayah');
-});
+Route::post('/wilayah', [WilayahController::class, 'getWilayah'])->name('api.wilayah');
+Route::post('/kk', [PendudukController::class, 'getKK'])->name('api.kk');
+Route::post('/akta-kawin', [PendudukController::class, 'getAktaKawin'])->name('api.aktaKawin');

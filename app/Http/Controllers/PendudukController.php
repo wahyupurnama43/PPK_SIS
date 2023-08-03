@@ -3,10 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Wilayah;
-use Illuminate\Http\Request;
-use Yajra\DataTables\DataTables;
-use App\Http\Controllers\Controller;
+use App\Models\Keluarga;
 use App\Models\Penduduk;
+use App\Models\AktaKawin;
+use App\Models\Pekerjaan;
+use Illuminate\Http\Request;
+use Laravel\Ui\Presets\React;
+use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
 class PendudukController extends Controller
 {
@@ -14,7 +19,7 @@ class PendudukController extends Controller
     {
 
         if (request()->ajax()) {
-            return DataTables::of(Penduduk::select('*'))
+            return DataTables::of(Penduduk::select('nik', 'no_kk', 'no_akta_lahir', 'nama_lengkap', 'jenis_kelamin', DB::raw("CONCAT('tempat_lahir', ', ', 'tanggal_lahir')", 'pendidikan')))
                 ->addColumn('action', function ($row) {
                     $btn =
                         '<button type="button" class="btn edit btn btn-primary btn-sm update" data-url="' .
@@ -35,6 +40,41 @@ class PendudukController extends Controller
                 ->make(true);
         }
 
-        return view('pages.penduduk.penduduk');
+        $pekerjaan = Pekerjaan::all();
+
+        return view('pages.penduduk.penduduk', compact('pekerjaan'));
+    }
+
+    public function store(Request $request)
+    {
+        dd($request->all());
+    }
+
+    public function getKK(Request $request)
+    {
+        $nik = $request->term['term'];
+        $penduduk =  Keluarga::select('no_kk', 'uuid')->where('no_kk', 'LIKE', '%' . $nik . '%',)->get();
+        $response = array();
+        foreach ($penduduk as $p) {
+            $response[] = array(
+                "id"   => $p->uuid,
+                "text" => $p->no_kk
+            );
+        }
+        return response()->json($response);
+    }
+
+    public function getAktaKawin(Request $request)
+    {
+        $nik = $request->term['term'];
+        $penduduk =  AktaKawin::select('no_akta_kawin', 'uuid')->where('no_akta_kawin', 'LIKE', '%' . $nik . '%',)->get();
+        $response = array();
+        foreach ($penduduk as $p) {
+            $response[] = array(
+                "id"   => $p->uuid,
+                "text" => $p->no_akta_kawin
+            );
+        }
+        return response()->json($response);
     }
 }

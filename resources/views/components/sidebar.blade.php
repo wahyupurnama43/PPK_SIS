@@ -12,10 +12,16 @@
     <hr class="sidebar-divider my-0">
 
     <!-- Nav Item - Dashboard -->
-    <li class="nav-item  {{ (request()->is('/')) ? 'active' : '' }}">
-        <a class="nav-link" href="/">
+    <li class="nav-item  {{ (request()->is('/dashboard')) ? 'active' : '' }}">
+        <a class="nav-link" href="/dashboard">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
+    </li>
+
+    <li class="nav-item  {{ (request()->is('/')) ? 'active' : '' }}">
+        <a class="nav-link" href="/">
+            <i class="fas fa-home"></i>
+            <span>Home Page</span></a>
     </li>
 
     <!-- Divider -->
