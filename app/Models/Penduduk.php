@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Penduduk extends Model
 {
@@ -28,4 +29,9 @@ class Penduduk extends Model
         'nama_lengkap_ayah',
         'nama_lengkap_ibu'
     ];
+
+    public function keluarga(): HasOne
+    {
+        return $this->hasOne(Keluarga::class, 'id', 'no_kk');
+    }
 }

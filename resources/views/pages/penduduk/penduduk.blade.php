@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Wilayah')
+@section('title', 'Penduduk')
 
 @section('css')
     <link href="{{ asset('vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
@@ -9,6 +9,10 @@
     <style>
         .select2 {
             width: 100% !important;
+        }
+
+        td {
+            text-transform: capitalize !important;
         }
     </style>
 @endsection
@@ -60,7 +64,8 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="nik">Nik</label>
-                                    <input type="text" class="form-control" required name="nik" value="{{ old('nik') }}">
+                                    <input type="text" class="form-control" required name="nik"
+                                        value="{{ old('nik') }}">
                                     @error('nik')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -70,7 +75,8 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="no_akta_lahir">No Akta Lahir</label>
-                                    <input type="text" class="form-control" required name="no_akta_lahir" value="{{ old('no_akta_lahir') }}">
+                                    <input type="text" class="form-control" required name="no_akta_lahir"
+                                        value="{{ old('no_akta_lahir') }}">
                                     @error('no_akta_lahir')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -81,7 +87,8 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="nama_lengkap_ayah">Nama Lengkap Ayah</label>
-                                    <input type="text" class="form-control" required name="nama_lengkap_ayah" value="{{ old('nama_lengkap_ayah') }}">
+                                    <input type="text" class="form-control" required name="nama_lengkap_ayah"
+                                        value="{{ old('nama_lengkap_ayah') }}">
                                     @error('nama_lengkap_ayah')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -91,7 +98,8 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="nama_lengkap_ibu">Nama Lengkap Ibu</label>
-                                    <input type="text" class="form-control" required name="nama_lengkap_ibu" value="{{ old('nama_lengkap_ibu') }}">
+                                    <input type="text" class="form-control" required name="nama_lengkap_ibu"
+                                        value="{{ old('nama_lengkap_ibu') }}">
                                     @error('nama_lengkap_ibu')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -116,7 +124,8 @@
                                 <div class="form-group">
                                     <label for="nama_lengkap">Nama Lengkap</label>
                                     <br>
-                                    <input type="text" class="form-control" name="nama_lengkap" required value="{{ old('nama_lengkap') }}">
+                                    <input type="text" class="form-control" name="nama_lengkap" required
+                                        value="{{ old('nama_lengkap') }}">
 
                                     @error('nama_lengkap')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -128,7 +137,7 @@
                                 <div class="form-group">
                                     <label for="jenis_kelamin">Jenis Kelamin</label>
                                     <br>
-                                    <select class="select50" name="jenis_kelamin" >
+                                    <select class="select50" name="jenis_kelamin">
                                         <option selected disabled>Pilih jenis kelamin</option>
                                         <option value="L">Laki Laki</option>
                                         <option value="P">Perempuan</option>
@@ -144,19 +153,21 @@
                                 <div class="form-group">
                                     <label for="tempat_lahir">Tempat Lahir</label>
                                     <br>
-                                    <input type="text" class="form-control" name="tempat_lahir" required value="{{ old('tempat_lahir') }}">
+                                    <input type="text" class="form-control" name="tempat_lahir" required
+                                        value="{{ old('tempat_lahir') }}">
 
                                     @error('tempat_lahir')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
-                            
+
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="tanggal_lahir">Tanggal Lahir</label>
                                     <br>
-                                    <input type="date" class="form-control" name="tanggal_lahir" required value="{{ old('tanggal_lahir') }}">
+                                    <input type="date" class="form-control" name="tanggal_lahir" required
+                                        value="{{ old('tanggal_lahir') }}">
 
                                     @error('tanggal_lahir')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -168,11 +179,11 @@
                                 <div class="form-group">
                                     <label for="agama">Agama</label>
                                     <br>
-                                    <select class="select50" name="agama" >
+                                    <select class="select50" name="agama">
                                         <option selected disabled>Pilih Agama</option>
-                                        <option value="I">Islma</option>
+                                        <option value="I">Islam</option>
                                         <option value="H">Hindu</option>
-                                        <option value="P">Protestan</option>
+                                        <option value="KR">Kristen</option>
                                         <option value="KA">Katolik</option>
                                         <option value="B">Budha</option>
                                         <option value="Kh">Khonghucu</option>
@@ -188,7 +199,8 @@
                                 <div class="form-group">
                                     <label for="golongan_darah">Golongan Darah</label>
                                     <br>
-                                    <input type="text" class="form-control" name="golongan_darah" required value="{{ old('golongan_darah') }}">
+                                    <input type="text" class="form-control" name="golongan_darah" required
+                                        value="{{ old('golongan_darah') }}">
 
                                     @error('golongan_darah')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -200,19 +212,11 @@
                                 <div class="form-group">
                                     <label for="pendidikan">Pendidikan</label>
                                     <br>
-                                    <select class="select50" name="pendidikan" >
+                                    <select class="select50" name="pendidikan">
                                         <option selected disabled>Pilih Pendidikan</option>
-                                        <option value="BS">Belum Sekolah</option>
-                                        <option value="SD">SD</option>
-                                        <option value="SMP">SMP</option>
-                                        <option value="SMA">SMA</option>
-                                        <option value="D1">Diploma 1 </option>
-                                        <option value="D2">Diploma 2 </option>
-                                        <option value="D3">Diploma 3 </option>
-                                        <option value="D4">Diploma 4 </option>
-                                        <option value="S1">Strata 1</option>
-                                        <option value="S2">Strata 2</option>
-                                        <option value="S3">Strata 3</option>
+                                        @foreach ($pendidikan as $pen)
+                                            <option value="{{ $pen->pendidikan }}">{{ $pen->pendidikan }}</option>
+                                        @endforeach
                                     </select>
 
                                     @error('pendidikan')
@@ -226,7 +230,7 @@
                                 <div class="form-group">
                                     <label for="status_dalam_keluarga">Status Dalam Keluarga</label>
                                     <br>
-                                    <select class="select50" name="status_dalam_keluarga" >
+                                    <select class="select50" name="status_dalam_keluarga">
                                         <option selected disabled>Pilih Status Dalam Keluarga</option>
                                         <option value="anak">Anak</option>
                                         <option value="kepala keluarga">Kepala Keluarga</option>
@@ -245,7 +249,7 @@
                                 <div class="form-group">
                                     <label for="status_kawin">Status Kawin</label>
                                     <br>
-                                    <select class="select50" name="status_kawin" >
+                                    <select class="select50" name="status_kawin">
                                         <option selected disabled>Pilih Status Kawin</option>
                                         <option value="belum kawin">Belum Kawin</option>
                                         <option value="kawin">Kawin</option>
@@ -259,7 +263,7 @@
                                 </div>
                             </div>
 
-                            
+
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="aktaKawin">No Akta Kawin</label>
@@ -278,10 +282,10 @@
                                 <div class="form-group">
                                     <label for="pekerjaan">Pekerjaan</label>
                                     <br>
-                                    <select class="select50" name="pekerjaan" >
+                                    <select class="select50" name="pekerjaan">
                                         <option selected disabled>Pilih Pekerjaan</option>
                                         @foreach ($pekerjaan as $kerja)
-                                        <option value="{{ $kerja->uuid }}">{{ $kerja->pekerjaan }}</option>
+                                            <option value="{{ $kerja->uuid }}">{{ $kerja->pekerjaan }}</option>
                                         @endforeach
                                     </select>
 
@@ -344,7 +348,7 @@
         $(document).ready(function() {
             $(".select50").select2({})
 
-            
+
             $("#kk").select2({
                 minimumInputLength: 2,
                 ajax: {
@@ -365,7 +369,7 @@
                     cache: true
                 }
             });
-            
+
             $("#aktaKawin").select2({
                 minimumInputLength: 2,
                 ajax: {
@@ -388,6 +392,12 @@
             });
 
         });
+    </script>
+
+    <script>
+        @if (count($errors) > 0)
+            $('#wilayah').modal('show');
+        @endif
     </script>
 
     <script src="{{ asset('vendor/datatables/jquery.dataTables.min.js') }}"></script>
@@ -414,12 +424,42 @@
                         searchable: false
                     },
                     {
-                        data: 'no_akta_kawin',
-                        name: 'no_akta_kawin'
+                        data: 'nik',
+                        name: 'nik'
+                    },
+                    {
+                        data: 'no_akta_lahir',
+                        name: 'no_akta_lahir'
+                    },
+                    {
+                        data: 'nama_lengkap',
+                        name: 'nama_lengkap'
+                    },
+
+                    {
+                        data: 'jenis_kelamin',
+                        name: 'jenis_kelamin',
+                        "render": function(data, type, row) {
+                            if (data === 'L') {
+                                return 'Laki - Laki';
+                            } else {
+                                return 'Perempuan';
+                            }
+                        },
+                    },
+                    {
+                        data: 'infolahir',
+                        name: 'infolahir',
+                        searchable: false
+                    },
+                    {
+                        data: 'pendidikan',
+                        name: 'pendidikan',
                     },
                     {
                         data: 'action',
-                        name: 'action'
+                        name: 'action',
+                        searchable: false
                     },
                 ]
             });
@@ -427,80 +467,35 @@
     </script>
 
     <script>
-        $(document).on('click', '.update', function(event) {
-            let url = $(this).attr('data-url');
-            let send = $(this).attr('data-send');
-            $.ajax({
-                url: url,
-                // return the result
-                success: function(res) {
-                    $('#form').attr('action', send);
-                    $('#aktaKawinE').val(res.no_akta_kawin);
-                },
-            })
-        });
+        // $(document).on('click', '.deletePost', function(event) {
+        //     let url = $(this).attr('data-url');
+        //     let id = $(this).attr('data-id');
+        //     var token = $("meta[name='csrf-token']").attr("content");
 
-        $(document).on('click', '.deletePost', function(event) {
-            let url = $(this).attr('data-url');
-            let id = $(this).attr('data-id');
-            var token = $("meta[name='csrf-token']").attr("content");
-
-            $.ajax({
-                url: url,
-                type: 'DELETE',
-                data: {
-                    "id": id,
-                    "_token": token,
-                },
-                success: function(res) {
-                    if (res) {
-                        Toastify({
-                            text: 'Data Berhasil Dihapus',
-                            className: "success",
-                            style: {
-                                background: "#00b09b",
-                            }
-                        }).showToast();
-                    }
-                    location.reload();
-                }
-            });
-        });
-    </script>
-
-    <script>
-        @if (count($errors) > 0)
-            $('#wilayah').modal('show');
-        @endif
-
-
-        // $("#profiles-thread").select2({
-        //     minimumInputLength: 2,
-        //     tags: [],
-        //     ajax: {
-        //         url: URL,
-        //         dataType: 'json',
-        //         type: "GET",
-        //         quietMillis: 50,
-        //         data: function(term) {
-        //             return {
-        //                 term: term
-        //             };
+        //     $.ajax({
+        //         url: url,
+        //         type: 'DELETE',
+        //         data: {
+        //             "id": id,
+        //             "_token": token,
         //         },
-        //         results: function(data) {
-        //             return {
-        //                 results: $.map(data, function(item) {
-        //                     return {
-        //                         text: item.completeName,
-        //                         slug: item.slug,
-        //                         id: item.id
+        //         success: function(res) {
+        //             if (res) {
+        //                 Toastify({
+        //                     text: 'Data Berhasil Dihapus',
+        //                     className: "success",
+        //                     style: {
+        //                         background: "#00b09b",
         //                     }
-        //                 })
-        //             };
+        //                 }).showToast();
+        //             }
+        //             location.reload();
         //         }
-        //     }
+        //     });
         // });
     </script>
+
+
 
 
 
