@@ -12,13 +12,13 @@
     <hr class="sidebar-divider my-0">
 
     <!-- Nav Item - Dashboard -->
-    <li class="nav-item  {{ (request()->is('/dashboard')) ? 'active' : '' }}">
+    <li class="nav-item  {{ request()->is('/dashboard') ? 'active' : '' }}">
         <a class="nav-link" href="/dashboard">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
     </li>
 
-    <li class="nav-item  {{ (request()->is('/')) ? 'active' : '' }}">
+    <li class="nav-item  {{ request()->is('/') ? 'active' : '' }}">
         <a class="nav-link" href="/">
             <i class="fas fa-home"></i>
             <span>Home Page</span></a>
@@ -32,28 +32,35 @@
         Fitur Admin
     </div>
 
-    <li class="nav-item {{ (request()->is('admin/pegawai*')) ? 'active' : '' }}">
+    <li class="nav-item {{ request()->is('admin/pegawai*') ? 'active' : '' }}">
         {{-- <a class="nav-link collapsed " href="{{ route('pengguna.index') }}">
             <i class="fas fa-user"></i>
             <span>Pegawai</span>
         </a> --}}
     </li>
 
-    <li class="nav-item {{ (request()->is('admin/akta-kawin*')) ? 'active' : '' }}">
+    <li class="nav-item {{ request()->is('admin/kadus*') ? 'active' : '' }}">
+        <a class="nav-link collapsed " href="{{ route('kadus.index') }}">
+            <i class="fas fa-street-view"></i>
+            <span>Kadus</span>
+        </a>
+    </li>
+
+    <li class="nav-item {{ request()->is('admin/akta-kawin*') ? 'active' : '' }}">
         <a class="nav-link collapsed " href="{{ route('akta-kawin.index') }}">
             <i class="fas fa-file-alt"></i>
             <span>Akta Kawin</span>
         </a>
     </li>
 
-    <li class="nav-item {{ (request()->is('admin/keluarga*')) ? 'active' : '' }}">
+    <li class="nav-item {{ request()->is('admin/keluarga*') ? 'active' : '' }}">
         <a class="nav-link collapsed " href="{{ route('keluarga.index') }}">
             <i class="fas fa-user-tie"></i>
             <span>Kepala Keluarga</span>
         </a>
     </li>
 
-    <li class="nav-item {{ (request()->is('admin/penduduk*')) ? 'active' : '' }}">
+    <li class="nav-item {{ request()->is('admin/penduduk*') ? 'active' : '' }}">
         <a class="nav-link collapsed " href="{{ route('penduduk.index') }}">
             <i class="fas fa-users"></i>
             <span>Penduduk</span>
@@ -61,14 +68,25 @@
     </li>
 
     <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item {{ (request()->is('admin/wilayah*')) ? 'active' : '' }}">
+    <li class="nav-item {{ request()->is('admin/wilayah*') ? 'active' : '' }}">
         <a class="nav-link collapsed " href="{{ route('wilayah.index') }}">
             <i class="fas fa-map-marker-alt"></i>
             <span>Wilayah GIS</span>
         </a>
     </li>
 
-    
+    <!-- Heading -->
+    <div class="sidebar-heading">
+        Fitur User
+    </div>
+
+    <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item {{ request()->is('admin/wilayah*') ? 'active' : '' }}">
+        <a class="nav-link collapsed " href="{{ route('wilayah.index') }}">
+            <i class="far fa-file-word"></i>
+            <span>Cetak Surat</span>
+        </a>
+    </li>
 
     <!-- Nav Item - Utilities Collapse Menu -->
     {{-- <li class="nav-item">
