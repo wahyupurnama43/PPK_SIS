@@ -23,7 +23,7 @@ class PendudukRequest extends FormRequest
     {
         return [
             "nik"                   => 'required|string|max:255',
-            "no_akta_lahir"         => 'required|string|max:255',
+            "no_akta_lahir"         => 'max:255',
             "nama_lengkap_ayah"     => 'required|string|max:255',
             "nama_lengkap_ibu"      => 'required|string|max:255',
             "kk"                    => 'required|string|max:255',

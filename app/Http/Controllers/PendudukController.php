@@ -47,14 +47,14 @@ class PendudukController extends Controller
 
     public function store(PendudukRequest $request)
     {
-        $kk_input              = Keluarga::select('id')->where('uuid', Str::title($request->kk))->first();
-        $aktaKawin_input       = AktaKawin::select('id')->where('uuid', Str::title($request->aktaKawin))->first();
-        $pekerjaan_input       = Pekerjaan::select('id')->where('uuid', Str::title($request->pekerjaan))->first();
+        $kk_input              = Keluarga::select('id')->where('uuid', $request->kk)->first();
+        $aktaKawin_input       = AktaKawin::select('id')->where('uuid', $request->aktaKawin)->first();
+        $pekerjaan_input       = Pekerjaan::select('id')->where('uuid', $request->pekerjaan)->first();
         $kk                    = $kk_input->id;
         $aktaKawin             = $aktaKawin_input->id;
         $pekerjaan             = $pekerjaan_input->id;
         $nik                   = Str::title($request->nik);
-        $no_akta_lahir         = Str::title($request->no_akta_lahir);
+        $no_akta_lahir         = $request->no_akta_lahir;
         $nama_lengkap_ayah     = Str::title($request->nama_lengkap_ayah);
         $nama_lengkap_ibu      = Str::title($request->nama_lengkap_ibu);
         $nama_lengkap          = Str::title($request->nama_lengkap);
@@ -99,9 +99,12 @@ class PendudukController extends Controller
 
     public function show($id)
     {
-        $pekerjaan = Pekerjaan::all();
-        $penduduk =  Penduduk::where('nik', $id)->first();
-        return view('pages.penduduk.detail', compact('penduduk', 'pekerjaan'));
+        $pekerjaan  = Pekerjaan::all();
+        $penduduk   = Penduduk::where('nik', $id)->first();
+        $pendidikan = DB::table('penduduk')
+            ->select(DB::raw('DISTINCT(pendidikan) as pendidikan'))
+            ->get();
+        return view('pages.penduduk.detail', compact('penduduk', 'pekerjaan', 'pendidikan'));
     }
 
     public function getKK(Request $request)
@@ -130,5 +133,71 @@ class PendudukController extends Controller
             );
         }
         return response()->json($response);
+    }
+
+    public function update(PendudukRequest $request)
+    {
+        $kk_input              = Keluarga::select('id')->where('uuid', $request->kk)->first();
+        $aktaKawin_input       = AktaKawin::select('id')->where('uuid', $request->aktaKawin)->first();
+        $pekerjaan_input       = Pekerjaan::select('id')->where('uuid', $request->pekerjaan)->first();
+        $kk                    = $kk_input->id;
+        $aktaKawin             = $aktaKawin_input->id;
+        $pekerjaan             = $pekerjaan_input->id;
+        $nik                   = Str::title($request->nik);
+        $no_akta_lahir         = Str::title($request->no_akta_lahir);
+        $nama_lengkap_ayah     = Str::title($request->nama_lengkap_ayah);
+        $nama_lengkap_ibu      = Str::title($request->nama_lengkap_ibu);
+        $nama_lengkap          = Str::title($request->nama_lengkap);
+        $jenis_kelamin         = Str::title($request->jenis_kelamin);
+        $tempat_lahir          = Str::title($request->tempat_lahir);
+        $tanggal_lahir         = Str::title($request->tanggal_lahir);
+        $agama                 = Str::title($request->agama);
+        $golongan_darah        = Str::title($request->golongan_darah);
+        $pendidikan            = Str::title($request->pendidikan);
+        $status_dalam_keluarga = Str::title($request->status_dalam_keluarga);
+        $status_kawin          = Str::title($request->status_kawin);
+
+        try {
+            $penduduk = Penduduk::where('nik', $nik)->first();
+            $penduduk->nik                   = $nik;
+            $penduduk->no_kk                 = $kk;
+            $penduduk->no_akta_kawin         = $aktaKawin;
+            $penduduk->id_pekerjaan          = $pekerjaan;
+            $penduduk->nama_lengkap          = $nama_lengkap;
+            $penduduk->jenis_kelamin         = $jenis_kelamin;
+            $penduduk->tempat_lahir          = $tempat_lahir;
+            $penduduk->tanggal_lahir         = $tanggal_lahir;
+            $penduduk->agama                 = $agama;
+            $penduduk->golongan_darah        = $golongan_darah;
+            $penduduk->pendidikan            = $pendidikan;
+            $penduduk->status_dalam_keluarga = $status_dalam_keluarga;
+            $penduduk->status_kawin          = $status_kawin;
+            $penduduk->no_akta_lahir         = $no_akta_lahir;
+            $penduduk->nama_lengkap_ayah     = $nama_lengkap_ayah;
+            $penduduk->nama_lengkap_ibu      = $nama_lengkap_ibu;
+            $cek  = $penduduk->save();
+
+            if ($cek) {
+                return redirect()->route('penduduk.index')->with('success', 'Berhasil Diupdate');
+            } else {
+                return redirect()->route('penduduk.index')->with('error', 'Mohon Hubungi Admin');
+            }
+        } catch (\Throwable $e) {
+            dd($e);
+
+            return redirect()->route('penduduk.index')->with('error', $e->errorInfo[2]);;
+        }
+    }
+
+    public function destroy($id)
+    {
+        try {
+            Penduduk::where('nik', $id)->delete();
+            return response()->json([
+                'success' => true
+            ]);
+        } catch (\Throwable $e) {
+            return redirect()->route('keluarga.index')->with('error', $e->errorInfo[2]);;
+        }
     }
 }

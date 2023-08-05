@@ -75,16 +75,16 @@
                         <h5 class="modal-title" id="exampleModalLabel">Edit Data Akta Kawin</h5>
                     </div>
                     <div class="modal-body">
-                      <div class="col-lg-12">
-                        <div class="form-group">
-                            <label for="aktaKawin">No Akta Kawin</label>
-                            <input type="text" class="form-control" id="aktaKawinE" name="aktaKawin"
-                                placeholder="Enter No Akta Kawin" value="{{ old('aktaKawin') }}">
-                            @error('aktaKawin')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label for="aktaKawin">No Akta Kawin</label>
+                                <input type="text" class="form-control" id="aktaKawinE" name="aktaKawin"
+                                    placeholder="Enter No Akta Kawin" value="{{ old('aktaKawin') }}">
+                                @error('aktaKawin')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
                         </div>
-                    </div>
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary">Simpan</button>
@@ -142,7 +142,7 @@
                 url: url,
                 // return the result
                 success: function(res) {
-                    $('#form').attr('action',send);
+                    $('#form').attr('action', send);
                     $('#aktaKawinE').val(res.no_akta_kawin);
                 },
             })
@@ -152,27 +152,28 @@
             let url = $(this).attr('data-url');
             let id = $(this).attr('data-id');
             var token = $("meta[name='csrf-token']").attr("content");
-
-            $.ajax({
-                url: url,
-                type: 'DELETE',
-                data: {
-                    "id": id,
-                    "_token": token,
-                },
-                success: function(res) {
-                    if (res) {
-                        Toastify({
-                            text: 'Data Berhasil Dihapus',
-                            className: "success",
-                            style: {
-                                background: "#00b09b",
-                            }
-                        }).showToast();
+            if (confirm("Yakin Data Di Hapus ?")) {
+                $.ajax({
+                    url: url,
+                    type: 'DELETE',
+                    data: {
+                        "id": id,
+                        "_token": token,
+                    },
+                    success: function(res) {
+                        if (res) {
+                            Toastify({
+                                text: 'Data Berhasil Dihapus',
+                                className: "success",
+                                style: {
+                                    background: "#00b09b",
+                                }
+                            }).showToast();
+                        }
+                        location.reload();
                     }
-                    location.reload();
-                }
-            });
+                });
+            }
         });
     </script>
 

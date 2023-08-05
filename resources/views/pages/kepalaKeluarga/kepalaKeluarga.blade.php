@@ -4,8 +4,8 @@
 @section('css')
     <link href="{{ asset('vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
     <style>
-        td{
-            text-transform:capitalize !important;
+        td {
+            text-transform: capitalize !important;
         }
     </style>
 @endsection
@@ -157,8 +157,9 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="nama_kepala_keluarga">Nama Kepala Keluarga</label>
-                                    <input type="text" class="form-control" id="nama_kepala_keluargaE" name="nama_kepala_keluarga"
-                                        placeholder="Masukkan No Akta Kawin" value="{{ old('nama_kepala_keluarga') }}">
+                                    <input type="text" class="form-control" id="nama_kepala_keluargaE"
+                                        name="nama_kepala_keluarga" placeholder="Masukkan No Akta Kawin"
+                                        value="{{ old('nama_kepala_keluarga') }}">
                                     @error('nama_kepala_keluarga')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -291,27 +292,28 @@
             let url = $(this).attr('data-url');
             let id = $(this).attr('data-id');
             var token = $("meta[name='csrf-token']").attr("content");
-
-            $.ajax({
-                url: url,
-                type: 'DELETE',
-                data: {
-                    "id": id,
-                    "_token": token,
-                },
-                success: function(res) {
-                    if (res) {
-                        Toastify({
-                            text: 'Data Berhasil Dihapus',
-                            className: "success",
-                            style: {
-                                background: "#00b09b",
-                            }
-                        }).showToast();
+            if (confirm("Yakin Data Di Hapus ?")) {
+                $.ajax({
+                    url: url,
+                    type: 'DELETE',
+                    data: {
+                        "id": id,
+                        "_token": token,
+                    },
+                    success: function(res) {
+                        if (res) {
+                            Toastify({
+                                text: 'Data Berhasil Dihapus',
+                                className: "success",
+                                style: {
+                                    background: "#00b09b",
+                                }
+                            }).showToast();
+                        }
+                        location.reload();
                     }
-                    location.reload();
-                }
-            });
+                });
+            }
         });
     </script>
 

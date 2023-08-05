@@ -2,13 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Keluarga;
+use App\Models\AktaKawin;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Penduduk extends Model
 {
     use HasFactory;
+    use SoftDeletes;
     protected $table = 'penduduk';
     protected $hidden = ['id'];
     protected $fillable = [
@@ -33,5 +37,10 @@ class Penduduk extends Model
     public function keluarga(): HasOne
     {
         return $this->hasOne(Keluarga::class, 'id', 'no_kk');
+    }
+
+    public function aktaKawin(): HasOne
+    {
+        return $this->hasOne(AktaKawin::class, 'id', 'no_akta_kawin');
     }
 }

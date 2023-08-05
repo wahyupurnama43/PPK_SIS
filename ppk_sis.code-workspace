@@ -1,0 +1,13 @@
+{
+  "folders": [
+	{
+		"path": "."
+	},
+	{
+		"path": "../../../github/ppk/up2client.com/envato/advento/main-file"
+	}
+],
+  "settings": {
+    "liveServer.settings.multiRootWorkspaceName": "main-file"
+  }
+}
