@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'AktaKawin')
+@section('title', 'Jabatan')
 
 @section('css')
     <link href="{{ asset('vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
@@ -22,7 +22,7 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>No Akta Kawin</th>
+                            <th>Nama</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -37,7 +37,7 @@
     <div class="modal fade" id="wilayah" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
-                <form action="{{ route('akta-kawin.store') }}" method="post" enctype="multipart/form-data">
+                <form action="{{ route('jabatan.store') }}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Tambah Data Akta Kawin</h5>
@@ -46,10 +46,10 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="form-group">
-                                    <label for="aktaKawin">No Akta Kawin</label>
-                                    <input type="text" class="form-control" id="aktaKawin" name="aktaKawin"
-                                        placeholder="Enter No Akta Kawin" value="{{ old('aktaKawin') }}">
-                                    @error('aktaKawin')
+                                    <label for="jabatan">Nama</label>
+                                    <input type="text" class="form-control" id="jabatan" name="jabatan"
+                                        placeholder="Enter Nama" value="{{ old('jabatan') }}">
+                                    @error('jabatan')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -77,10 +77,10 @@
                     <div class="modal-body">
                         <div class="col-lg-12">
                             <div class="form-group">
-                                <label for="aktaKawin">No Akta Kawin</label>
-                                <input type="text" class="form-control" id="aktaKawinE" name="aktaKawin"
-                                    placeholder="Enter No Akta Kawin" value="{{ old('aktaKawin') }}">
-                                @error('aktaKawin')
+                                <label for="jabatan">Nama</label>
+                                <input type="text" class="form-control" id="jabatanE" name="jabatan"
+                                    placeholder="Enter Nama" value="{{ old('jabatan') }}">
+                                @error('jabatan')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -114,7 +114,7 @@
             $('#dataTable').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('akta-kawin.index') }}",
+                ajax: "{{ route('jabatan.index') }}",
                 columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex',
@@ -122,8 +122,8 @@
                         searchable: false
                     },
                     {
-                        data: 'no_akta_kawin',
-                        name: 'no_akta_kawin'
+                        data: 'nama',
+                        name: 'nama'
                     },
                     {
                         data: 'action',
@@ -143,7 +143,7 @@
                 // return the result
                 success: function(res) {
                     $('#form').attr('action', send);
-                    $('#aktaKawinE').val(res.no_akta_kawin);
+                    $('#jabatanE').val(res.nama);
                 },
             })
         });
