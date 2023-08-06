@@ -9,7 +9,7 @@
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex justify-content-between align-content-center align-items-center">
-            <h6 class="m-0 font-weight-bold text-primary">Data Akta Kawin</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Data Jabatan</h6>
             <!-- Button trigger modal -->
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#wilayah">
                 Tambah Data

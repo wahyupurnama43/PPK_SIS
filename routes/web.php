@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KadusController;
+use App\Http\Controllers\SuratController;
+use App\Http\Controllers\JabatanController;
 use App\Http\Controllers\WilayahController;
 use App\Http\Controllers\KeluargaController;
 use App\Http\Controllers\PendudukController;
