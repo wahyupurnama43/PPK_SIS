@@ -9,6 +9,7 @@ use App\Http\Controllers\KeluargaController;
 use App\Http\Controllers\PendudukController;
 use App\Http\Controllers\AktaKawinController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\SuratController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,6 +32,11 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('akta-kawin', AktaKawinController::class);
         Route::resource('keluarga', KeluargaController::class);
         Route::resource('kadus', KadusController::class);
+    });
+
+    Route::name('surat.')->group(function () {
+        Route::get('/surat', [SuratController::class, 'index'])->name('index');
+        Route::get('/surat/{slug}', [SuratController::class, 'surat'])->name('create');
     });
 });
 

@@ -81,8 +81,8 @@
     </div>
 
     <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item {{ request()->is('admin/wilayah*') ? 'active' : '' }}">
-        <a class="nav-link collapsed " href="{{ route('wilayah.index') }}">
+    <li class="nav-item {{ request()->is('surat*') ? 'active' : '' }}">
+        <a class="nav-link collapsed " href="{{ route('surat.index') }}">
             <i class="far fa-file-word"></i>
             <span>Cetak Surat</span>
         </a>
