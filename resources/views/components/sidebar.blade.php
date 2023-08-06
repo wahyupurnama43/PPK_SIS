@@ -67,6 +67,13 @@
         </a>
     </li>
 
+    <li class="nav-item {{ request()->is('admin/jabatan*') ? 'active' : '' }}">
+        <a class="nav-link collapsed " href="{{ route('jabatan.index') }}">
+            <i class="fas fa-user-secret"></i>
+            <span>Jabatan</span>
+        </a>
+    </li>
+
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item {{ request()->is('admin/wilayah*') ? 'active' : '' }}">
         <a class="nav-link collapsed " href="{{ route('wilayah.index') }}">

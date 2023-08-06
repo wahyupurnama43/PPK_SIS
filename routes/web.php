@@ -9,7 +9,6 @@ use App\Http\Controllers\KeluargaController;
 use App\Http\Controllers\PendudukController;
 use App\Http\Controllers\AktaKawinController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\SuratController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,6 +30,7 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('penduduk', PendudukController::class);
         Route::resource('akta-kawin', AktaKawinController::class);
         Route::resource('keluarga', KeluargaController::class);
+        Route::resource('jabatan', JabatanController::class);
         Route::resource('kadus', KadusController::class);
     });
 
