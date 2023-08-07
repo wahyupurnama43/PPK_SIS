@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('uuid')->unique();
             $table->string('kode');
-            $table->integer('urutan');
+            $table->string('urutan');
             $table->string('bulan');
-            $table->integer('tahun');
+            $table->string('tahun');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -21,8 +21,8 @@ return new class extends Migration
             $table->string('keperluan');
             $table->string('deskripsi');
             $table->string('pendukung');
-            $table->boolean('verifikasi_staf');
-            $table->boolean('verifikasi_kadus');
+            $table->boolean('verifikasi_staf')->nullable();
+            $table->boolean('verifikasi_kadus')->nullable();
             $table->string('barcode');
             $table->timestamps();
             $table->softDeletes();

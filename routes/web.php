@@ -38,7 +38,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::name('surat.')->group(function () {
         Route::get('/surat', [SuratController::class, 'index'])->name('index');
-        Route::get('/surat/{slug}', [SuratController::class, 'surat'])->name('create');
+        Route::get('/preview/{slug}', [SuratController::class, 'preview'])->name('preview');
+        Route::post('/surat/{slug}', [SuratController::class, 'surat'])->name('create');
     });
 });
 

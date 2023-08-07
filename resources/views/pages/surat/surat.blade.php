@@ -19,7 +19,7 @@
                         <div class="col mr-2">
                             <div class="h5 mb-0 font-weight-bold text-gray-800">Surat Keterangan Usaha</div>
                             <div class="text-xs font-weight-bold text-primary text-right mt-3 text-uppercase mb-1">
-                                <button class="btn btn-primary">Cetak</button>
+                                <button class="btn btn-primary" data-toggle="modal" data-target="#sku">Cetak</button>
                             </div>
                         </div>
                     </div>
@@ -87,8 +87,73 @@
             </div>
         </div>
 
+        <!-- Modal -->
+        <div class="modal fade" id="sku" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Surat Keterangan Usaha</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form method="POST" action="{{ route('surat.create', 'surat-keterangan-usaha') }}">
+                        @csrf
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label for="">Nama Usaha</label>
+                                        <input type="text" class="form-control" required name="nama_usaha">
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label for="">Keperluan</label>
+                                        <input type="text" class="form-control" required name="keperluan">
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label for="">Lokasi Usaha</label>
+                                        <input type="text" class="form-control" required
+                                            placeholder="Contoh : Banjar Dinas Bubungkelambu, Desa Batur Tengah"
+                                            name="lokasi_usaha">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="{{ route('surat.preview', 'surat-keterangan-usaha') }}" class="btn btn-secondary">Preview</a>
+                            <button type="submit" class="btn btn-primary">Download</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
 
+        <!-- Modal Preview -->
+        <div class="modal fade" id="previewSurat" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Surat Keterangan Usaha</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    @csrf
+                    <div class="modal-body">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa beatae ipsam officiis praesentium animi. Eaque provident labore nihil id nemo aspernatur, recusandae vitae magnam, laudantium architecto fugiat, a laborum necessitatibus!
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
     </div>

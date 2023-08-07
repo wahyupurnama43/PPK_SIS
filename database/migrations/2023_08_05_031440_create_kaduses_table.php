@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('uuid')->unique();
             $table->integer('id_pengguna');
+            $table->integer('id_jabatan');
             $table->string('nama');
             $table->string('dusun');
             $table->string('desa');
