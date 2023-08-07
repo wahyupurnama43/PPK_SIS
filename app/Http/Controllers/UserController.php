@@ -2,7 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\User;
+use Illuminate\Support\Str;
+use Yajra\DataTables\DataTables;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\UserRequest;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -11,7 +17,29 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        if (request()->ajax()) {
+            return DataTables::of(User::select('*'))
+                ->addColumn('action', function ($row) {
+                    $btn =
+                        '<button type="button" class="btn edit btn btn-primary btn-sm update" data-url="' .
+                        route('pengguna.show', $row->uuid) .
+                        '" data-send="' .
+                        route('pengguna.update', $row->uuid) .
+                        '" data-toggle="modal" data-target="#editWilayah">
+                    Edit
+                </button>';
+                    $btn = $btn . ' <a href="javascript:void(0)" data-url="' .
+                        route('pengguna.destroy', $row->uuid) .
+                        '"  data-id="' . $row->uuid .
+                        '" class="btn btn-danger btn-sm deletePost">Delete</a>';
+                    return $btn;
+                })
+                ->rawColumns(['action'])
+                ->addIndexColumn()
+                ->make(true);
+        }
+
+        return view('pages.pengguna.pengguna');
     }
 
     /**
@@ -25,9 +53,27 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
-        //
+        $id_jabatan           = $request->id_jabatan;
+        $username             = $request->username;
+        $password             = Str::random(10);
+
+        try {
+            $pengguna = User::create([
+                'uuid'                 => Str::uuid(),
+                'id_jabatan'           => $id_jabatan,
+                'username'             => $username,
+                'password'             => Hash::make($password),
+            ]);
+            if ($pengguna) {
+                return redirect()->route('pengguna.index')->with('success', 'Berhasil Ditambahkan');
+            } else {
+                return redirect()->route('pengguna.index')->with('error', 'Mohon Hubungi Admin');
+            }
+        } catch (\Throwable $e) {
+            return redirect()->route('pengguna.index')->with('error', $e->errorInfo[2]);;
+        }
     }
 
     /**
@@ -35,7 +81,8 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $pengguna = User::where('uuid', $id)->first();
+        return response()->json($pengguna);
     }
 
     /**
@@ -49,9 +96,19 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UserRequest $request, string $id)
     {
-        //
+        try {
+            $pengguna                       = User::where('uuid', $id)->first();
+            $pengguna->id_jabatan           = $request->id_jabatan;
+            $pengguna->username             = $request->username;
+            $pengguna->password             = Str::random(10);
+            $pengguna->save();
+
+            return redirect()->route('pengguna.index')->with('success', 'Berhasil Diupdate');
+        } catch (\Throwable $e) {
+            return redirect()->route('pengguna.index')->with('error', $e->errorInfo[2]);;
+        }
     }
 
     /**
@@ -59,6 +116,13 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            User::where('uuid', $id)->delete();
+            return response()->json([
+                'success' => true
+            ]);
+        } catch (\Throwable $e) {
+            return redirect()->route('pengguna.index')->with('error', $e->errorInfo[2]);;
+        }
     }
 }

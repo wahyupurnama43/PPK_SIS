@@ -39,6 +39,13 @@
         </a> --}}
     </li>
 
+    <li class="nav-item {{ request()->is('admin/pengguna*') ? 'active' : '' }}">
+        <a class="nav-link collapsed " href="{{ route('pengguna.index') }}">
+            <i class="fas fa-user"></i>
+            <span>Pengguna</span>
+        </a>
+    </li>
+
     <li class="nav-item {{ request()->is('admin/kadus*') ? 'active' : '' }}">
         <a class="nav-link collapsed " href="{{ route('kadus.index') }}">
             <i class="fas fa-street-view"></i>
