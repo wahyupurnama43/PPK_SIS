@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class JenisSurat extends Model
 {
     use HasFactory;
+    protected $table = 'jenis_surat';
+    protected $hidden = ['id'];
+    protected $fillable = [
+        'uuid',
+        'nama',
+        'slug'
+    ];
 }

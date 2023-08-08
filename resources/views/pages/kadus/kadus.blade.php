@@ -60,6 +60,21 @@
 
                             <div class="col-lg-6">
                                 <div class="form-group">
+                                    <label for="jabatan">Jabatan</label>
+                                    <select name="jabatan" id="jabatan" class="form-control">
+                                        <option value="" selected disabled>Pilih Jabatan</option>
+                                        @foreach ($jabatan as $jbt)
+                                            <option value="{{ $jbt->uuid }}">{{ $jbt->nama }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('jabatan')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="form-group">
                                     <label for="dusun">Dusun</label>
                                     <input type="text" class="form-control" id="dusun" name="dusun"
                                         placeholder="Masukkan Dusun" value="{{ old('dusun') }}">
@@ -118,6 +133,21 @@
                                     <input type="text" class="form-control" id="kadusE" name="kadus"
                                         placeholder="Masukan Nama Kadus" value="{{ old('kadus') }}">
                                     @error('kadus')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="jabatan">Jabatan</label>
+                                    <select name="jabatan" id="jabatanE" class="form-control">
+                                        <option value="" selected disabled>Pilih Jabatan</option>
+                                        @foreach ($jabatan as $jbt)
+                                            <option value="{{ $jbt->uuid }}">{{ $jbt->nama }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('jabatan')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -227,6 +257,7 @@
                 success: function(res) {
                     $('#form').attr('action', send);
                     $('#kadusE').val(res.nama);
+                    $('#jabatanE').val(res.jabatan.uuid);
                     $('#dusunE').val(res.dusun);
                     $('#desaE').val(res.desa);
                     $('#kecamatanE').val(res.kecamatan);

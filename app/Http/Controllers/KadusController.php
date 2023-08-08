@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\KadusRequest;
 use App\Http\Controllers\Controller;
+use App\Models\Jabatan;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -37,12 +38,16 @@ class KadusController extends Controller
                 ->addIndexColumn()
                 ->make(true);
         }
-        return view('pages.kadus.kadus');
+        $jabatan = Jabatan::where('nama', '!=', 'admin')->where('nama', '!=', 'Admin')->get();
+        return view('pages.kadus.kadus', compact('jabatan'));
     }
 
     public function store(KadusRequest $request)
     {
-        $kadus     = Str::title($request->kadus);
+        $jb        = Jabatan::where('uuid', $request->jabatan)->first();
+        $kadus     = $request->kadus;
+        $jabatan   = $jb->id;
+        $jabatan   = $request->jabatan;
         $dusun     = Str::title($request->dusun);
         $desa      = Str::title($request->desa);
         $kecamatan = Str::title($request->kecamatan);
@@ -55,6 +60,7 @@ class KadusController extends Controller
                 'nama'        => $kadus,
                 'dusun'       => $dusun,
                 'desa'        => $desa,
+                'jabatan'     => $jabatan,
                 'kecamatan'   => $kecamatan,
             ]);
 
@@ -70,23 +76,26 @@ class KadusController extends Controller
 
     public function show($id)
     {
-        $kadus = Kadus::where('uuid', $id)->first();
+        $kadus = Kadus::where('uuid', $id)->with('jabatan')->first();
         return response()->json($kadus);
     }
 
     public function update(KadusRequest $request, $id)
     {
-        $nama     = Str::title($request->kadus);
+        $jb        = Jabatan::where('uuid', $request->jabatan)->first();
+        $nama      = $request->kadus;
+        $jabatan   = $jb->id;
         $dusun     = Str::title($request->dusun);
         $desa      = Str::title($request->desa);
         $kecamatan = Str::title($request->kecamatan);
 
         try {
-            $kadus            = Kadus::where('uuid', $id)->first();
-            $kadus->nama      = $nama;
-            $kadus->dusun     = $dusun;
-            $kadus->desa      = $desa;
-            $kadus->kecamatan = $kecamatan;
+            $kadus             = Kadus::where('uuid', $id)->first();
+            $kadus->nama       = $nama;
+            $kadus->dusun      = $dusun;
+            $kadus->desa       = $desa;
+            $kadus->id_jabatan = $jabatan;
+            $kadus->kecamatan  = $kecamatan;
             $kadus->save();
 
             return redirect()->route('kadus.index')->with('success', 'Berhasil Diupdate');
