@@ -43,7 +43,7 @@
     <div class="modal fade" id="wilayah" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
-                <form action="{{ route('pengguna.store') }}" method="post" enctype="multipart/form-data">
+                <form action="{{ route('pengguna.store') }}" method="post" enctype="multipart/form-data" name="myform">
                     @csrf
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Tambah Data Pengguna</h5>
@@ -65,9 +65,14 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="id_jabatan">ID Jabatan</label>
-                                    <input type="text" class="form-control" id="id_jabatan"
-                                        name="id_jabatan" placeholder="Masukkan id jabatan"
-                                        value="{{ old('id_jabatan') }}">
+                                    <select name="id_jabatan" required class="form-control">
+                                        <option value="">Pilih jabatan</option>
+                                        @foreach ($jabatan as $j)
+                                            <option value="{{ $j->nama }}">
+                                                {{ $j->nama }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                     @error('id_jabatan')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -78,11 +83,9 @@
                                 <div class="form-group">
                                     <label for="password">Password</label>
                                     <input type="text" class="form-control" id="password"
-                                        name="password" placeholder="Masukkan password"
+                                        name="row_password" placeholder="Masukkan password"
                                         value="{{ old('password') }}">
-                                    <div class="buttons my-2">
-                                        <button id="btnGenerator" class=" btn btn-success">Generate</button>
-                                    </div>
+                                    <input type="button" class="button" value="Generate" onClick="randomPassword(10);" tabindex="2">
                                     @error('password')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -103,7 +106,7 @@
     <div class="modal fade" id="editWilayah" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
-                <form action="" id="form" method="post" enctype="multipart/form-data">
+                <form action="" id="form" method="post" enctype="multipart/form-data" name="myform">
                     @method('PUT')
                     @csrf
                     <div class="modal-header">
@@ -126,9 +129,14 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="id_jabatan">ID Jabatan</label>
-                                    <input type="text" class="form-control" id="id_jabatanE"
-                                        name="id_jabatan" placeholder="Masukkan id jabatan"
-                                        value="{{ old('id_jabatan') }}">
+                                    <select name="id_jabatan" required class="form-control">
+                                        <option value="">Pilih jabatan</option>
+                                        @foreach ($jabatan as $j)
+                                            <option value="{{ $j->nama }}">
+                                                {{ $j->nama }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                     @error('id_jabatan')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -137,13 +145,11 @@
 
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="password">Password</label>
+                                    <label for="passwordE">Password</label>
                                     <input type="text" class="form-control" id="passwordE"
                                         name="password" placeholder="Masukkan password"
                                         value="{{ old('password') }}">
-                                    <div class="buttons my-2">
-                                        <button id="btnGenerator" class=" btn btn-success">Generate</button>
-                                    </div>
+                                    <input type="button" class="button my-2" value="Generate" onClick="randomPassword(10);" tabindex="2">
                                     @error('password')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -205,9 +211,22 @@
     </script>
 
     <script>
+        function randomPassword(length) {
+        var chars = "abcdefghijklmnopqrstuvwxyz!@#$%^&*()-+<>ABCDEFGHIJKLMNOP1234567890";
+        var pass = document.getElementById("passworrdE");;
+        for (var x = 0; x < length; x++) {
+            var i = Math.floor(Math.random() * chars.length);
+            pass += chars.charAt(i);
+        }
+        myform.row_password.value = pass;
+        }
+    </script>
+
+    <script>
         $(document).on('click', '.update', function(event) {
             let url = $(this).attr('data-url');
             let send = $(this).attr('data-send');
+            
             $.ajax({
                 url: url,
                 // return the result
@@ -215,7 +234,6 @@
                     $('#form').attr('action', send);
                     $('#usernameE').val(res.username);
                     $('#id_jabatanE').val(res.id_jabatan);
-                    //$('#passwordE').val(res.password);
                 },
             })
         });
@@ -246,27 +264,6 @@
                     }
                 });
             }
-        });
-    </script>
-
-    <script>
-        let pass = document.getElementById("passwordE");
-        let btn = document.getElementById("btnGenerator");
-        
-        function generatePass() {
-            let chars =
-                "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()_+[]{}?><";
-            let passLength = 20;
-            let password = "";
-
-            for (let i = 0; i < passLength; i++)
-            password += chars[Math.floor(Math.random() * chars.length)];
-
-            return password;
-        }
-
-        btn.addEventListener("click", () => {
-            pass.value = generatePass();
         });
     </script>
 

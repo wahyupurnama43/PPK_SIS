@@ -24,8 +24,7 @@ class UserRequest extends FormRequest
         return [
             "id_jabatan"           => 'required|integer',
             "username"             => 'required|string|max:255',
-            // "password"             => 'nullable|required_with:password_confirmation|string|confirmed',
-            // "current_password"     => 'required',
+            "password"             => 'required|string|max:255',
         ];
     }
 }

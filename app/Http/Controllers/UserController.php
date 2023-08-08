@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Jabatan;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
@@ -17,6 +19,7 @@ class UserController extends Controller
      */
     public function index()
     {
+
         if (request()->ajax()) {
             return DataTables::of(User::select('*'))
                 ->addColumn('action', function ($row) {
@@ -39,7 +42,8 @@ class UserController extends Controller
                 ->make(true);
         }
 
-        return view('pages.pengguna.pengguna');
+        $jabatan = Jabatan::all();
+        return view('pages.pengguna.pengguna', compact('jabatan'));
     }
 
     /**
@@ -55,8 +59,9 @@ class UserController extends Controller
      */
     public function store(UserRequest $request)
     {
-        $id_jabatan           = $request->id_jabatan;
-        $username             = $request->username;
+        $jabatan_input        = Jabatan::select('id')->where('uuid', $request->id)->first();
+        $id_jabatan           = $jabatan_input->id;
+        $username             = Str::title($request->username);
         $password             = Str::random(10);
 
         try {
@@ -81,8 +86,22 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
+        $jabatan = Jabatan::all();
         $pengguna = User::where('uuid', $id)->first();
-        return response()->json($pengguna);
+        return view('pages.penngguna.pengguna', compact('jabatan', 'pengguna'));
+    }
+
+    public function getJabatan(Request $request)
+    {
+        $jabatan = Jabatan::select('id', 'uuid')->where('id')->get();
+        $response = array();
+        foreach ($jabatan as $j) {
+            $response[] = array(
+                "id"   => $j->uuid,
+                "text" => $j->id
+            );
+        }
+        return response()->json($response);
     }
 
     /**
@@ -99,9 +118,10 @@ class UserController extends Controller
     public function update(UserRequest $request, string $id)
     {
         try {
+            $jabatan_input                  = Jabatan::select('id')->where('uuid', $request->id)->first();
             $pengguna                       = User::where('uuid', $id)->first();
-            $pengguna->id_jabatan           = $request->id_jabatan;
-            $pengguna->username             = $request->username;
+            $pengguna->id_jabatan           = $jabatan_input->id;
+            $pengguna->username             = Str::title($request->username);
             $pengguna->password             = Str::random(10);
             $pengguna->save();
 
