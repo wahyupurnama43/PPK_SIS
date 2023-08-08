@@ -127,30 +127,9 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <a href="{{ route('surat.preview', 'surat-keterangan-usaha') }}" class="btn btn-secondary">Preview</a>
                             <button type="submit" class="btn btn-primary">Download</button>
                         </div>
                     </form>
-                </div>
-            </div>
-        </div>
-
-
-        <!-- Modal Preview -->
-        <div class="modal fade" id="previewSurat" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Surat Keterangan Usaha</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    @csrf
-                    <div class="modal-body">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa beatae ipsam officiis praesentium animi. Eaque provident labore nihil id nemo aspernatur, recusandae vitae magnam, laudantium architecto fugiat, a laborum necessitatibus!
-                    </div>
                 </div>
             </div>
         </div>

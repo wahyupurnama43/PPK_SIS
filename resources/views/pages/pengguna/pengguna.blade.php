@@ -68,7 +68,7 @@
                                     <select name="id_jabatan" required class="form-control">
                                         <option value="">Pilih jabatan</option>
                                         @foreach ($jabatan as $j)
-                                            <option value="{{ $j->nama }}">
+                                            <option value="{{ $j->uuid }}">
                                                 {{ $j->nama }}
                                             </option>
                                         @endforeach
@@ -82,10 +82,12 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="password">Password</label>
-                                    <input type="text" class="form-control" id="password"
-                                        name="row_password" placeholder="Masukkan password"
-                                        value="{{ old('password') }}">
-                                    <input type="button" class="button" value="Generate" onClick="randomPassword(10);" tabindex="2">
+                                    <input type="text" class="form-control" id="password" name="password"
+                                        placeholder="Masukkan password" value="{{ old('password') }}">
+                                    <div class="mt-2 d-flex justify-content-between">
+                                        <button type="button" class="btn btn-primary" id="generate">Generate </button>
+                                        <button type="button" class="btn btn-info" id="copy">Copy </button>
+                                    </div>
                                     @error('password')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -146,10 +148,10 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="passwordE">Password</label>
-                                    <input type="text" class="form-control" id="passwordE"
-                                        name="password" placeholder="Masukkan password"
-                                        value="{{ old('password') }}">
-                                    <input type="button" class="button my-2" value="Generate" onClick="randomPassword(10);" tabindex="2">
+                                    <input type="text" class="form-control" id="passwordE" name="password"
+                                        placeholder="Masukkan password" value="{{ old('password') }}">
+                                    <input type="button" class="button my-2" value="Generate"
+                                        onClick="randomPassword(10);" tabindex="2">
                                     @error('password')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -211,22 +213,29 @@
     </script>
 
     <script>
-        function randomPassword(length) {
-        var chars = "abcdefghijklmnopqrstuvwxyz!@#$%^&*()-+<>ABCDEFGHIJKLMNOP1234567890";
-        var pass = document.getElementById("passworrdE");;
-        for (var x = 0; x < length; x++) {
-            var i = Math.floor(Math.random() * chars.length);
-            pass += chars.charAt(i);
-        }
-        myform.row_password.value = pass;
-        }
+        $('#generate').click(function() {
+            var chars = "0123456789abcdefghijklmnopqrstuvwxyz!@#$%^&*()ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            var passwordLength = 12;
+            var password = "";
+            for (var i = 0; i <= passwordLength; i++) {
+                var randomNumber = Math.floor(Math.random() * chars.length);
+                password += chars.substring(randomNumber, randomNumber + 1);
+            }
+            $('#password').val(password)
+        })
+
+        $('#copy').click(function() {
+            var copyText = document.getElementById("password");
+            copyText.select();
+            document.execCommand("copy");
+        })
     </script>
 
     <script>
         $(document).on('click', '.update', function(event) {
             let url = $(this).attr('data-url');
             let send = $(this).attr('data-send');
-            
+
             $.ajax({
                 url: url,
                 // return the result

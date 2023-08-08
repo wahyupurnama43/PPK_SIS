@@ -59,10 +59,10 @@ class UserController extends Controller
      */
     public function store(UserRequest $request)
     {
-        $jabatan_input        = Jabatan::select('id')->where('uuid', $request->id)->first();
-        $id_jabatan           = $jabatan_input->id;
-        $username             = Str::title($request->username);
-        $password             = Str::random(10);
+        $jabatan_input = Jabatan::select('id')->where('uuid', $request->id_jabatan)->first();
+        $id_jabatan    = $jabatan_input->id;
+        $username      = $request->username;
+        $password      = $request->password;
 
         try {
             $pengguna = User::create([

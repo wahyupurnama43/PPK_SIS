@@ -39,6 +39,13 @@
         </a> --}}
     </li>
 
+    <li class="nav-item {{ request()->is('admin/jabatan*') ? 'active' : '' }}">
+        <a class="nav-link collapsed " href="{{ route('jabatan.index') }}">
+            <i class="fas fa-user-secret"></i>
+            <span>Jabatan</span>
+        </a>
+    </li>
+
     <li class="nav-item {{ request()->is('admin/pengguna*') ? 'active' : '' }}">
         <a class="nav-link collapsed " href="{{ route('pengguna.index') }}">
             <i class="fas fa-user"></i>
@@ -74,10 +81,10 @@
         </a>
     </li>
 
-    <li class="nav-item {{ request()->is('admin/jabatan*') ? 'active' : '' }}">
-        <a class="nav-link collapsed " href="{{ route('jabatan.index') }}">
-            <i class="fas fa-user-secret"></i>
-            <span>Jabatan</span>
+    <li class="nav-item {{ request()->is('admin/Adminlist*') ? 'active' : '' }}">
+        <a class="nav-link collapsed " href="{{ route('surat.Adminlist') }}">
+            <i class="fas fa-file"></i>
+            <span>Surat Konfirmasi</span>
         </a>
     </li>
 
@@ -95,10 +102,18 @@
     </div>
 
     <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item {{ request()->is('surat*') ? 'active' : '' }}">
+    <li class="nav-item {{ request()->is('surat') ? 'active' : '' }}">
         <a class="nav-link collapsed " href="{{ route('surat.index') }}">
             <i class="far fa-file-word"></i>
             <span>Cetak Surat</span>
+        </a>
+    </li>
+
+      <!-- Nav Item - Pages Collapse Menu -->
+      <li class="nav-item {{ request()->is('surat/list*') ? 'active' : '' }}">
+        <a class="nav-link collapsed " href="{{ route('surat.list') }}">
+            <i class="far fa-file-word"></i>
+            <span>List Surat</span>
         </a>
     </li>
 

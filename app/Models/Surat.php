@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Keluarga;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Surat extends Model
 {
@@ -24,5 +26,26 @@ class Surat extends Model
         'verifikasi_staf',
         'verifikasi_kadus',
         'barcode',
+        'pdf'
     ];
+
+    public function penduduk(): HasOne
+    {
+        return $this->hasOne(Penduduk::class, 'nik', 'nik');
+    }
+
+    public function no_surat(): HasOne
+    {
+        return $this->hasOne(NomorSurat::class, 'id', 'id_nomor_surat');
+    }
+
+    public function jenis_surat(): HasOne
+    {
+        return $this->hasOne(JenisSurat::class, 'id', 'id_jenis_surat');
+    }
+
+    public function kadus(): HasOne
+    {
+        return $this->hasOne(Kadus::class, 'id', 'id_kadus');
+    }
 }
