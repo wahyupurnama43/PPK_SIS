@@ -1,5 +1,5 @@
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-
+    {{-- {{ dd(Auth()->user()) }} --}}
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
         <div class="sidebar-brand-icon">
@@ -26,7 +26,7 @@
 
     <!-- Divider -->
     <hr class="sidebar-divider">
-
+    @if(Auth()->user()->id_jabatan === 1)
     <!-- Heading -->
     <div class="sidebar-heading">
         Fitur Admin
@@ -96,6 +96,23 @@
         </a>
     </li>
 
+     <!-- Nav Item - Pages Collapse Menu -->
+     <li class="nav-item {{ request()->is('admin/surat') ? 'active' : '' }}">
+        <a class="nav-link collapsed " href="{{ route('admin.suratAdmin') }}">
+            <i class="far fa-file-word"></i>
+            <span>Cetak Surat</span>
+        </a>
+    </li>
+
+      <!-- Nav Item - Pages Collapse Menu -->
+      <li class="nav-item {{ request()->is('admin/surat/list*') ? 'active' : '' }}">
+        <a class="nav-link collapsed " href="{{ route('admin.list') }}">
+            <i class="far fa-file-word"></i>
+            <span>List Surat</span>
+        </a>
+    </li>
+    @endif
+    @if(Auth()->user()->id_jabatan === 2)
     <!-- Heading -->
     <div class="sidebar-heading">
         Fitur User
@@ -116,6 +133,7 @@
             <span>List Surat</span>
         </a>
     </li>
+    @endif
 
     <!-- Nav Item - Utilities Collapse Menu -->
     {{-- <li class="nav-item">
