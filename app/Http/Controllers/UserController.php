@@ -17,11 +17,17 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-
-        if (request()->ajax()) {
-            return DataTables::of(User::select('*'))
+        if ($request->ajax()) {
+            $pengguna = User::with('jabatan')->get();
+            return DataTables::of($pengguna)
+                ->addColumn('DT_RowIndex', function ($pengguna) {
+                    return '';
+                })
+                ->addColumn('jabatan_nama', function ($pengguna) {
+                    return $pengguna->jabatan->nama;
+                })
                 ->addColumn('action', function ($row) {
                     $btn =
                         '<button type="button" class="btn edit btn btn-primary btn-sm update" data-url="' .
@@ -37,7 +43,7 @@ class UserController extends Controller
                         '" class="btn btn-danger btn-sm deletePost">Delete</a>';
                     return $btn;
                 })
-                ->rawColumns(['action'])
+                ->rawColumns(['action', 'DT_RowIndex', 'jabatan_nama'])
                 ->addIndexColumn()
                 ->make(true);
         }
@@ -60,14 +66,14 @@ class UserController extends Controller
     public function store(UserRequest $request)
     {
         $jabatan_input = Jabatan::select('id')->where('uuid', $request->id_jabatan)->first();
-        $id_jabatan    = $jabatan_input->id;
-        $username      = $request->username;
+        $jabatan       = $jabatan_input->id;
+        $username      = Str::title($request->username);
         $password      = $request->password;
 
         try {
             $pengguna = User::create([
                 'uuid'                 => Str::uuid(),
-                'id_jabatan'           => $id_jabatan,
+                'id_jabatan'           => $jabatan,
                 'username'             => $username,
                 'password'             => Hash::make($password),
             ]);
@@ -91,19 +97,6 @@ class UserController extends Controller
         return view('pages.penngguna.pengguna', compact('jabatan', 'pengguna'));
     }
 
-    public function getJabatan(Request $request)
-    {
-        $jabatan = Jabatan::select('id', 'uuid')->where('id')->get();
-        $response = array();
-        foreach ($jabatan as $j) {
-            $response[] = array(
-                "id"   => $j->uuid,
-                "text" => $j->id
-            );
-        }
-        return response()->json($response);
-    }
-
     /**
      * Show the form for editing the specified resource.
      */
@@ -117,15 +110,23 @@ class UserController extends Controller
      */
     public function update(UserRequest $request, string $id)
     {
-        try {
-            $jabatan_input                  = Jabatan::select('id')->where('uuid', $request->id)->first();
-            $pengguna                       = User::where('uuid', $id)->first();
-            $pengguna->id_jabatan           = $jabatan_input->id;
-            $pengguna->username             = Str::title($request->username);
-            $pengguna->password             = Str::random(10);
-            $pengguna->save();
+        $jabatan_input = Jabatan::select('id')->where('uuid')->first();
+        $jabatan       = $jabatan_input->id;
+        $username      = Str::title($request->username);
+        $password      = $request->password;
 
-            return redirect()->route('pengguna.index')->with('success', 'Berhasil Diupdate');
+        try {
+            $pengguna                       = User::where('id', $id)->first();
+            $pengguna->username             = $username;
+            $pengguna->id_jabatan           = $jabatan;
+            $pengguna->password_get_info    = $password;
+            $cek = $pengguna->save();
+
+            if ($cek) {
+                return redirect()->route('pengguna.index')->with('success', 'Berhasil Ditambahkan');
+            } else {
+                return redirect()->route('pengguna.index')->with('error', 'Mohon Hubungi Admin');
+            }
         } catch (\Throwable $e) {
             return redirect()->route('pengguna.index')->with('error', $e->errorInfo[2]);;
         }
