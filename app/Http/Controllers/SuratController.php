@@ -140,7 +140,8 @@ class SuratController extends Controller
         $array_bln = [1 => 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
         $bulan     = $array_bln[date('n')];
 
-        $nik = '1807245108910003';
+
+        $nik = Auth::user()->username;
         // get data penduduk
 
         $penduduk = Penduduk::where('nik', $nik)->first();
@@ -184,8 +185,12 @@ class SuratController extends Controller
 
     public function list()
     {
-        $nik   = '1807245108910003';
-        $surat = Surat::where('nik', $nik)->get();
+        if (Auth::user()->id_jabatan === 1) {
+            $surat = Surat::all();
+        } else {
+            $nik   = Auth::user()->username;
+            $surat = Surat::where('nik', $nik)->orderBy('created_at', 'DESC')->get();
+        }
         return view('pages.surat.list', compact('surat'));
     }
 
@@ -210,40 +215,18 @@ class SuratController extends Controller
         }
     }
 
-    // public function preview($slug)
-    // {
-    //     $keperluan      = 'asdas';
-    //     $jenis_surat    = JenisSurat::where('slug', $slug)->first();
-    //     $id_jenis_surat = $jenis_surat->id;
-    //     $pendukung      = '';
-    //     $host           = request()->getHttpHost();
-    //     // note
-    //     // sku = 1
-    //     // skm = 2
-    //     // skd = 3
-    //     // sktm = 4
-    //     // sk =5
-    //     if ($id_jenis_surat === 1) {
-    //         $deskripsi = "Sesuai dengan pernyataan orang tersebut diatas bahwa memang benar yang bersangkutan mempunyai usaha  yang berlokasi di wilayah keja kami di dan masih memerlukan Bantuan Modal dengan agunan sebagai berikut :";
-    //     } else {
-    //         dd('tidak');
-    //     }
-    //     $tahun     = date('Y');
-    //     $cek_nomor = NomorSurat::where('id_jenis_surat', $id_jenis_surat)->where('tahun', $tahun)->count();
-    //     $count     = ($cek_nomor + 1);
-    //     $nomor     = str_pad($count, 2, "0", STR_PAD_LEFT);
-    //     $array_bln = array(1 => "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII");
-    //     $bulan     = $array_bln[date('n')];
-    //     $no_surat = '';
-    //     $surat = 'preview';
+    public function suratAdmin()
+    {
+        dd('belum');
+    }
 
-    //     $nik = '1807245108910003';
-    //     // get data penduduk
-    //     $penduduk = Penduduk::where('nik', $nik)->first();
-    //     $kadus    = Kadus::where('dusun', 'like',  '%' . $penduduk->keluarga->dusun . '%')->where('desa', 'like',  '%' . $penduduk->keluarga->desa . '%')->first();
-
-    //     $pdf = PDF::loadview('pages.surat.sku', compact('penduduk', 'kadus', 'no_surat', 'nik', 'surat', 'host'));
-    //     return $pdf->stream('tes.pdf');
-    //     exit();
-    // }
+    public function notify()
+    {
+        $surat = Surat::select('created_at', 'nik', 'id_jenis_surat')->with(['penduduk' => function ($d) {
+            $d->select('nik', 'nama_lengkap');
+        }, 'jenis_surat' => function ($js) {
+            $js->select('id', 'nama');
+        }])->where('verifikasi_staf', null)->where("verifikasi_kadus", null)->orderBy('created_at', 'ASC')->get();
+        return response()->json($surat);
+    }
 }

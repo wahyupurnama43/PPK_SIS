@@ -28,23 +28,28 @@ Route::get('/', [HomeController::class, 'index']);
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index']);
-    Route::prefix('admin')->group(function () {
-        Route::resource('wilayah', WilayahController::class);
-        Route::resource('penduduk', PendudukController::class);
-        Route::resource('akta-kawin', AktaKawinController::class);
-        Route::resource('keluarga', KeluargaController::class);
-        Route::resource('jabatan', JabatanController::class);
-        Route::resource('kadus', KadusController::class);
-        Route::resource('pengguna', UserController::class);
-        Route::get('/Adminlist', [SuratController::class, 'Adminlist'])->name('surat.Adminlist');
-        Route::get('/verif/{id}/{aktor}', [SuratController::class, 'verif'])->name('surat.verif');
+    Route::middleware(['jabatan:admin'])->group(function () {
+        Route::prefix('admin')->group(function () {
+            Route::resource('wilayah', WilayahController::class);
+            Route::resource('penduduk', PendudukController::class);
+            Route::resource('akta-kawin', AktaKawinController::class);
+            Route::resource('keluarga', KeluargaController::class);
+            Route::resource('jabatan', JabatanController::class);
+            Route::resource('kadus', KadusController::class);
+            Route::resource('pengguna', UserController::class);
+            Route::get('/Adminlist', [SuratController::class, 'Adminlist'])->name('surat.Adminlist');
+            Route::get('/verif/{id}/{aktor}', [SuratController::class, 'verif'])->name('surat.verif');
+            Route::get('/surat', [SuratController::class, 'suratAdmin'])->name('admin.suratAdmin');
+            Route::get('/surat/list', [SuratController::class, 'list'])->name('admin.list');
+        });
     });
-
-    Route::name('surat.')->group(function () {
-        Route::get('/surat', [SuratController::class, 'index'])->name('index');
-        Route::get('/surat/list', [SuratController::class, 'list'])->name('list');
-        // Route::get('/preview/{slug}', [SuratController::class, 'preview'])->name('preview');
-        Route::post('/surat/{slug}', [SuratController::class, 'surat'])->name('create');
+    Route::middleware(['jabatan:masyarakat'])->group(function () {
+        Route::name('surat.')->group(function () {
+            Route::get('/surat', [SuratController::class, 'index'])->name('index');
+            Route::get('/surat/list', [SuratController::class, 'list'])->name('list');
+            // Route::get('/preview/{slug}', [SuratController::class, 'preview'])->name('preview');
+            Route::post('/surat/{slug}', [SuratController::class, 'surat'])->name('create');
+        });
     });
 });
 

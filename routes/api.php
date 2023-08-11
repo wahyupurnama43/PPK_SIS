@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\PendudukController;
+use App\Http\Controllers\SuratController;
 use App\Http\Controllers\WilayahController;
-use App\Models\Wilayah;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,5 +18,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/wilayah', [WilayahController::class, 'getWilayah'])->name('api.wilayah');
+Route::get('/notify', [SuratController::class, 'notify'])->name('api.notify');
 Route::post('/kk', [PendudukController::class, 'getKK'])->name('api.kk');
 Route::post('/akta-kawin', [PendudukController::class, 'getAktaKawin'])->name('api.aktaKawin');
