@@ -28,7 +28,7 @@
                         <tr>
                             <th>No</th>
                             <th>Username</th>
-                            <th>ID Jabatan</th>
+                            <th>Jabatan</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -64,7 +64,7 @@
 
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label for="id_jabatan">ID Jabatan</label>
+                                    <label for="id_jabatan">Jabatan</label>
                                     <select name="id_jabatan" required class="form-control">
                                         <option value="">Pilih jabatan</option>
                                         @foreach ($jabatan as $j)
@@ -104,7 +104,7 @@
         </div>
     </div>
 
-    {{-- Modal Edit --}}
+    Modal Edit 
     <div class="modal fade" id="editWilayah" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
@@ -130,12 +130,12 @@
 
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label for="id_jabatan">ID Jabatan</label>
+                                    <label for="id_jabatan">Jabatan</label>
                                     <select name="id_jabatan" required class="form-control">
                                         <option value="">Pilih jabatan</option>
-                                        @foreach ($jabatan as $j)
-                                            <option value="{{ $j->nama }}">
-                                                {{ $j->nama }}
+                                        @foreach ($jabatan as $jb)
+                                            <option value="{{ $jb->uuid }}">
+                                                {{ $jb->nama }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -147,11 +147,13 @@
 
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="passwordE">Password</label>
-                                    <input type="text" class="form-control" id="passwordE" name="password"
+                                    <label for="password">Password</label>
+                                    <input type="text" class="form-control" id="password" name="password"
                                         placeholder="Masukkan password" value="{{ old('password') }}">
-                                    <input type="button" class="button my-2" value="Generate"
-                                        onClick="randomPassword(10);" tabindex="2">
+                                    <div class="mt-2 d-flex justify-content-between">
+                                        <button type="button" class="btn btn-primary" id="generate">Generate</button>
+                                        <button type="button" class="btn btn-info" id="copy">Copy </button>
+                                    </div>
                                     @error('password')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -166,51 +168,52 @@
                 </form>
             </div>
         </div>
-    </div>
+    </div> 
 
 
 @endsection
 
 @section('js')
-    <script src="{{ asset('vendor/datatables/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
 
-    <script>
-        $(document).ready(function() {
+        <script src="{{ asset('vendor/datatables/jquery.dataTables.min.js') }}"></script>
+        <script src="{{ asset('vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
 
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
+        <script>
+            $(document).ready(function() {
+
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+
+                $('#dataTable').DataTable({
+                    processing: true,
+                    serverSide: true,
+                    ajax: "{{ route('pengguna.index') }}",
+                    columns: [{
+                            data: 'DT_RowIndex',
+                            name: 'DT_RowIndex',
+                            orderable: false,
+                            searchable: false
+                        },
+                        {
+                            data: 'username',
+                            name: 'username'
+                        },
+                        {
+                            data: 'jabatan_nama',
+                            name: 'jabatan_nama'
+                        },
+                        {
+                            data: 'action',
+                            name: 'action'
+                        },
+                    ]
+                });
             });
-
-
-            $('#dataTable').DataTable({
-                processing: true,
-                serverSide: true,
-                ajax: "{{ route('pengguna.index') }}",
-                columns: [{
-                        data: 'DT_RowIndex',
-                        name: 'DT_RowIndex',
-                        orderable: false,
-                        searchable: false
-                    },
-                    {
-                        data: 'username',
-                        name: 'username'
-                    },
-                    {
-                        data: 'id_jabatan',
-                        name: 'id_jabatan'
-                    },
-                    {
-                        data: 'action',
-                        name: 'action'
-                    },
-                ]
-            });
-        });
-    </script>
+        </script>
 
     <script>
         $('#generate').click(function() {
