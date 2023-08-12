@@ -121,6 +121,20 @@ class PendudukController extends Controller
         return response()->json($response);
     }
 
+    public function getNik(Request $request)
+    {
+        $nik      = $request->term['term'];
+        $penduduk = Penduduk::select('nik', 'nama_lengkap')->where('nik', 'LIKE', '%' . $nik . '%')->orWhere('nama_lengkap', 'LIKE', '%' . $nik . '%')->get();
+        $response = array();
+        foreach ($penduduk as $p) {
+            $response[] = array(
+                "id"   => $p->nik,
+                "text" => $p->nik . ' (' . $p->nama_lengkap . ')'
+            );
+        }
+        return response()->json($response);
+    }
+
     public function getAktaKawin(Request $request)
     {
         $nik      = $request->term['term'];

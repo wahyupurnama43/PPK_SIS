@@ -80,19 +80,23 @@
             <span>Penduduk</span>
         </a>
     </li>
-
-    <li class="nav-item {{ request()->is('admin/Adminlist*') ? 'active' : '' }}">
-        <a class="nav-link collapsed " href="{{ route('surat.Adminlist') }}">
-            <i class="fas fa-file"></i>
-            <span>Surat Konfirmasi</span>
-        </a>
-    </li>
-
+  
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item {{ request()->is('admin/wilayah*') ? 'active' : '' }}">
         <a class="nav-link collapsed " href="{{ route('wilayah.index') }}">
             <i class="fas fa-map-marker-alt"></i>
             <span>Wilayah GIS</span>
+        </a>
+    </li>
+
+    <div class="sidebar-heading">
+        Fitur Admin Surat
+    </div>
+
+    <li class="nav-item {{ request()->is('admin/Adminlist*') ? 'active' : '' }}">
+        <a class="nav-link collapsed " href="{{ route('surat.Adminlist') }}">
+            <i class="fas fa-file"></i>
+            <span>Surat Konfirmasi</span>
         </a>
     </li>
 

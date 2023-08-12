@@ -64,7 +64,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Primakara Unversity & Desa Batur Tengah  2023</span>
+                        <span>Copyright &copy; Primakara Unversity & Desa Batur Tengah 2023</span>
                     </div>
                 </div>
             </footer>
@@ -87,23 +87,26 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Apakah Anda Mau Keluar?</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-body">Pilih Tombol Keluar dibawah ini untuk keluar dari aplikasi ini.</div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="dropdown-item" href="{{ route('logout') }}"
-                        onclick="event.preventDefault();
-                    document.getElementById('logout-form').submit();">
-                        {{ __('Logout') }}
-                    </a>
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
 
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                        @csrf
-                    </form>
+                    <div>
+                        <a class="btn btn-danger text-white" href="{{ route('logout') }}"
+                            onclick="event.preventDefault();
+                    document.getElementById('logout-form').submit();">
+                            {{ __('Keluar') }}
+                        </a>
+
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            @csrf
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -124,6 +127,11 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
     <script>
+        if ($(window).width() < 768) {
+            $(".sidebar").addClass("toggled");
+            $(".nav-link").addClass("collapsed");
+            $("#collapseUtilities").removeClass("show");
+        }
         $(document).ready(function() {
             @if (Session::has('error'))
                 Toastify({

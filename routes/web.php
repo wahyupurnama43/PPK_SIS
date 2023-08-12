@@ -41,11 +41,13 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/verif/{id}/{aktor}', [SuratController::class, 'verif'])->name('surat.verif');
             Route::get('/surat', [SuratController::class, 'suratAdmin'])->name('admin.suratAdmin');
             Route::get('/surat/list', [SuratController::class, 'list'])->name('admin.list');
+            Route::post('/surat/{slug}', [SuratController::class, 'storeSuratAdmin'])->name('admin.storeSuratAdmin');
         });
     });
     Route::middleware(['jabatan:masyarakat'])->group(function () {
         Route::name('surat.')->group(function () {
             Route::get('/surat', [SuratController::class, 'index'])->name('index');
+            Route::post('/surat', [SuratController::class, 'index'])->name('update');
             Route::get('/surat/list', [SuratController::class, 'list'])->name('list');
             // Route::get('/preview/{slug}', [SuratController::class, 'preview'])->name('preview');
             Route::post('/surat/{slug}', [SuratController::class, 'surat'])->name('create');

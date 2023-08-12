@@ -24,6 +24,102 @@ class SuratController extends Controller
         return view('pages.surat.surat');
     }
 
+    public function notify()
+    {
+        $surat = Surat::select('created_at', 'nik', 'id_jenis_surat')->with(['penduduk' => function ($d) {
+            $d->select('nik', 'nama_lengkap');
+        }, 'jenis_surat' => function ($js) {
+            $js->select('id', 'nama');
+        }])->where('verifikasi_staf', null)->where("verifikasi_kadus", null)->orderBy('created_at', 'DESC')->get();
+        return response()->json($surat);
+    }
+
+    // FOR USER
+
+    public function surat(Request $request, $slug)
+    {
+        $jenis_surat    = JenisSurat::where('slug', $slug)->first();
+        $id_jenis_surat = $jenis_surat->id;
+        $pendukung      = '';
+        $host           = request()->getHttpHost();
+        // note
+        // sku = 1
+        // skm = 2
+        // skd = 3
+        // sktm = 4
+        // sk =5
+        if ($id_jenis_surat === 1) {
+            $deskripsi = 'Sesuai dengan pernyataan orang tersebut diatas bahwa memang benar yang bersangkutan mempunyai usaha ' . $request->nama_usaha . ' yang berlokasi di wilayah keja kami di ' . $request->lokasi_usaha . ' dan masih memerlukan Bantuan Modal dengan agunan sebagai berikut :';
+        } else {
+            dd('tidak');
+        }
+        $tahun = date('Y');
+        $cek_nomor = NomorSurat::where('id_jenis_surat', $id_jenis_surat)
+            ->where('tahun', $tahun)
+            ->count();
+        $count     = $cek_nomor + 1;
+        $nomor     = str_pad($count, 2, '0', STR_PAD_LEFT);
+        $array_bln = [1 => 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
+        $bulan     = $array_bln[date('n')];
+
+
+        $nik = Auth::user()->username;
+        // get data penduduk
+
+        $penduduk = Penduduk::where('nik', $nik)->first();
+        $kadus    = Kadus::where('dusun', 'like', '%' . $penduduk->keluarga->dusun . '%')
+            ->where('desa', 'like', '%' . $penduduk->keluarga->desa . '%')
+            ->first();
+
+        // insert no surat
+        $no_surat = NomorSurat::create([
+            'uuid'           => Str::uuid(),
+            'id_jenis_surat' => $id_jenis_surat,
+            'kode'           => '145',
+            'urutan'         => $nomor,
+            'bulan'          => $bulan,
+            'tahun'          => $tahun,
+        ]);
+        $pdfName = 'public/pdf/' . date('m-y-d') . $nomor . $nik . '.pdf';
+
+        $qrname = 'images/qrcode/' . date('m-y-d') . $nomor . $nik . '.svg';
+
+        QrCode::generate($host . Storage::url($pdfName), public_path($qrname));
+
+        $surat = Surat::create([
+            'uuid'           => Str::uuid(),
+            'nik'            => $nik,
+            'id_nomor_surat' => $no_surat->id,
+            'id_jenis_surat' => $id_jenis_surat,
+            'id_kadus'       => $kadus->id,
+            'keperluan'      => $request->keperluan,
+            'deskripsi'      => $deskripsi,
+            'pendukung'      => $pendukung,
+            'barcode'        => $qrname,
+            'pdf'            => $pdfName,
+        ]);
+
+        $pdf = PDF::loadview('pages.surat.sku', compact('penduduk', 'kadus', 'no_surat', 'nik', 'surat', 'host'));
+        Storage::put($pdfName, $pdf->output());
+        // return view('pages.surat.sku');
+        return redirect()->route('surat.list')->with('success', 'Berhasil Membuat Surat');
+    }
+
+    public function list()
+    {
+        if (Auth::user()->id_jabatan === 1) {
+            $surats = Surat::orderBy('created_at', 'DESC')->paginate(9);
+        } else {
+            $nik    = Auth::user()->username;
+            $surats = Surat::where('nik', $nik)->orderBy('created_at', 'DESC')->paginate(9);
+        }
+        return view('pages.surat.list', compact('surats'));
+    }
+
+
+
+    // FOR ADMIN
+
     public function Adminlist()
     {
         if (request()->ajax()) {
@@ -111,10 +207,36 @@ class SuratController extends Controller
                 ->addIndexColumn()
                 ->make(true);
         }
-        return view('pages.surat.Adminlist');
+        return view('pages.surat.admin.adminList');
     }
 
-    public function surat(Request $request, $slug)
+    public function verif($id, $aktor)
+    {
+        $surat = Surat::where("uuid", $id)->first();
+
+        if ($aktor === 'kadus') {
+            $surat->verifikasi_kadus = '1';
+        } else if ($aktor === 'staf') {
+            $surat->verifikasi_staf = '1';
+        } else {
+            $surat->verifikasi_staf  = '0';
+            $surat->verifikasi_kadus = '0';
+        }
+
+        $cek = $surat->save();
+        if ($cek) {
+            return redirect()->route('admin.list')->with('success', 'Berhasil Verifikasi');
+        } else {
+            return redirect()->route('admin.list')->with('error', 'Mohon Hubungi Admin');
+        }
+    }
+
+    public function suratAdmin()
+    {
+        return view('pages.surat.admin.adminCreate');
+    }
+
+    public function storeSuratAdmin(Request $request, $slug)
     {
         $jenis_surat    = JenisSurat::where('slug', $slug)->first();
         $id_jenis_surat = $jenis_surat->id;
@@ -141,7 +263,7 @@ class SuratController extends Controller
         $bulan     = $array_bln[date('n')];
 
 
-        $nik = Auth::user()->username;
+        $nik = $request->nik;
         // get data penduduk
 
         $penduduk = Penduduk::where('nik', $nik)->first();
@@ -181,52 +303,5 @@ class SuratController extends Controller
         Storage::put($pdfName, $pdf->output());
         // return view('pages.surat.sku');
         return redirect()->route('surat.list')->with('success', 'Berhasil Membuat Surat');
-    }
-
-    public function list()
-    {
-        if (Auth::user()->id_jabatan === 1) {
-            $surat = Surat::all();
-        } else {
-            $nik   = Auth::user()->username;
-            $surat = Surat::where('nik', $nik)->orderBy('created_at', 'DESC')->get();
-        }
-        return view('pages.surat.list', compact('surat'));
-    }
-
-    public function verif($id, $aktor)
-    {
-        $surat = Surat::where("uuid", $id)->first();
-
-        if ($aktor === 'kadus') {
-            $surat->verifikasi_kadus = '1';
-        } else if ($aktor === 'staf') {
-            $surat->verifikasi_staf = '1';
-        } else {
-            $surat->verifikasi_staf  = '0';
-            $surat->verifikasi_kadus = '0';
-        }
-
-        $cek = $surat->save();
-        if ($cek) {
-            return redirect()->route('surat.Adminlist')->with('success', 'Berhasil Verifikasi');
-        } else {
-            return redirect()->route('surat.Adminlist')->with('error', 'Mohon Hubungi Admin');
-        }
-    }
-
-    public function suratAdmin()
-    {
-        dd('belum');
-    }
-
-    public function notify()
-    {
-        $surat = Surat::select('created_at', 'nik', 'id_jenis_surat')->with(['penduduk' => function ($d) {
-            $d->select('nik', 'nama_lengkap');
-        }, 'jenis_surat' => function ($js) {
-            $js->select('id', 'nama');
-        }])->where('verifikasi_staf', null)->where("verifikasi_kadus", null)->orderBy('created_at', 'ASC')->get();
-        return response()->json($surat);
     }
 }
