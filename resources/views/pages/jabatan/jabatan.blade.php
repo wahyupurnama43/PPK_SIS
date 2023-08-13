@@ -40,7 +40,7 @@
                 <form action="{{ route('jabatan.store') }}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Tambah Data Akta Kawin</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Tambah Data Jabatan</h5>
                     </div>
                     <div class="modal-body">
                         <div class="row">

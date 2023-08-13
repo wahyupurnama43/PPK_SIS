@@ -26,118 +26,125 @@
 
     <!-- Divider -->
     <hr class="sidebar-divider">
-    @if(Auth()->user()->id_jabatan === 1)
-    <!-- Heading -->
-    <div class="sidebar-heading">
-        Fitur Admin
-    </div>
+    @if (Auth()->user()->id_jabatan === 1)
+        <!-- Heading -->
+        <div class="sidebar-heading">
+            Fitur Admin
+        </div>
 
-    <li class="nav-item {{ request()->is('admin/pegawai*') ? 'active' : '' }}">
-        {{-- <a class="nav-link collapsed " href="{{ route('pengguna.index') }}">
+        <li class="nav-item {{ request()->is('admin/pegawai*') ? 'active' : '' }}">
+            {{-- <a class="nav-link collapsed " href="{{ route('pengguna.index') }}">
             <i class="fas fa-user"></i>
             <span>Pegawai</span>
         </a> --}}
-    </li>
+        </li>
 
-    <li class="nav-item {{ request()->is('admin/jabatan*') ? 'active' : '' }}">
-        <a class="nav-link collapsed " href="{{ route('jabatan.index') }}">
-            <i class="fas fa-user-secret"></i>
-            <span>Jabatan</span>
-        </a>
-    </li>
+        <li class="nav-item {{ request()->is('admin/jabatan*') ? 'active' : '' }}">
+            <a class="nav-link collapsed " href="{{ route('jabatan.index') }}">
+                <i class="fas fa-user-secret"></i>
+                <span>Jabatan</span>
+            </a>
+        </li>
 
-    <li class="nav-item {{ request()->is('admin/pengguna*') ? 'active' : '' }}">
-        <a class="nav-link collapsed " href="{{ route('pengguna.index') }}">
-            <i class="fas fa-user"></i>
-            <span>Pengguna</span>
-        </a>
-    </li>
+        <li class="nav-item {{ request()->is('admin/pengguna*') ? 'active' : '' }}">
+            <a class="nav-link collapsed " href="{{ route('pengguna.index') }}">
+                <i class="fas fa-user"></i>
+                <span>Pengguna</span>
+            </a>
+        </li>
 
-    <li class="nav-item {{ request()->is('admin/kadus*') ? 'active' : '' }}">
-        <a class="nav-link collapsed " href="{{ route('kadus.index') }}">
-            <i class="fas fa-street-view"></i>
-            <span>Kadus</span>
-        </a>
-    </li>
+        <li class="nav-item {{ request()->is('admin/kadus*') ? 'active' : '' }}">
+            <a class="nav-link collapsed " href="{{ route('kadus.index') }}">
+                <i class="fas fa-street-view"></i>
+                <span>Kadus</span>
+            </a>
+        </li>
 
-    <li class="nav-item {{ request()->is('admin/akta-kawin*') ? 'active' : '' }}">
-        <a class="nav-link collapsed " href="{{ route('akta-kawin.index') }}">
-            <i class="fas fa-file-alt"></i>
-            <span>Akta Kawin</span>
-        </a>
-    </li>
+        <li class="nav-item {{ request()->is('admin/akta-kawin*') ? 'active' : '' }}">
+            <a class="nav-link collapsed " href="{{ route('akta-kawin.index') }}">
+                <i class="fas fa-file-alt"></i>
+                <span>Akta Kawin</span>
+            </a>
+        </li>
 
-    <li class="nav-item {{ request()->is('admin/keluarga*') ? 'active' : '' }}">
-        <a class="nav-link collapsed " href="{{ route('keluarga.index') }}">
-            <i class="fas fa-user-tie"></i>
-            <span>Kepala Keluarga</span>
-        </a>
-    </li>
+        <li class="nav-item {{ request()->is('admin/keluarga*') ? 'active' : '' }}">
+            <a class="nav-link collapsed " href="{{ route('keluarga.index') }}">
+                <i class="fas fa-user-tie"></i>
+                <span>Kepala Keluarga</span>
+            </a>
+        </li>
 
-    <li class="nav-item {{ request()->is('admin/penduduk*') ? 'active' : '' }}">
-        <a class="nav-link collapsed " href="{{ route('penduduk.index') }}">
-            <i class="fas fa-users"></i>
-            <span>Penduduk</span>
-        </a>
-    </li>
-  
-    <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item {{ request()->is('admin/wilayah*') ? 'active' : '' }}">
-        <a class="nav-link collapsed " href="{{ route('wilayah.index') }}">
-            <i class="fas fa-map-marker-alt"></i>
-            <span>Wilayah GIS</span>
-        </a>
-    </li>
+        <li class="nav-item {{ request()->is('admin/penduduk*') ? 'active' : '' }}">
+            <a class="nav-link collapsed " href="{{ route('penduduk.index') }}">
+                <i class="fas fa-users"></i>
+                <span>Penduduk</span>
+            </a>
+        </li>
 
-    <div class="sidebar-heading">
-        Fitur Admin Surat
-    </div>
+        <!-- Nav Item - Pages Collapse Menu -->
+        <li class="nav-item {{ request()->is('admin/wilayah*') ? 'active' : '' }}">
+            <a class="nav-link collapsed " href="{{ route('wilayah.index') }}">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>Wilayah GIS</span>
+            </a>
+        </li>
 
-    <li class="nav-item {{ request()->is('admin/Adminlist*') ? 'active' : '' }}">
-        <a class="nav-link collapsed " href="{{ route('surat.Adminlist') }}">
-            <i class="fas fa-file"></i>
-            <span>Surat Konfirmasi</span>
-        </a>
-    </li>
+        <div class="sidebar-heading">
+            Fitur Admin Surat
+        </div>
 
-     <!-- Nav Item - Pages Collapse Menu -->
-     <li class="nav-item {{ request()->is('admin/surat') ? 'active' : '' }}">
-        <a class="nav-link collapsed " href="{{ route('admin.suratAdmin') }}">
-            <i class="far fa-file-word"></i>
-            <span>Cetak Surat</span>
-        </a>
-    </li>
+        <li class="nav-item {{ request()->is('admin/Adminlist*') ? 'active' : '' }}">
+            <a class="nav-link collapsed " href="{{ route('surat.Adminlist') }}">
+                <i class="fas fa-file"></i>
+                <span>Surat Konfirmasi</span>
+            </a>
+        </li>
 
-      <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item {{ request()->is('admin/surat/list*') ? 'active' : '' }}">
-        <a class="nav-link collapsed " href="{{ route('admin.list') }}">
-            <i class="far fa-file-word"></i>
-            <span>List Surat</span>
-        </a>
-    </li>
+        <!-- Nav Item - Pages Collapse Menu -->
+        <li class="nav-item {{ request()->is('admin/surat') ? 'active' : '' }}">
+            <a class="nav-link collapsed " href="{{ route('admin.suratAdmin') }}">
+                <i class="far fa-file-word"></i>
+                <span>Cetak Surat</span>
+            </a>
+        </li>
+
+        <!-- Nav Item - Pages Collapse Menu -->
+        <li class="nav-item {{ request()->is('admin/surat/list*') ? 'active' : '' }}">
+            <a class="nav-link collapsed " href="{{ route('admin.list') }}">
+                <i class="far fa-file-word"></i>
+                <span>List Surat</span>
+            </a>
+        </li>
     @endif
-    @if(Auth()->user()->id_jabatan === 2)
-    <!-- Heading -->
-    <div class="sidebar-heading">
-        Fitur User
-    </div>
+    @if (Auth()->user()->id_jabatan === 2)
+        <!-- Heading -->
+        <div class="sidebar-heading">
+            Fitur User
+        </div>
 
-    <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item {{ request()->is('surat') ? 'active' : '' }}">
-        <a class="nav-link collapsed " href="{{ route('surat.index') }}">
-            <i class="far fa-file-word"></i>
-            <span>Cetak Surat</span>
-        </a>
-    </li>
+        <!-- Nav Item - Pages Collapse Menu -->
+        <li class="nav-item {{ request()->is('surat') ? 'active' : '' }}">
+            <a class="nav-link collapsed " href="{{ route('surat.index') }}">
+                <i class="far fa-file-word"></i>
+                <span>Cetak Surat</span>
+            </a>
+        </li>
 
-      <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item {{ request()->is('surat/list*') ? 'active' : '' }}">
-        <a class="nav-link collapsed " href="{{ route('surat.list') }}">
-            <i class="far fa-file-word"></i>
-            <span>List Surat</span>
-        </a>
-    </li>
+        <!-- Nav Item - Pages Collapse Menu -->
+        <li class="nav-item {{ request()->is('surat/list*') ? 'active' : '' }}">
+            <a class="nav-link collapsed " href="{{ route('surat.list') }}">
+                <i class="far fa-file-word"></i>
+                <span>List Surat</span>
+            </a>
+        </li>
     @endif
+    <li class="nav-item">
+        <a class="nav-link collapsed " href="#" data-toggle="modal" data-target="#logoutModal">
+            <i class="fas fa-sign-out-alt "></i>
+            Logout
+        </a>
+
+    </li>
 
     <!-- Nav Item - Utilities Collapse Menu -->
     {{-- <li class="nav-item">

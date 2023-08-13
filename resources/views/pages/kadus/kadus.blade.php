@@ -23,6 +23,7 @@
                         <tr>
                             <th>No</th>
                             <th>Nama Kadus</th>
+                            <th>Jabatan</th>
                             <th>Dusun</th>
                             <th>Desa</th>
                             <th>Kecamatan</th>
@@ -227,6 +228,10 @@
                         name: 'nama'
                     },
                     {
+                        data: 'jabatan.nama',
+                        name: 'jabatan.nama'
+                    },
+                    {
                         data: 'dusun',
                         name: 'dusun'
                     },
@@ -255,6 +260,7 @@
                 url: url,
                 // return the result
                 success: function(res) {
+                    console.log(res);
                     $('#form').attr('action', send);
                     $('#kadusE').val(res.nama);
                     $('#jabatanE').val(res.jabatan.uuid);

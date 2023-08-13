@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\AktaKawin;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Jabatan extends Model
 {
@@ -14,4 +16,9 @@ class Jabatan extends Model
         'uuid',
         'nama'
     ];
+
+    public function kadus(): BelongsTo
+    {
+        return $this->BelongsTo(Kadus::class, 'id', 'id_jabatan');
+    }
 }

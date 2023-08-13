@@ -57,7 +57,7 @@ class JabatanController extends Controller
             $return = Jabatan::create([
                 'uuid'          => Str::uuid(),
                 'id_pengguna'   => Auth::id(),
-                'nama'          => $jabatan
+                'nama'          => Str::title($jabatan)
             ]);
 
             if ($return) {

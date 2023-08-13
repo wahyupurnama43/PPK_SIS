@@ -18,7 +18,8 @@ class KadusController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            return DataTables::of(Kadus::select('*'))
+            $data = Kadus::select('*')->with('jabatan')->get();
+            return DataTables::of($data)
                 ->addColumn('action', function ($row) {
                     $btn =
                         '<button type="button" class="btn edit btn btn-primary btn-sm update" data-url="' .
@@ -47,10 +48,10 @@ class KadusController extends Controller
         $jb        = Jabatan::where('uuid', $request->jabatan)->first();
         $kadus     = $request->kadus;
         $jabatan   = $jb->id;
-        $jabatan   = $request->jabatan;
-        $dusun     = Str::title($request->dusun);
-        $desa      = Str::title($request->desa);
-        $kecamatan = Str::title($request->kecamatan);
+        // $jabatan   = $request->jabatan;
+        $dusun     = strtolower($request->dusun);
+        $desa      = strtolower($request->desa);
+        $kecamatan = strtolower($request->kecamatan);
 
         try {
 
@@ -60,7 +61,7 @@ class KadusController extends Controller
                 'nama'        => $kadus,
                 'dusun'       => $dusun,
                 'desa'        => $desa,
-                'jabatan'     => $jabatan,
+                'id_jabatan'  => $jabatan,
                 'kecamatan'   => $kecamatan,
             ]);
 
@@ -85,9 +86,9 @@ class KadusController extends Controller
         $jb        = Jabatan::where('uuid', $request->jabatan)->first();
         $nama      = $request->kadus;
         $jabatan   = $jb->id;
-        $dusun     = Str::title($request->dusun);
-        $desa      = Str::title($request->desa);
-        $kecamatan = Str::title($request->kecamatan);
+        $dusun     = strtolower($request->dusun);
+        $desa      = strtolower($request->desa);
+        $kecamatan = strtolower($request->kecamatan);
 
         try {
             $kadus             = Kadus::where('uuid', $id)->first();

@@ -25,7 +25,7 @@
 
 <body>
 
-    <img src="{{ public_path('kop-surat.png') }}" alt="" style="width: 100%; height: 180px">
+    <img src="{{ public_path('kop-surat.png') }}" alt="" style="width: 100%; height: 200px">
 
     <hr style="height: 4px; background:#333;">
     <center>
@@ -36,19 +36,18 @@
             @endif
         </h5>
     </center>
-
     <p>Yang bertanda tangan dibawah ini :</p>
 
     <table>
         <tr>
             <td width="100px">Nama &nbsp;&nbsp;&nbsp;</td>
             <td>:</td>
-            <td>{{ $kadus->nama }}</td>
+            <td>{{ $perbekel->nama }}</td>
         </tr>
         <tr>
             <td>Jabatan</td>
             <td>:</td>
-            <td>{{ $kadus->jabatan->nama }}</td>
+            <td>{{ Str::title($perbekel->jabatan->nama) . ' '. Str::title($perbekel->dusun)}}</td>
         </tr>
     </table>
 
@@ -58,7 +57,7 @@
         <tr>
             <td width="100px">Nama &nbsp;&nbsp;&nbsp;</td>
             <td>:</td>
-            <td>{{ $penduduk->nama_lengkap }}</td>
+            <td>{{ Str::title($penduduk->nama_lengkap) }}</td>
         </tr>
         <tr>
             <td>Jenis Kelamin</td>
@@ -107,11 +106,11 @@
         <tr>
             <td>Alamat</td>
             <td>:</td>
-            <td>{{ $penduduk->keluarga->alamat . ', ' . $penduduk->keluarga->dusun . ', ' . $penduduk->keluarga->desa . ', ' . $penduduk->keluarga->kecamatan }}
+            <td>{{Str::title($penduduk->keluarga->alamat) . ', ' . Str::title($penduduk->keluarga->dusun) . ', ' . Str::title($penduduk->keluarga->desa) . ', ' . Str::title($penduduk->keluarga->kecamatan) }}, Kabupaten Bangli
             </td>
         </tr>
     </table>
-    <p>
+    <p style="text-indent:50px">
         @if ($surat !== 'preview')
             {{ $surat->deskripsi }}
         @endif
@@ -136,7 +135,7 @@
 
     </p>
 
-    <p>
+    <p style="text-indent:50px">
         Demikian surat keterangan ini dibuat agar dapat dipergunakan dimana perlunya, dan apabila dikemudian hari
         Pernyataan orang tersebut tidak sesuai dengan kenyataan yang sebenarnya, maka surat ini tidak berlaku serta
         tidak akan melibatkan Pemerintah Desa Batur Tengah.
@@ -152,14 +151,14 @@
             // Format tanggal dalam bahasa Indonesia
             $formattedDate = $date->isoFormat('D MMMM YYYY');
         @endphp
-        <p style="margin:0;margin-top:5px; ">{{ $kadus->desa }}, {{ $formattedDate }}</p>
+        <p style="margin:0;margin-top:5px; ">{{ Str::title($perbekel->desa) }}, {{ $formattedDate }}</p>
         <p style="margin:5px 0; ">
-            {{ $kadus->jabatan->nama }}
+            {{ Str::title($perbekel->jabatan->nama) . ' '. Str::title($perbekel->dusun) }}
         </p>
         @if ($surat !== 'preview')
             <img src="{{ public_path($surat->barcode) }}" alt="">
         @endif
-        <p style="margin:0;margin-top:5px; ">{{ $kadus->nama }}</p>
+        <p style="margin:0;margin-top:5px; ">{{ $perbekel->nama  }}</p>
     </div>
 
 </body>

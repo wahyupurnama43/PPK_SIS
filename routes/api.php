@@ -20,5 +20,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/wilayah', [WilayahController::class, 'getWilayah'])->name('api.wilayah');
 Route::get('/notify', [SuratController::class, 'notify'])->name('api.notify');
 Route::post('/kk', [PendudukController::class, 'getKK'])->name('api.kk');
-Route::post('/nik', [PendudukController::class, 'getNik'])->name('api.nik');
+Route::post('/nikonly', [PendudukController::class, 'getNik'])->name('api.nik');
+Route::post('/nik', [PendudukController::class, 'getNikwithKK'])->name('api.getNikwithKK');
 Route::post('/akta-kawin', [PendudukController::class, 'getAktaKawin'])->name('api.aktaKawin');
