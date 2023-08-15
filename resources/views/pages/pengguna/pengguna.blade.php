@@ -64,8 +64,8 @@
 
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label for="id_jabatan">Jabatan</label>
-                                    <select name="id_jabatan" required class="form-control">
+                                    <label for="jabatan">Jabatan</label>
+                                    <select name="jabatan" required class="form-control">
                                         <option value="">Pilih jabatan</option>
                                         @foreach ($jabatan as $j)
                                             <option value="{{ $j->uuid }}">
@@ -73,7 +73,7 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                    @error('id_jabatan')
+                                    @error('jabatan')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -104,24 +104,24 @@
         </div>
     </div>
 
-    Modal Edit 
+    {{--  Modal Edit   --}}
     <div class="modal fade" id="editWilayah" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
-                <form action="" id="form" method="post" enctype="multipart/form-data" name="myform">
+                <form action="" id="formE" method="post" enctype="multipart/form-data">
                     @method('PUT')
                     @csrf
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Edit Data Pengguna</h5>
                     </div>
                     <div class="modal-body">
+                        <input type="hidden" id="userE" name="uuid"> 
                         <div class="row">
-
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="username">Username</label>
                                     <input type="text" class="form-control" id="usernameE" name="username"
-                                        placeholder="Masukkan Username" value="{{ old('username') }}">
+                                        placeholder="Masukan username" value="{{ old('username') }}">
                                     @error('username')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -130,36 +130,35 @@
 
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label for="id_jabatan">Jabatan</label>
-                                    <select name="id_jabatan" required class="form-control">
-                                        <option value="">Pilih jabatan</option>
+                                    <label for="jabatan">Jabatan</label>
+                                    <select name="Masukan jabatan" id="jabatanE" class="form-control">
+                                        <option value="" selected disabled>Pilih Jabatan</option>
                                         @foreach ($jabatan as $jb)
                                             <option value="{{ $jb->uuid }}">
                                                 {{ $jb->nama }}
                                             </option>
                                         @endforeach
                                     </select>
-                                    @error('id_jabatan')
+                                    @error('jabatan')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
 
-                            <div class="col-md-6">
+                           <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="password">Password</label>
-                                    <input type="text" class="form-control" id="password" name="password"
+                                    <input type="text" class="form-control" id="passwordE" name="password"
                                         placeholder="Masukkan password" value="{{ old('password') }}">
                                     <div class="mt-2 d-flex justify-content-between">
-                                        <button type="button" class="btn btn-primary" id="generate">Generate</button>
-                                        <button type="button" class="btn btn-info" id="copy">Copy </button>
+                                        <button type="button" class="btn btn-primary" id="generateEdit">Generate </button>
+                                        <button type="button" class="btn btn-info" id="copyEdit">Copy </button>
                                     </div>
                                     @error('password')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
-
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -168,7 +167,7 @@
                 </form>
             </div>
         </div>
-    </div> 
+    </div>
 
 
 @endsection
@@ -203,8 +202,8 @@
                             name: 'username'
                         },
                         {
-                            data: 'jabatan_nama',
-                            name: 'jabatan_nama'
+                            data: 'jabatan.nama',
+                            name: 'jabatan.nama'
                         },
                         {
                             data: 'action',
@@ -232,20 +231,39 @@
             copyText.select();
             document.execCommand("copy");
         })
+
+        $('#generateEdit').click(function() {
+            var chars = "0123456789abcdefghijklmnopqrstuvwxyz!@#$%^&*()ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            var passwordLength = 12;
+            var password = "";
+            for (var i = 0; i <= passwordLength; i++) {
+                var randomNumber = Math.floor(Math.random() * chars.length);
+                password += chars.substring(randomNumber, randomNumber + 1);
+            }
+            $('#passwordE').val(password);
+        })
+
+        $('#copyEdit').click(function() {
+            var copyText = document.getElementById("passwordE");
+            copyText.select();
+            document.execCommand("copy");
+        })
     </script>
 
     <script>
         $(document).on('click', '.update', function(event) {
             let url = $(this).attr('data-url');
             let send = $(this).attr('data-send');
-
             $.ajax({
                 url: url,
                 // return the result
                 success: function(res) {
-                    $('#form').attr('action', send);
+                    $('#formE').attr('action', send);
                     $('#usernameE').val(res.username);
-                    $('#id_jabatanE').val(res.id_jabatan);
+                    $('#jabatanE').val(res.jabatan.uuid);
+                    $('#passwordE').val('');
+                    $('#generateEdit').prop('disabled', false); 
+                    $('#copyEdit').prop('disabled', false); 
                 },
             })
         });

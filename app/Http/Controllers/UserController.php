@@ -19,15 +19,9 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        if ($request->ajax()) {
-            $pengguna = User::with('jabatan')->get();
-            return DataTables::of($pengguna)
-                ->addColumn('DT_RowIndex', function ($pengguna) {
-                    return '';
-                })
-                ->addColumn('jabatan_nama', function ($pengguna) {
-                    return $pengguna->jabatan->nama;
-                })
+        if (request()->ajax()) {
+            $data = User::select('*')->with('jabatan')->get();
+            return DataTables::of($data)
                 ->addColumn('action', function ($row) {
                     $btn =
                         '<button type="button" class="btn edit btn btn-primary btn-sm update" data-url="' .
@@ -43,11 +37,10 @@ class UserController extends Controller
                         '" class="btn btn-danger btn-sm deletePost">Delete</a>';
                     return $btn;
                 })
-                ->rawColumns(['action', 'DT_RowIndex', 'jabatan_nama'])
+                ->rawColumns(['action'])
                 ->addIndexColumn()
                 ->make(true);
         }
-
         $jabatan = Jabatan::all();
         return view('pages.pengguna.pengguna', compact('jabatan'));
     }
@@ -92,9 +85,8 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        $jabatan = Jabatan::all();
-        $pengguna = User::where('uuid', $id)->first();
-        return view('pages.penngguna.pengguna', compact('jabatan', 'pengguna'));
+        $pengguna = User::where('uuid', $id)->with('jabatan')->first();
+        return response()->json($pengguna);
     }
 
     /**
@@ -110,25 +102,23 @@ class UserController extends Controller
      */
     public function update(UserRequest $request, string $id)
     {
-        $jabatan_input = Jabatan::select('id')->where('uuid')->first();
-        $jabatan       = $jabatan_input->id;
-        $username      = Str::title($request->username);
-        $password      = $request->password;
+        $jb        = Jabatan::where('uuid', $request->jabatan)->first();
+        $username  = $request->username;
+        $jabatan   = $jb->id;
+        $password  = Hash::make($request->password);
 
         try {
-            $pengguna                       = User::where('id', $id)->first();
-            $pengguna->username             = $username;
-            $pengguna->id_jabatan           = $jabatan;
-            $pengguna->password_get_info    = $password;
-            $cek = $pengguna->save();
+            $pengguna             = User::where('uuid', $id)->first();
+            $pengguna->username   = $username;
+            $pengguna->id_jabatan = $jabatan;
+            $pengguna->password   = $password;
+            $pengguna->save();
+            dd($pengguna);
 
-            if ($cek) {
-                return redirect()->route('pengguna.index')->with('success', 'Berhasil Ditambahkan');
-            } else {
-                return redirect()->route('pengguna.index')->with('error', 'Mohon Hubungi Admin');
-            }
+            return redirect()->route('penggguna.index')->with('success', 'Berhasil Diupdate');
         } catch (\Throwable $e) {
-            return redirect()->route('pengguna.index')->with('error', $e->errorInfo[2]);;
+            dd($e);
+            return redirect()->route('penggguna.index')->with('error', $e->errorInfo[2]);
         }
     }
 
