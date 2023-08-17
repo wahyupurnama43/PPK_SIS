@@ -27,4 +27,9 @@ class Kadus extends Model
     {
         return $this->hasOne(Jabatan::class, 'id', 'id_jabatan');
     }
+
+    public function pengguna(): HasOne
+    {
+        return $this->hasOne(User::class, 'id', 'id_pengguna');
+    }
 }

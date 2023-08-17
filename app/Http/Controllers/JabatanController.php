@@ -23,19 +23,19 @@ class JabatanController extends Controller
         if (request()->ajax()) {
             return DataTables::of(Jabatan::select('*'))
                 ->addColumn('action', function ($row) {
-                    $btn =
-                        '<button type="button" class="btn edit btn btn-primary btn-sm update" data-url="' .
-                        route('jabatan.show', $row->uuid) .
-                        '" data-send="' .
-                        route('jabatan.update', $row->uuid) .
-                        '" data-toggle="modal" data-target="#editWilayah">
-                    Edit
-                </button>';
-                    $btn = $btn . ' <a href="javascript:void(0)" data-url="' .
-                        route('jabatan.destroy', $row->uuid) .
-                        '"  data-id="' . $row->uuid .
-                        '" class="btn btn-danger btn-sm deletePost">Delete</a>';
-                    return $btn;
+                    //     $btn =
+                    //         '<button type="button" class="btn edit btn btn-primary btn-sm update" data-url="' .
+                    //         route('jabatan.show', $row->uuid) .
+                    //         '" data-send="' .
+                    //         route('jabatan.update', $row->uuid) .
+                    //         '" data-toggle="modal" data-target="#editWilayah">
+                    //     Edit
+                    // </button>';
+                    //     $btn = $btn . ' <a href="javascript:void(0)" data-url="' .
+                    //         route('jabatan.destroy', $row->uuid) .
+                    //         '"  data-id="' . $row->uuid .
+                    //         '" class="btn btn-danger btn-sm deletePost">Delete</a>';
+                    //     return $btn;
                 })
                 ->rawColumns(['action'])
                 ->addIndexColumn()

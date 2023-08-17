@@ -37,6 +37,10 @@ Route::middleware(['auth'])->group(function () {
             Route::resource('jabatan', JabatanController::class);
             Route::resource('kadus', KadusController::class);
             Route::resource('pengguna', UserController::class);
+        });
+    });
+    Route::middleware(['jabatan:admin,perbekel desa,kelian banjar dinas,staf'])->group(function () {
+        Route::prefix('admin')->group(function () {
             Route::get('/Adminlist', [SuratController::class, 'Adminlist'])->name('surat.Adminlist');
             Route::get('/verif/{id}/{aktor}', [SuratController::class, 'verif'])->name('surat.verif');
             Route::get('/surat', [SuratController::class, 'suratAdmin'])->name('admin.suratAdmin');

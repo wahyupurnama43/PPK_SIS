@@ -116,6 +116,40 @@
             </a>
         </li>
     @endif
+
+    {{-- 3 => kelian banjar --}}
+    {{-- 4 => Perbekel --}}
+    {{-- 5 => Staf --}}
+    @if (in_array(Auth()->user()->id_jabatan, [3,4,5]))
+        <div class="sidebar-heading">
+            Fitur Admin Surat
+        </div>
+
+        <li class="nav-item {{ request()->is('admin/Adminlist*') ? 'active' : '' }}">
+            <a class="nav-link collapsed " href="{{ route('surat.Adminlist') }}">
+                <i class="fas fa-file"></i>
+                <span>Surat Konfirmasi</span>
+            </a>
+        </li>
+
+        <!-- Nav Item - Pages Collapse Menu -->
+        <li class="nav-item {{ request()->is('admin/surat') ? 'active' : '' }}">
+            <a class="nav-link collapsed " href="{{ route('admin.suratAdmin') }}">
+                <i class="far fa-file-word"></i>
+                <span>Cetak Surat</span>
+            </a>
+        </li>
+
+        <!-- Nav Item - Pages Collapse Menu -->
+        <li class="nav-item {{ request()->is('admin/surat/list*') ? 'active' : '' }}">
+            <a class="nav-link collapsed " href="{{ route('admin.list') }}">
+                <i class="far fa-file-word"></i>
+                <span>List Surat</span>
+            </a>
+        </li>
+    @endif
+
+    {{-- masyarakat --}}
     @if (Auth()->user()->id_jabatan === 2)
         <!-- Heading -->
         <div class="sidebar-heading">
@@ -138,6 +172,8 @@
             </a>
         </li>
     @endif
+
+
     <li class="nav-item">
         <a class="nav-link collapsed " href="#" data-toggle="modal" data-target="#logoutModal">
             <i class="fas fa-sign-out-alt "></i>
@@ -146,23 +182,5 @@
 
     </li>
 
-    <!-- Nav Item - Utilities Collapse Menu -->
-    {{-- <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-            aria-expanded="true" aria-controls="collapseUtilities">
-            <i class="fas fa-fw fa-wrench"></i>
-            <span>Utilities</span>
-        </a>
-        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
-            data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Custom Utilities:</h6>
-                <a class="collapse-item" href="utilities-color.html">Colors</a>
-                <a class="collapse-item" href="utilities-border.html">Borders</a>
-                <a class="collapse-item" href="utilities-animation.html">Animations</a>
-                <a class="collapse-item" href="utilities-other.html">Other</a>
-            </div>
-        </div>
-    </li> --}}
 
 </ul>

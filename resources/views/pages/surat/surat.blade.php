@@ -58,7 +58,7 @@
                         <div class="col mr-2">
                             <div class="h5 mb-0 font-weight-bold text-gray-800">Surat Keterangan Tidak Mampu</div>
                             <div class="text-xs font-weight-bold text-primary text-right mt-3 text-uppercase mb-1">
-                                <button class="btn btn-primary">Cetak</button>
+                                <button class="btn btn-primary" data-toggle="modal" data-target="#sktm">Cetak</button>
                             </div>
                         </div>
                     </div>
@@ -73,7 +73,7 @@
                         <div class="col mr-2">
                             <div class="h5 mb-0 font-weight-bold text-gray-800">Surat Keterangan Domisili</div>
                             <div class="text-xs font-weight-bold text-primary text-right mt-3 text-uppercase mb-1">
-                                <button class="btn btn-primary">Cetak</button>
+                                <button class="btn btn-primary"  data-toggle="modal" data-target="#skd">Cetak</button>
                             </div>
                         </div>
                     </div>
@@ -96,7 +96,7 @@
             </div>
         </div>
 
-        <!-- Modal -->
+        <!-- Modal keterangan usaha -->
         <div class="modal fade" id="sku" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -143,12 +143,12 @@
             </div>
         </div>
 
-        <!-- Modal -->
+        <!-- Modal keterangan miskin -->
         <div class="modal fade" id="skm" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Surat Keterangan Usaha</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Surat Keterangan Miskin</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -174,6 +174,66 @@
                                     </div>
                                 </div>
 
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Download</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal keterangan tidak mampu -->
+        <div class="modal fade" id="sktm" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Surat Keterangan Tidak Mampu</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form method="POST" action="{{ route('surat.create', 'surat-keterangan-tidak-mampu') }}">
+                        @csrf
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label for="">Keperluan</label>
+                                        <input type="text" class="form-control" required name="keperluan">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Download</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+         <!-- Modal keterangan tidak mampu -->
+         <div class="modal fade" id="skd" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Surat Keterangan Domisili</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form method="POST" action="{{ route('surat.create', 'surat-domisili') }}">
+                        @csrf
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label for="">Keperluan</label>
+                                        <input type="text" class="form-control" required name="keperluan">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="modal-footer">

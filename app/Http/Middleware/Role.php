@@ -20,7 +20,7 @@ class Role
         if (!Auth::check()) // I included this check because you have it, but it really should be part of your 'auth' middleware, most likely added as part of a route group.
             return redirect('login');
         $jabatan = Jabatan::where('id', Auth::user()->id_jabatan)->first();
-        if ($jabatan->nama === $role[0]) {
+        if (in_array($jabatan->nama, $role)) {
             return $next($request);
         } else {
             return redirect()->back();

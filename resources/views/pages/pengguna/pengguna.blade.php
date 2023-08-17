@@ -11,6 +11,7 @@
 @endsection
 
 @section('content')
+{{ var_dump(Session::has('success')) }}
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex justify-content-between align-content-center align-items-center">
@@ -115,7 +116,6 @@
                         <h5 class="modal-title" id="exampleModalLabel">Edit Data Pengguna</h5>
                     </div>
                     <div class="modal-body">
-                        <input type="hidden" id="userE" name="uuid"> 
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group">
@@ -131,7 +131,7 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="jabatan">Jabatan</label>
-                                    <select name="Masukan jabatan" id="jabatanE" class="form-control">
+                                    <select name="jabatan" id="jabatanE" class="form-control">
                                         <option value="" selected disabled>Pilih Jabatan</option>
                                         @foreach ($jabatan as $jb)
                                             <option value="{{ $jb->uuid }}">

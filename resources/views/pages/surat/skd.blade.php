@@ -25,11 +25,11 @@
 
 <body>
 
-    <img src="{{ public_path('kop-surat.png') }}" alt="" style="width: 100%; height: 180px">
+    <img src="{{ public_path('kop-surat.png') }}" alt="" style="width: 100%; height: 200px">
 
     <hr style="height: 4px; background:#333;">
     <center>
-        <h1 style="text-decoration: underline; font-size:25px;margin-bottom:0">SURAT KETERANGAN MISKIN</h1>
+        <h1 style="text-decoration: underline; font-size:25px;margin-bottom:0">SURAT KETERANGAN DOMISILI</h1>
         <h5 style="margin:0; margin-top:3px">Nomor :
             @if ($surat !== 'preview')
                 {{ $no_surat->kode . '/' . $no_surat->urutan . '/' . $no_surat->bulan . '/' . $no_surat->tahun }}
@@ -111,44 +111,15 @@
             </td>
         </tr>
     </table>
+
     <p style="text-indent: 50px">
         @if ($surat !== 'preview')
-            {{ $surat->deskripsi }}
+            {{ $surat->deskripsi }} {{ Str::title($penduduk->keluarga->alamat) . ', ' . Str::title($penduduk->keluarga->dusun) . ', ' . Str::title($penduduk->keluarga->desa) . ', ' . Str::title($penduduk->keluarga->kecamatan) }}
         @endif
     </p>
-    @php
-        $datas = json_decode($surat->pendukung);
-        $i = 1;
-    @endphp
-    <table width="100%" border="1px solid #000" style="border-collapse:collapse; text-align:center">
-        <tr>
-            <td>No</td>
-            <td>Nik</td>
-            <td>Nama</td>
-            <td>Tempat Lahir</td>
-            <td>Tanggal Lahir</td>
-        </tr>
-        @foreach ($datas as $km)
-            @php
-                $penduduk = DB::table('penduduk')
-                    ->where('nik', $km)
-                    ->first();
-            @endphp
-            <tr>
-                <td>{{ $i++ }}</td>
-                <td>{{ $penduduk->nik }}</td>
-                <td>{{ Str::title($penduduk->nama_lengkap) }}</td>
-                <td>{{ $penduduk->tempat_lahir }}</td>
-                <td>{{ date('d/m/Y', strtotime($penduduk->tanggal_lahir)) }}</td>
-            </tr>
-        @endforeach
-
-    </table>
 
     <p style="text-indent: 50px">
-        Demikian surat keterangan ini dibuat agar dapat dipergunakan dimana perlunya, dan apabila dikemudian hari
-        pernyataan orang tersebut tidak sesuai dengan kenyataan yang sebenarnya, maka surat ini tidak berlaku serta
-        tidak akan melibatkan Pemerintah Desa Batur Tengah.
+        Demikian surat keterangan ini kami buat dengan sebenarnya, agar dapat dipergunakan sebagaimana
     </p>
     <table>
         <tr>

@@ -20,6 +20,7 @@ class Surat extends Model
         'id_nomor_surat',
         'id_jenis_surat',
         'id_kadus',
+        'id_perbekel',
         'keperluan',
         'deskripsi',
         'pendukung',

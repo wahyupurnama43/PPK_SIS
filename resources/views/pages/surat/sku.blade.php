@@ -25,7 +25,7 @@
 
 <body>
 
-    <img src="{{ public_path('kop-surat.png') }}" alt="" style="width: 100%; height: 200px">
+    <img src="{{ public_path('kop-surat.png') }}" alt="" style="width: 100%; height: 180px">
 
     <hr style="height: 4px; background:#333;">
     <center>

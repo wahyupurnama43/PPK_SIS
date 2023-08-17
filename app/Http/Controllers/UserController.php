@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Hash;
+use Svg\Tag\Rect;
 
 class UserController extends Controller
 {
@@ -100,25 +101,40 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UserRequest $request, string $id)
+    public function update(Request $request, string $id)
     {
+        $pengguna = User::where('uuid', $id)->first();
+        $validated = $request->validate([
+            "username" => "required",
+            "jabatan"  => "required",
+        ]);
+
+        if ($request->password !== null) {
+
+            $validated = $request->validate([
+                "password"  => "required|min:5",
+            ]);
+
+            $password  = Hash::make($request->password);
+        } else {
+            $password =  $pengguna->password;
+        }
+
+
+
         $jb        = Jabatan::where('uuid', $request->jabatan)->first();
-        $username  = $request->username;
         $jabatan   = $jb->id;
-        $password  = Hash::make($request->password);
+        $username  = $request->username;
 
         try {
-            $pengguna             = User::where('uuid', $id)->first();
             $pengguna->username   = $username;
             $pengguna->id_jabatan = $jabatan;
             $pengguna->password   = $password;
             $pengguna->save();
-            dd($pengguna);
 
-            return redirect()->route('penggguna.index')->with('success', 'Berhasil Diupdate');
+            return redirect()->route('pengguna.index')->with('success', 'Berhasil Diupdate');
         } catch (\Throwable $e) {
-            dd($e);
-            return redirect()->route('penggguna.index')->with('error', $e->errorInfo[2]);
+            return redirect()->route('pengguna.index')->with('error', $e->errorInfo[2]);
         }
     }
 
