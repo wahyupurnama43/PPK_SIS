@@ -17,7 +17,7 @@ class KeluargaController extends Controller
     {
 
         if (request()->ajax()) {
-            return DataTables::of(Keluarga::select('nama_kepala_keluarga', DB::raw('CONCAT(alamat, ", ", dusun, ", ", desa, ", ", kecamatan) as fullAlamat'), 'uuid', 'no_kk'))
+            return DataTables::of(Keluarga::select('nama_kepala_keluarga', 'alamat', 'dusun', 'desa', 'kecamatan', 'uuid', 'no_kk'))
                 ->addColumn('action', function ($row) {
                     $btn =
                         '<button type="button" class="btn edit btn btn-primary btn-sm update" data-url="' .

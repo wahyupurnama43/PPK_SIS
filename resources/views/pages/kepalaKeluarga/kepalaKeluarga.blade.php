@@ -30,6 +30,9 @@
                             <th>No Kartu Keluarga</th>
                             <th>Nama Kepala Keluarga</th>
                             <th>Alamat</th>
+                            <th>Dusun</th>
+                            <th>Desa</th>
+                            <th>Kecamatan</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -257,8 +260,20 @@
                         name: 'nama_kepala_keluarga'
                     },
                     {
-                        data: 'fullAlamat',
-                        name: 'fullAlamat'
+                        data: 'alamat',
+                        name: 'alamat',
+                    },
+                    {
+                        data: 'dusun',
+                        name: 'dusun',
+                    },
+                    {
+                        data: 'desa',
+                        name: 'desa',
+                    },
+                    {
+                        data: 'kecamatan',
+                        name: 'kecamatan',
                     },
                     {
                         data: 'action',

@@ -21,7 +21,7 @@ class PendudukController extends Controller
     {
 
         if (request()->ajax()) {
-            return DataTables::of(Penduduk::select('nik', 'no_kk', 'no_akta_lahir', 'nama_lengkap', 'jenis_kelamin', 'pendidikan', DB::raw("CONCAT(tempat_lahir, ', ', DATE_FORMAT(tanggal_lahir, '%d-%m-%Y'))  as infolahir")))
+            return DataTables::of(Penduduk::select('nik', 'no_kk', 'no_akta_lahir', 'nama_lengkap', 'jenis_kelamin', 'pendidikan', DB::raw("CONCAT(tempat_lahir, ', ', DATE_FORMAT(tanggal_lahir, '%d-%m-%Y'))  as infolahir"))->with('keluarga')->get())
                 ->addColumn('action', function ($row) {
                     $btn =
                         '<a href="' . route('penduduk.show', $row->nik) . '" class="btn edit btn btn-primary btn-sm update" >

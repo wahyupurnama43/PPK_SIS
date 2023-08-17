@@ -56,4 +56,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Penduduk::class, 'nik', 'username');
     }
+
+    public function kadus(): BelongsTo
+    {
+        return $this->belongsTo(Kadus::class, 'id', 'id_pengguna');
+    }
 }

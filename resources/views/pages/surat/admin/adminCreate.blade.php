@@ -2,9 +2,7 @@
 
 @section('title', 'Surat')
 @section('css')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css"
-        integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <style>
         .select2 {
             width: 100% !important;
@@ -44,7 +42,7 @@
                         <div class="col mr-2">
                             <div class="h5 mb-0 font-weight-bold text-gray-800">Surat Keterangan Miskin</div>
                             <div class="text-xs font-weight-bold text-primary text-right mt-3 text-uppercase mb-1">
-                                <button class="btn btn-primary">Cetak</button>
+                                <button class="btn btn-primary" data-toggle="modal" data-target="#skm">Cetak</button>
                             </div>
                         </div>
                     </div>
@@ -59,7 +57,7 @@
                         <div class="col mr-2">
                             <div class="h5 mb-0 font-weight-bold text-gray-800">Surat Keterangan Tidak Mampu</div>
                             <div class="text-xs font-weight-bold text-primary text-right mt-3 text-uppercase mb-1">
-                                <button class="btn btn-primary">Cetak</button>
+                                <button class="btn btn-primary" data-toggle="modal" data-target="#sktm">Cetak</button>
                             </div>
                         </div>
                     </div>
@@ -74,7 +72,7 @@
                         <div class="col mr-2">
                             <div class="h5 mb-0 font-weight-bold text-gray-800">Surat Keterangan Domisili</div>
                             <div class="text-xs font-weight-bold text-primary text-right mt-3 text-uppercase mb-1">
-                                <button class="btn btn-primary">Cetak</button>
+                                <button class="btn btn-primary" data-toggle="modal" data-target="#skd">Cetak</button>
                             </div>
                         </div>
                     </div>
@@ -116,7 +114,7 @@
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label for="">Nik</label>
-                                        <select name="nik" id="nik"  data-placeholder="Pilih Nik"></select>
+                                        <select name="nik_pembuat" id="nik"  data-placeholder="Pilih Nik"></select>
                                     </div>
                                 </div>
 
@@ -140,6 +138,129 @@
                                         <input type="text" class="form-control" required
                                             placeholder="Contoh : Banjar Dinas Bubungkelambu, Desa Batur Tengah"
                                             name="lokasi_usaha">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Download</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Modal keterangan miskin -->
+        <div class="modal fade" id="skm" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Surat Keterangan Miskin</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form method="POST" action="{{ route('admin.storeSuratAdmin', 'surat-keterangan-miskin') }}">
+                        @csrf
+                        <div class="modal-body">
+                            <div class="row">
+                                
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label for="">Nik Pembuat Surat</label>
+                                        <select name="nik_pembuat" id="nik_pembuat"  data-placeholder="Pilih Nik Pembuat Surat"></select>
+                                    </div>
+                                </div>
+
+                                
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label for="">Keperluan</label>
+                                        <input type="text" class="form-control" required name="keperluan">
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <label for="">Nik</label>
+                                            <select id="nikM" data-placeholder="Pilih Nik" name="nik[]"
+                                                multiple="multiple"></select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Download</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal keterangan tidak mampu -->
+        <div class="modal fade" id="sktm" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Surat Keterangan Tidak Mampu</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form method="POST" action="{{ route('admin.storeSuratAdmin', 'surat-keterangan-tidak-mampu') }}">
+                        @csrf
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label for="">Nik</label>
+                                        <select name="nik_pembuat" id="nikstm"  data-placeholder="Pilih Nik"></select>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label for="">Keperluan</label>
+                                        <input type="text" class="form-control" required name="keperluan">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Download</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+         <!-- Modal keterangan domisili -->
+         <div class="modal fade" id="skd" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Surat Keterangan Domisili</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form method="POST" action="{{ route('admin.storeSuratAdmin', 'surat-domisili') }}">
+                        @csrf
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label for="">Nik</label>
+                                        <select name="nik_pembuat" id="niksd"  data-placeholder="Pilih Nik"></select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label for="">Keperluan</label>
+                                        <input type="text" class="form-control" required name="keperluan">
                                     </div>
                                 </div>
                             </div>
@@ -183,6 +304,100 @@
                 },
                 cache: true
             }
+        });
+
+        $("#nikstm").select2({
+            dropdownParent: $('#sktm'),
+            minimumInputLength: 2,
+            ajax: {
+                url: "{{ route('api.nik') }}",
+                dataType: 'json',
+                type: "POST",
+                quietMillis: 50,
+                data: function(term) {
+                    return {
+                        term: term,
+                    };
+                },
+                processResults: function(response) {
+                    return {
+                        results: response
+                    };
+                },
+                cache: true
+            }
+        });
+        
+        $("#niksd").select2({
+            dropdownParent: $('#skd'),
+            minimumInputLength: 2,
+            ajax: {
+                url: "{{ route('api.nik') }}",
+                dataType: 'json',
+                type: "POST",
+                quietMillis: 50,
+                data: function(term) {
+                    return {
+                        term: term,
+                    };
+                },
+                processResults: function(response) {
+                    return {
+                        results: response
+                    };
+                },
+                cache: true
+            }
+        });
+        
+        
+        $("#nikM").select2({
+            dropdownParent: $('#skm'),
+            minimumInputLength: 2,
+            ajax: {
+                url: "{{ route('api.nik') }}",
+                dataType: 'json',
+                type: "POST",
+                quietMillis: 50,
+                data: function(term) {
+                    return {
+                        term: term,
+                    };
+                },
+                processResults: function(response) {
+                    return {
+                        results: response
+                    };
+                },
+                cache: true
+            }
+        });
+        
+        $("#nik_pembuat").select2({
+            dropdownParent: $('#skm'),
+            minimumInputLength: 2,
+            ajax: {
+                url: "{{ route('api.nik') }}",
+                dataType: 'json',
+                type: "POST",
+                quietMillis: 50,
+                data: function(term) {
+                    return {
+                        term: term,
+                    };
+                },
+                processResults: function(response) {
+                    return {
+                        results: response
+                    };
+                },
+                cache: true
+            }
+        });
+     
+
+        $(document).ready(function() {
+            $('.js-example-basic-multiple').select2();
         });
     </script>
 @endsection

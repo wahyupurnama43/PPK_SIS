@@ -40,8 +40,8 @@ Route::middleware(['auth'])->group(function () {
         });
     });
     Route::middleware(['jabatan:admin,perbekel desa,kelian banjar dinas,staf'])->group(function () {
+        Route::get('list/surat', [SuratController::class, 'Adminlist'])->name('surat.Adminlist');
         Route::prefix('admin')->group(function () {
-            Route::get('/Adminlist', [SuratController::class, 'Adminlist'])->name('surat.Adminlist');
             Route::get('/verif/{id}/{aktor}', [SuratController::class, 'verif'])->name('surat.verif');
             Route::get('/surat', [SuratController::class, 'suratAdmin'])->name('admin.suratAdmin');
             Route::get('/surat/list', [SuratController::class, 'list'])->name('admin.list');

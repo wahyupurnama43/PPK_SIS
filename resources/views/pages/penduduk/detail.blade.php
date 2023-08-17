@@ -254,8 +254,8 @@
                             <label for="aktaKawin">No Akta Kawin</label>
                             <br>
                             <select id="aktaKawin" data-placeholder="Pilih No Akta Kawin" name="aktaKawin">
-                                <option value="{{ $penduduk->aktaKawin->uuid }}">
-                                    {{ $penduduk->aktaKawin->no_akta_kawin }}</option>
+                                <option value="{{ !empty($penduduk->aktaKawin->uuid) ? $penduduk->aktaKawin->uuid : '' }}">
+                                    {{ !empty($penduduk->aktaKawin->uuid) ? $penduduk->aktaKawin->uuid : '' }}</option>
                             </select>
 
                             @error('aktaKawin')

@@ -53,6 +53,17 @@
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
+                    @if (Auth::user()->id_jabatan === 3 || Auth::user()->id_jabatan === 4)
+                        <center class="badge-success py-3 mb-3">
+                            <h5>
+                                Kadus : {{ Auth::user()->kadus->nama }}
+                            </h5>
+                            <h5>
+                                Alamat : {{ Str::title(Auth::user()->kadus->dusun) }},
+                                {{ Str::title(Auth::user()->kadus->desa) }}
+                            </h5>
+                        </center>
+                    @endif
                     @yield('content')
                 </div>
                 <!-- /.container-fluid -->

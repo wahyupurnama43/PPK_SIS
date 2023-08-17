@@ -21,7 +21,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         if (request()->ajax()) {
-            $data = User::select('*')->with('jabatan')->get();
+            $data = User::select('*')->with('jabatan')->orderBy('id_jabatan', 'asc')->get();
             return DataTables::of($data)
                 ->addColumn('action', function ($row) {
                     $btn =
@@ -59,7 +59,7 @@ class UserController extends Controller
      */
     public function store(UserRequest $request)
     {
-        $jabatan_input = Jabatan::select('id')->where('uuid', $request->id_jabatan)->first();
+        $jabatan_input = Jabatan::select('id')->where('uuid', $request->jabatan)->first();
         $jabatan       = $jabatan_input->id;
         $username      = Str::title($request->username);
         $password      = $request->password;

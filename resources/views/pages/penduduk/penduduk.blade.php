@@ -35,7 +35,7 @@
                         <tr>
                             <th>No</th>
                             <th>Nik</th>
-                            <th>No Akta Lahir</th>
+                            <th>No KK</th>
                             <th>Nama Lengkap</th>
                             <th>Jenis Kelamin</th>
                             <th>Tempat, Tanggal Lahir</th>
@@ -427,8 +427,8 @@
                         name: 'nik'
                     },
                     {
-                        data: 'no_akta_lahir',
-                        name: 'no_akta_lahir'
+                        data: 'keluarga.no_kk',
+                        name: 'keluarga.no_kk'
                     },
                     {
                         data: 'nama_lengkap',
