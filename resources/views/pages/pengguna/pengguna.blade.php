@@ -144,7 +144,18 @@
                                 </div>
                             </div>
 
-                           <div class="col-lg-6">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="no_hp">No Handphone</label>
+                                    <input type="text" class="form-control" id="no_hpE" name="no_hp"
+                                        placeholder="Masukan No Handphone" value="{{ old('no_hp') }}">
+                                    @error('no_hp')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="password">Password</label>
                                     <input type="text" class="form-control" id="passwordE" name="password"
@@ -260,6 +271,7 @@
                     $('#formE').attr('action', send);
                     $('#usernameE').val(res.username);
                     $('#jabatanE').val(res.jabatan.uuid);
+                    $('#no_hpE').val(res.no_hp);
                     $('#passwordE').val('');
                     $('#generateEdit').prop('disabled', false); 
                     $('#copyEdit').prop('disabled', false); 

@@ -24,6 +24,7 @@ class User extends Authenticatable
         'uuid',
         'id_jabatan',
         'username',
+        'no_hp',
         'password',
     ];
 

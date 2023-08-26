@@ -8,6 +8,8 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Redirect;
+use Ramsey\Uuid\Uuid;
 
 class RegisterController extends Controller
 {
@@ -50,9 +52,9 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name'     => ['required', 'string', 'max:255'],
-            'email'    => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'username'     => ['required', 'string', 'max:255'],
+            'no_hp'        => ['required', 'string', 'max:255'],
+            'password'     => ['nullable', 'string', 'max:255', 'confirmed'],
         ]);
     }
 
@@ -64,10 +66,21 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
-            'name'     => $data['name'],
-            'email'    => $data['email'],
-            'password' => Hash::make($data['password']),
+
+        $uuid = Uuid::uuid4();
+
+        $pengguna = User::create([
+            'uuid'       => $uuid,
+            'username'   => $data['username'],
+            'no_hp'      => $data['no_hp'],
+            'id_jabatan' => 2,
+            'password'   => null,
         ]);
+
+        if ($pengguna) {
+            return Redirect::route('login')->with('success', 'Registrasi berhasil! Silakan menunggu verifikasi dari Admin');
+        } else {
+            return Redirect::back()->with('error', 'Terjadi kesalahan saat melakukan registrasi. Mohon coba lagi.');
+        }
     }
 }

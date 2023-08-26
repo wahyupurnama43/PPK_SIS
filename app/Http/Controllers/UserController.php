@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Hash;
 use Svg\Tag\Rect;
@@ -62,22 +63,28 @@ class UserController extends Controller
         $jabatan_input = Jabatan::select('id')->where('uuid', $request->jabatan)->first();
         $jabatan       = $jabatan_input->id;
         $username      = Str::title($request->username);
+        $no_hp         = $request->no_hp;
         $password      = $request->password;
+
+        $passwordHash = $password ? Hash::make($password) : null;
 
         try {
             $pengguna = User::create([
-                'uuid'                 => Str::uuid(),
-                'id_jabatan'           => $jabatan,
-                'username'             => $username,
-                'password'             => Hash::make($password),
+                'uuid'       => Str::uuid(),
+                'id_jabatan' => $jabatan,
+                'username'   => $username,
+                'no_hp'      => $no_hp,
+                'password'   => $passwordHash,
             ]);
+
             if ($pengguna) {
-                return redirect()->route('pengguna.index')->with('success', 'Berhasil Ditambahkan');
+                Auth::login($pengguna);
+                return Redirect::route('login')->with('success', 'Registrasi berhasil! Silakan menunggu verifikasi dari Admin');
             } else {
-                return redirect()->route('pengguna.index')->with('error', 'Mohon Hubungi Admin');
+                return Redirect::back()->with('error', 'Terjadi kesalahan saat melakukan registrasi. Mohon coba lagi.');
             }
         } catch (\Throwable $e) {
-            return redirect()->route('pengguna.index')->with('error', $e->errorInfo[2]);;
+            return redirect()->route('pengguna.index')->with('error', $e->errorInfo[2]);
         }
     }
 
@@ -107,6 +114,7 @@ class UserController extends Controller
         $validated = $request->validate([
             "username" => "required",
             "jabatan"  => "required",
+            "no_hp"    => "required",
         ]);
 
         if ($request->password !== null) {
@@ -124,11 +132,13 @@ class UserController extends Controller
 
         $jb        = Jabatan::where('uuid', $request->jabatan)->first();
         $jabatan   = $jb->id;
+        $no_hp     = $request->no_hp;
         $username  = $request->username;
 
         try {
             $pengguna->username   = $username;
             $pengguna->id_jabatan = $jabatan;
+            $pengguna->no_hp      = $no_hp;
             $pengguna->password   = $password;
             $pengguna->save();
 

@@ -23,8 +23,9 @@ class UserRequest extends FormRequest
     {
         return [
             "jabatan"  => 'required|string',
+            "no_hp"    => 'required|string|max:20',
             "username" => 'required|string|max:255',
-            "password" => 'required|string|max:255',
+            "password" => 'nullable|string|max:255',
         ];
     }
 }
