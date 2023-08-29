@@ -4,15 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Kadus;
 use App\Models\Surat;
+use App\Models\Jabatan;
 use App\Models\Penduduk;
 use App\Models\JenisSurat;
 use App\Models\NomorSurat;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Elibyy\TCPDF\Facades\TCPDF;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Models\Jabatan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
@@ -36,8 +36,8 @@ class SuratController extends Controller
                     $js->select('id', 'nama');
                 },
             ])
-            ->where('verifikasi_staf', null)
-            ->where('verifikasi_kadus', null)
+            ->where('verifikasi_perbekel', null)
+            ->where('verifikasi_perbekel', null)
             ->orderBy('created_at', 'DESC')
             ->get();
         return response()->json($surat);
@@ -106,7 +106,34 @@ class SuratController extends Controller
 
             $id_kelian_banjar = $kelian_banjar->id;
         } else {
-            dd('tidak');
+
+            $deskripsi = $request->deskripsi;
+            $jb_perbekel = Jabatan::select('*')->where('nama', '=', 'perbekel desa')->first();
+            $perbekel    = Kadus::with('jabatan')->where('id_jabatan', $jb_perbekel->id)->first();
+            if (!$perbekel) {
+                return redirect()->route('surat.index')->with('error', 'Perbekel Tidak Tersedia Pada Wilayah ' . $penduduk->keluarga->dusun . ' Hubungi Kantor Desa');
+            }
+
+            $id_perbekel = $perbekel->id;
+
+            // get jabatan kelian dinas
+            $jb_kb            = Jabatan::select('*')->where('nama', '=', 'kelian banjar dinas')->first();
+
+            $exDusun = explode('br. dinas ', $penduduk->keluarga->dusun);
+            if (count($exDusun) > 1) {
+                $dusunNew = $exDusun[1];
+            } else {
+                $dusunNew = $exDusun[0];
+            }
+
+
+            $kelian_banjar    = Kadus::with('jabatan')->where('id_jabatan', $jb_kb->id)->where('dusun', $dusunNew)->where('desa', strtolower($penduduk->keluarga->desa))->first();
+            // cek apakah kelian banjar ada
+            if (!$kelian_banjar) {
+                return redirect()->route('surat.index')->with('error', 'Kelian Banjar Tidak Tersedia Pada Wilayah ' . $penduduk->keluarga->dusun . ' Hubungi Kantor Desa');
+            }
+
+            $id_kelian_banjar = $kelian_banjar->id;
         }
 
         $tahun     = date('Y');
@@ -126,7 +153,7 @@ class SuratController extends Controller
             'tahun'          => $tahun,
         ]);
 
-        $pdfName = 'public/pdf/' . date('m-y-d') . $nomor . $nik . '.pdf';
+        $pdfName = 'public/pdf/' . $nomor . $nik . '.pdf';
 
         $qrname = 'images/qrcode/' . date('m-y-d') . $nomor . $nik . '.svg';
 
@@ -143,26 +170,26 @@ class SuratController extends Controller
             'deskripsi'      => $deskripsi,
             'pendukung'      => $pendukung,
             'barcode'        => $qrname,
-            'pdf'            => $pdfName,
+            'pdf'            => $pdfName
         ]);
-
-        if ($id_jenis_surat === 1) {
-            $pdf = PDF::loadview('pages.surat.sku', compact('penduduk', 'perbekel', 'no_surat', 'nik', 'surat', 'host'));
-            // return $pdf->stream('dompdf_out.pdf');
-            Storage::put($pdfName, $pdf->output());
-        } else if ($id_jenis_surat === 2) {
-            $pdf = PDF::loadview('pages.surat.skm', compact('penduduk', 'perbekel', 'kelian_banjar', 'no_surat', 'nik', 'surat', 'host'));
-            // return $pdf->stream('dompdf_out.pdf');
-            Storage::put($pdfName, $pdf->output());
-        } else if ($id_jenis_surat === 4) {
-            $pdf = PDF::loadview('pages.surat.sktm', compact('penduduk', 'perbekel', 'kelian_banjar', 'no_surat', 'nik', 'surat', 'host'));
-            // return $pdf->stream('dompdf_out.pdf');
-            Storage::put($pdfName, $pdf->output());
-        } else if ($id_jenis_surat === 3) {
-            $pdf = PDF::loadview('pages.surat.skd', compact('penduduk', 'perbekel', 'kelian_banjar', 'no_surat', 'nik', 'surat', 'host'));
-            // return $pdf->stream('dompdf_out.pdf');
-            Storage::put($pdfName, $pdf->output());
-        }
+        // dd($surat);
+        // if ($id_jenis_surat === 1) {
+        //     $pdf = PDF::loadview('pages.surat.sku', compact('penduduk', 'perbekel', 'no_surat', 'nik', 'surat', 'host'));
+        //     return $pdf->stream('dompdf_out.pdf');
+        //     // Storage::put($pdfName, $pdf->output());
+        // } else if ($id_jenis_surat === 2) {
+        //     $pdf = PDF::loadview('pages.surat.skm', compact('penduduk', 'perbekel', 'kelian_banjar', 'no_surat', 'nik', 'surat', 'host'));
+        //     return $pdf->stream('dompdf_out.pdf');
+        //     // Storage::put($pdfName, $pdf->output());
+        // } else if ($id_jenis_surat === 4) {
+        //     $pdf = PDF::loadview('pages.surat.sktm', compact('penduduk', 'perbekel', 'kelian_banjar', 'no_surat', 'nik', 'surat', 'host'));
+        //     return $pdf->stream('dompdf_out.pdf');
+        //     // Storage::put($pdfName, $pdf->output());
+        // } else if ($id_jenis_surat === 3) {
+        //     $pdf = PDF::loadview('pages.surat.skd', compact('penduduk', 'perbekel', 'kelian_banjar', 'no_surat', 'nik', 'surat', 'host'));
+        //     return $pdf->stream('dompdf_out.pdf');
+        //     // Storage::put($pdfName, $pdf->output());
+        // }
 
 
         // return view('pages.surat.sku');
@@ -203,12 +230,12 @@ class SuratController extends Controller
                     ->get();
             }
             return DataTables::of($data)
-                ->addColumn('verifikasi_staf', function ($row) {
-                    if ($row->verifikasi_staf === 0) {
+                ->addColumn('verifikasi_kadus', function ($row) {
+                    if ($row->verifikasi_kadus === 0) {
                         return '<span class="badge badge-danger">
                         Di Tolak
                         </span>';
-                    } elseif ($row->verifikasi_staf === 1) {
+                    } elseif ($row->verifikasi_kadus > 0 && $row->verifikasi_kadus !== null) {
                         return '<span class="badge badge-success">
                         Verifikasi Berhasil
                         </span>';
@@ -225,12 +252,12 @@ class SuratController extends Controller
                             PDF
                         </a>';
                 })
-                ->addColumn('verifikasi_kadus', function ($row) {
-                    if ($row->verifikasi_kadus === 0) {
+                ->addColumn('verifikasi_perbekel', function ($row) {
+                    if ($row->verifikasi_perbekel === 0) {
                         return '<span class="badge badge-danger">
                         Di Tolak
                         </span>';
-                    } elseif ($row->verifikasi_kadus === 1) {
+                    } elseif ($row->verifikasi_perbekel > 0 && $row->verifikasi_perbekel !== null) {
                         return '<span class="badge badge-success">
                         Verifikasi Berhasil
                         </span>';
@@ -245,33 +272,35 @@ class SuratController extends Controller
                 })
                 ->addColumn('action', function ($row) {
                     $btn = '';
-                    // selain staff muncul
-                    if (Auth()->user()->id_jabatan !== 5) {
+
+                    // untuk staf,sekre,perbekel
+                    if (in_array(Auth()->user()->id_jabatan, [1, 3, 5, 6])) {
                         if ($row->id_jenis_surat !== 1)
-                            if ($row->verifikasi_kadus !== 1 && $row->verifikasi_kadus !== 0) {
+                            if ($row->verifikasi_perbekel !== 0 && $row->verifikasi_perbekel === null) {
                                 $btn =
                                     $btn .
                                     '<a href="' .
-                                    route('surat.verif', [$row->uuid, 'kadus']) .
+                                    route('surat.verif', [$row->uuid, 'staf']) .
                                     '" class="btn edit btn btn-primary btn-sm update mb-2 mx-1">
-                                        Verifikasi Kadus
+                                        Verifikasi Perbekel/staf
                                     </a>';
                             }
                     }
-                    // selain kelian banjar muncul
-                    if (Auth()->user()->id_jabatan !== 4) {
-                        if ($row->verifikasi_staf !== 1 && $row->verifikasi_staf !== 0) {
+
+                    // untuk kelian banjar
+                    if (in_array(Auth()->user()->id_jabatan, [4])) {
+                        if ($row->verifikasi_kadus !== 0 && $row->verifikasi_kadus === null) {
                             $btn =
                                 $btn .
                                 '<a href="' .
-                                route('surat.verif', [$row->uuid, 'staf']) .
+                                route('surat.verif', [$row->uuid, 'kadus']) .
                                 '" class="btn edit btn btn-primary btn-sm update mb-2 mx-1">
-                            Verifikasi Staf
-                        </a>';
+                                    Verifikasi Kadus
+                                </a>';
                         }
                     }
 
-                    if ($row->verifikasi_staf !== 0 && $row->verifikasi_staf !== 1 && ($row->verifikasi_kadus !== 0 && $row->verifikasi_kadus !== 1)) {
+                    if ($row->verifikasi_perbekel !== 0  && $row->verifikasi_kadus !== 0) {
                         $btn =
                             $btn .
                             '<a href="' .
@@ -279,7 +308,7 @@ class SuratController extends Controller
                             '" class="btn edit btn btn-danger btn-sm update mb-2 mx-1">
                             Tolak
                         </a>';
-                    } elseif ($row->verifikasi_kadus === 1 || $row->verifikasi_staf === 1) {
+                    } elseif ($row->verifikasi_perbekel === 1 || $row->verifikasi_kadus === 1) {
                         $btn =
                             $btn .
                             '<a href="' .
@@ -290,7 +319,7 @@ class SuratController extends Controller
                     }
                     return $btn;
                 })
-                ->rawColumns(['action', 'verifikasi_staf', 'verifikasi_kadus', 'preview'])
+                ->rawColumns(['action', 'verifikasi_kadus', 'verifikasi_perbekel', 'preview'])
                 ->addIndexColumn()
                 ->make(true);
         }
@@ -300,28 +329,97 @@ class SuratController extends Controller
     public function verif($id, $aktor)
     {
         $surat = Surat::where('uuid', $id)->first();
-
         if ($aktor === 'kadus') {
-            $surat->verifikasi_kadus = '1';
+            $surat->verifikasi_kadus = Auth::user()->id;
         } elseif ($aktor === 'staf') {
-            $surat->verifikasi_staf = '1';
+            $surat->verifikasi_perbekel = Auth::user()->id;
             if ($surat->id_jenis_surat === 1) {
-                $surat->verifikasi_kadus = '1';
+                $surat->verifikasi_kadus = Auth::user()->id;
             }
         } else {
-            $surat->verifikasi_staf = '0';
+            $surat->verifikasi_perbekel = '0';
             $surat->verifikasi_kadus = '0';
         }
-
         $cek = $surat->save();
-        if ($cek) {
-            return redirect()
-                ->route('surat.Adminlist')
-                ->with('success', 'Berhasil Verifikasi');
+        if (($surat->verifikasi_perbekel !== null && $surat->verifikasi_perbekel !== '0') && ($surat->verifikasi_kadus !== null && $surat->verifikasi_kadus !== '0')) {
+            $id_jenis_surat = $surat->id_jenis_surat;
+            $penduduk       = Penduduk::where('nik', $surat->nik)->first();
+            $no_surat       = NomorSurat::where('id', $surat->id_nomor_surat)->first();
+            $nik            = $surat->nik;
+            $host           = request()->getHttpHost();
+            if ($id_jenis_surat === 1) {
+                // get jabatan perbekel
+                $jb_perbekel      = Jabatan::select('*')->where('nama', '=', 'perbekel desa')->first();
+                $perbekel         = Kadus::with('jabatan')->where('id_jabatan', $jb_perbekel->id)->first();
+                if (!$perbekel) {
+                    return redirect()->route('surat.index')->with('error', 'Perbekel Tidak Tersedia Pada Wilayah ' . $penduduk->keluarga->dusun . ' Hubungi Kantor Desa');
+                }
+                $id_perbekel      = $perbekel->id;
+                $id_kelian_banjar = null;
+            } elseif ($id_jenis_surat === 2 || $id_jenis_surat === 4 || $id_jenis_surat === 3 || $id_jenis_surat === 5) {
+                // get jabatan perbekel
+                $jb_perbekel = Jabatan::select('*')->where('nama', '=', 'perbekel desa')->first();
+                $perbekel    = Kadus::with('jabatan')->where('id_jabatan', $jb_perbekel->id)->first();
+                if (!$perbekel) {
+                    return redirect()->route('surat.index')->with('error', 'Perbekel Tidak Tersedia Pada Wilayah ' . $penduduk->keluarga->dusun . ' Hubungi Kantor Desa');
+                }
+
+                $id_perbekel = $perbekel->id;
+
+                // get jabatan kelian dinas
+                $jb_kb            = Jabatan::select('*')->where('nama', '=', 'kelian banjar dinas')->first();
+
+                $exDusun = explode('br. dinas ', $penduduk->keluarga->dusun);
+                if (count($exDusun) > 1) {
+                    $dusunNew = $exDusun[1];
+                } else {
+                    $dusunNew = $exDusun[0];
+                }
+
+                $kelian_banjar    = Kadus::with('jabatan')->where('id_jabatan', $jb_kb->id)->where('dusun', $dusunNew)->where('desa', strtolower($penduduk->keluarga->desa))->first();
+                // cek apakah kelian banjar ada
+                if (!$kelian_banjar) {
+                    return redirect()->route('surat.index')->with('error', 'Kelian Banjar Tidak Tersedia Pada Wilayah ' . $penduduk->keluarga->dusun . ' Hubungi Kantor Desa');
+                }
+
+                $id_kelian_banjar = $kelian_banjar->id;
+            } else {
+                dd('hubungi developers dan berikan alur errornya');
+            }
+
+            $pdfName = 'public/pdf/' . $no_surat->urutan . $nik . '.pdf';
+            if ($id_jenis_surat === 1) {
+                $pdf = PDF::loadview('pages.surat.sku', compact('penduduk', 'perbekel', 'no_surat', 'nik', 'surat', 'host'));
+                // return $pdf->stream('dompdf_out.pdf');
+                Storage::put($pdfName, $pdf->output());
+            } else if ($id_jenis_surat === 2) {
+                $pdf = PDF::loadview('pages.surat.skm', compact('penduduk', 'perbekel', 'kelian_banjar', 'no_surat', 'nik', 'surat', 'host'));
+                // return $pdf->stream('dompdf_out.pdf');
+                Storage::put($pdfName, $pdf->output());
+            } else if ($id_jenis_surat === 4) {
+                $pdf = PDF::loadview('pages.surat.sktm', compact('penduduk', 'perbekel', 'kelian_banjar', 'no_surat', 'nik', 'surat', 'host'));
+                // return $pdf->stream('dompdf_out.pdf');
+                Storage::put($pdfName, $pdf->output());
+            } else if ($id_jenis_surat === 3) {
+                $pdf = PDF::loadview('pages.surat.skd', compact('penduduk', 'perbekel', 'kelian_banjar', 'no_surat', 'nik', 'surat', 'host'));
+                // return $pdf->stream('dompdf_out.pdf');
+                Storage::put($pdfName, $pdf->output());
+            } else if ($id_jenis_surat === 5) {
+                $pdf = PDF::loadview('pages.surat.skk', compact('penduduk', 'perbekel', 'kelian_banjar', 'no_surat', 'nik', 'surat', 'host'));
+                return $pdf->stream('dompdf_out.pdf');
+                // Storage::put($pdfName, $pdf->output());
+            }
+            return redirect()->back()->with('success', 'Surat Berhasil Di Buat');
         } else {
-            return redirect()
-                ->route('surat.Adminlist')
-                ->with('error', 'Mohon Hubungi Admin');
+            if ($cek) {
+                return redirect()
+                    ->route('surat.Adminlist')
+                    ->with('success', 'Berhasil Verifikasi');
+            } else {
+                return redirect()
+                    ->route('surat.Adminlist')
+                    ->with('error', 'Mohon Hubungi Admin');
+            }
         }
     }
 

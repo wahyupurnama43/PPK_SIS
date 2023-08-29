@@ -56,7 +56,7 @@
         <li class="nav-item {{ request()->is('admin/kadus*') ? 'active' : '' }}">
             <a class="nav-link collapsed " href="{{ route('kadus.index') }}">
                 <i class="fas fa-street-view"></i>
-                <span>Kadus</span>
+                <span>Data Perangkat Desa</span>
             </a>
         </li>
 
@@ -120,7 +120,7 @@
     {{-- 3 => kelian banjar --}}
     {{-- 4 => Perbekel --}}
     {{-- 5 => Staf --}}
-    @if (in_array(Auth()->user()->id_jabatan, [3,4,5]))
+    @if (in_array(Auth()->user()->id_jabatan, [3,4,5,6]))
         <div class="sidebar-heading">
             Fitur Admin Surat
         </div>
