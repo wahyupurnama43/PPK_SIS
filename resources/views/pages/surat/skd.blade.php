@@ -138,7 +138,7 @@
             <div>
                 <div style="float: right; width: 45%; height: auto; border:1px solid #333;">
                     <p style="text-align: left;padding:0 10px;">
-                        Surat ini telah Ditandatangani dan disahkan secara digital oleh pemerintahan Desa Batur Tengah. {{ $surat->verif_kadus->jabatan->nama }} {{ $surat->verif_kadus->dusun }},{{ $surat->verif_kadus->nama }}
+                        Surat ini telah Ditandatangani dan disahkan secara digital oleh pemerintahan Desa Batur Tengah. {{ $surat->verif_kadus->jabatan->nama }} {{ $surat->verif_kadus->dusun }},{{ $surat->verif_kadus->nama }} dan {{ $surat->verif_staff->jabatan->nama }} {{ $surat->verif_staff->dusun }},{{ $surat->verif_staff->nama }}
                     </p>
                     <p style="text-align: left;padding:0 10px;">
                         ID : {{ $no_surat->kode . '-SID/' . $no_surat->urutan . '/' . $no_surat->bulan . '/' . $no_surat->tahun }}
