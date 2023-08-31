@@ -41,7 +41,7 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/pengguna/verif/{id}', [UserController::class, 'verif'])->name('pengguna.verif');
         });
     });
-    Route::middleware(['jabatan:admin,perbekel desa,kelian banjar dinas,staf'])->group(function () {
+    Route::middleware(['jabatan:admin,perbekel desa,kelian banjar dinas,staf,sekretaris'])->group(function () {
         Route::get('list/surat', [SuratController::class, 'Adminlist'])->name('surat.Adminlist');
         Route::prefix('admin')->group(function () {
             Route::get('/verif/{id}/{aktor}', [SuratController::class, 'verif'])->name('surat.verif');

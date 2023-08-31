@@ -32,7 +32,7 @@
         <h1 style="text-decoration: underline; font-size:25px;margin-bottom:0">SURAT KETERANGAN DOMISILI</h1>
         <h5 style="margin:0; margin-top:3px">Nomor :
             @if ($surat !== 'preview')
-                {{ $no_surat->kode . '/' . $no_surat->urutan . '/' . $no_surat->bulan . '/' . $no_surat->tahun }}
+                {{ $no_surat->kode . '-SID/' . $no_surat->urutan . '/' . $no_surat->bulan . '/' . $no_surat->tahun }}
             @endif
         </h5>
     </center>
@@ -121,51 +121,38 @@
     <p style="text-indent: 50px">
         Demikian surat keterangan ini kami buat dengan sebenarnya, agar dapat dipergunakan sebagaimana
     </p>
-    <table>
-        <tr>
-            <td>
-                <div style="">
 
-                    <p style="margin:0;margin-top:5px; ">Mengetahui :</p>
-                    <p style="margin:5px 0; ">
-                        {{ Str::title($perbekel->jabatan->nama) . ' '. Str::title($perbekel->desa) }}
+    <div style="text-align: right">
+        @php
+            use Carbon\Carbon;
+            
+            Carbon::setLocale('id');
+            
+            $date = Carbon::now(); // Objek Carbon saat ini (atau sesuaikan dengan tanggal yang diinginkan)
+            
+            // Format tanggal dalam bahasa Indonesia
+            $formattedDate = $date->isoFormat('D MMMM YYYY');
+        @endphp
+        <p style="margin:0;margin-top:5px; ">{{ Str::title($surat->verif_kadus->dusun) }}, {{ $formattedDate }}</p>
+        @if ($surat !== 'preview')
+            <div>
+                <div style="float: right; width: 45%; height: auto; border:1px solid #333;">
+                    <p style="text-align: left;padding:0 10px;">
+                        Surat ini telah Ditandatangani dan disahkan secara digital oleh pemerintahan Desa Batur Tengah. {{ $surat->verif_kadus->jabatan->nama }} {{ $surat->verif_kadus->dusun }},{{ $surat->verif_kadus->nama }} dan {{ $surat->verif_staff->jabatan->nama }} {{ $surat->verif_staff->dusun }},{{ $surat->verif_staff->nama }}
                     </p>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <p style="margin:0;margin-top:5px; ">{{ $perbekel->nama }}</p>
-                </div>
-            </td>
-            <td width="30%" style="color: #fff">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit a aut animi. Libero incidunt vitae recusandae neque exercitationem nam tempora voluptatem quisquam officia esse, error id perspiciatis iusto necessitatibus nobis.
-            </td>
-            <td>
-                <div style="text-align:right">
-                    @php
-                        use Carbon\Carbon;
-                        
-                        Carbon::setLocale('id');
-                        
-                        $date = Carbon::now(); // Objek Carbon saat ini (atau sesuaikan dengan tanggal yang diinginkan)
-                        
-                        // Format tanggal dalam bahasa Indonesia
-                        $formattedDate = $date->isoFormat('D MMMM YYYY');
-                    @endphp
-                    <p style="margin:0;margin-top:5px; ">{{ Str::title($kelian_banjar->desa) }}, {{ $formattedDate }}</p>
-                    <p style="margin:5px 0; ">
-                        {{ Str::title($kelian_banjar->jabatan->nama) . ' '. Str::title($kelian_banjar->dusun) }}
+                    <p style="text-align: left;padding:0 10px;">
+                        ID : {{ $no_surat->kode . '-SID/' . $no_surat->urutan . '/' . $no_surat->bulan . '/' . $no_surat->tahun }}
                     </p>
-                    @if ($surat !== 'preview')
-                        <img src="{{ public_path($surat->barcode) }}" alt="">
-                    @endif
-                    <p style="margin:0;margin-top:5px; ">{{ $kelian_banjar->nama }}</p>
+                    <p style="text-align: left;padding:0 10px;">
+                        Berlaku sampai : {{ Carbon::now()->addMonth()->isoFormat('D MMMM YYYY'); }}
+                    </p>
                 </div>
-            </td>
-        </tr>
-    </table>
-
+                <div style="float: right;margin-right: 10px; width: 25%; height: auto;">
+                    <img src="{{ public_path($surat->barcode) }}" alt="">
+                </div>
+            </div>
+        @endif
+    </div>
 
 
 

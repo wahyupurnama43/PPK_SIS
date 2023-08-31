@@ -36,9 +36,9 @@
                                 <td>Status</td>
                                 <td>:</td>
                                 <td>
-                                    @if ($surat->verifikasi_kadus === 1 && $surat->verifikasi_staf === 1)
+                                    @if ($surat->verifikasi_kadus > 0 && $surat->verifikasi_perbekel > 0)
                                         <span class="badge badge-success p-2"> Verifikasi</span>
-                                    @elseif($surat->verifikasi_kadus === 0 || $surat->verifikasi_staf === 0)
+                                    @elseif($surat->verifikasi_kadus === 0 || $surat->verifikasi_perbekel === 0)
                                         <span class="badge badge-danger p-2"> Di Tolak</span>
                                     @else
                                         <span class="badge badge-warning p-2"> Menunggu Verifikasi</span>
@@ -47,12 +47,12 @@
                             </tr>
                         </table>
                         <div class="mt-4">
-                            {{-- @if ($surat->verifikasi_kadus === 1 || ($surat->verifikasi_staf === 1 && $surat->verifikasi_staf !== 0 && $surat->verifikasi_kadus !== 0))
+                            {{-- @if ($surat->verifikasi_kadus === 1 || ($surat->verifikasi_perbekel === 1 && $surat->verifikasi_perbekel !== 0 && $surat->verifikasi_kadus !== 0))
                                 <button class="btn btn-primary">Preview</button> --}}
-                            @if ($surat->verifikasi_kadus === 1 && $surat->verifikasi_staf === 1)
+                            @if ($surat->verifikasi_kadus !== '0' && $surat->verifikasi_kadus !== null && $surat->verifikasi_perbekel !== null && $surat->verifikasi_perbekel !== '0')
                                 <a href="{{ Storage::url($surat->pdf) }}" target="_blank" class="btn btn-success">Unduh</a>
                             @endif
-                            {{-- @elseif($surat->verifikasi_kadus === 0 || $surat->verifikasi_staf === 0)
+                            {{-- @elseif($surat->verifikasi_kadus === 0 || $surat->verifikasi_perbekel === 0)
                                 <span class="badge badge-danger p-2"> Di Tolak</span> --}}
                             {{-- @else
                                 <button class="btn btn-info" data-toggle="modal" data-target="#sku{{ $surat->uuid }}">Edit</button>

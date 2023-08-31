@@ -49,4 +49,14 @@ class Surat extends Model
     {
         return $this->hasOne(Kadus::class, 'id', 'id_kadus');
     }
+
+    public function verif_kadus(): HasOne
+    {
+        return $this->hasOne(Kadus::class, 'id_pengguna', 'verifikasi_kadus');
+    }
+
+    public function verif_staff(): HasOne
+    {
+        return $this->hasOne(Kadus::class, 'id_pengguna', 'verifikasi_perbekel');
+    }
 }

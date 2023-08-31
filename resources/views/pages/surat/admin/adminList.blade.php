@@ -21,8 +21,8 @@
                             <th>Nama Pengaju</th>
                             <th>Nomor Surat</th>
                             <th>Jenis Surat</th>
-                            <th>Verifikasi Staff</th>
                             <th>Verifikasi Kadus</th>
+                            <th>Verifikasi Perbekel</th>
                             <th>PDF</th>
                             <th></th>
                         </tr>
@@ -74,12 +74,12 @@
                         name: 'jenis_surat.nama'
                     },
                     {
-                        data: 'verifikasi_staf',
-                        name: 'verifikasi_staf'
-                    },
-                    {
                         data: 'verifikasi_kadus',
                         name: 'verifikasi_kadus'
+                    },
+                    {
+                        data: 'verifikasi_perbekel',
+                        name: 'verifikasi_perbekel'
                     },{
                         data: 'preview',
                         name: 'preview'

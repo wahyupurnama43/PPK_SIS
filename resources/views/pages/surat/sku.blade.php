@@ -32,7 +32,7 @@
         <h1 style="text-decoration: underline; font-size:25px;margin-bottom:0">SURAT KETERANGAN USAHA</h1>
         <h5 style="margin:0; margin-top:3px">Nomor :
             @if ($surat !== 'preview')
-                {{ $no_surat->kode . '/' . $no_surat->urutan . '/' . $no_surat->bulan . '/' . $no_surat->tahun }}
+                {{ $no_surat->kode . '-SID/' . $no_surat->urutan . '/' . $no_surat->bulan . '/' . $no_surat->tahun }}
             @endif
         </h5>
     </center>
@@ -42,12 +42,12 @@
         <tr>
             <td width="100px">Nama &nbsp;&nbsp;&nbsp;</td>
             <td>:</td>
-            <td>{{ $perbekel->nama }}</td>
+            <td>{{ $surat->verif_kadus->nama }}</td>
         </tr>
         <tr>
             <td>Jabatan</td>
             <td>:</td>
-            <td>{{ Str::title($perbekel->jabatan->nama) . ' '. Str::title($perbekel->dusun)}}</td>
+            <td>{{ Str::title($surat->verif_kadus->jabatan->nama) . ' ' . Str::title($surat->verif_kadus->dusun) }}</td>
         </tr>
     </table>
 
@@ -106,7 +106,8 @@
         <tr>
             <td>Alamat</td>
             <td>:</td>
-            <td>{{Str::title($penduduk->keluarga->alamat) . ', ' . Str::title($penduduk->keluarga->dusun) . ', ' . Str::title($penduduk->keluarga->desa) . ', ' . Str::title($penduduk->keluarga->kecamatan) }}, Kabupaten Bangli
+            <td>{{ Str::title($penduduk->keluarga->alamat) . ', ' . Str::title($penduduk->keluarga->dusun) . ', ' . Str::title($penduduk->keluarga->desa) . ', ' . Str::title($penduduk->keluarga->kecamatan) }},
+                Kabupaten Bangli
             </td>
         </tr>
     </table>
@@ -151,14 +152,28 @@
             // Format tanggal dalam bahasa Indonesia
             $formattedDate = $date->isoFormat('D MMMM YYYY');
         @endphp
-        <p style="margin:0;margin-top:5px; ">{{ Str::title($perbekel->desa) }}, {{ $formattedDate }}</p>
+        <p style="margin:0;margin-top:5px; ">{{ Str::title($surat->verif_kadus->dusun) }}, {{ $formattedDate }}</p>
         <p style="margin:5px 0; ">
-            {{ Str::title($perbekel->jabatan->nama) . ' '. Str::title($perbekel->dusun) }}
+            {{ Str::title($surat->verif_kadus->jabatan->nama) . ' ' . Str::title($surat->verif_kadus->dusun) }}
         </p>
         @if ($surat !== 'preview')
-            <img src="{{ public_path($surat->barcode) }}" alt="">
+            <div>
+                <div style="float: right; width: 45%; height: auto; border:1px solid #333;">
+                    <p style="text-align: left;padding:0 10px;">
+                        Surat ini telah Ditandatangani dan disahkan secara digital oleh pemerintahan Desa Batur Tengah. {{ $surat->verif_kadus->jabatan->nama }} {{ $surat->verif_kadus->dusun }},{{ $surat->verif_kadus->nama }}
+                    </p>
+                    <p style="text-align: left;padding:0 10px;">
+                        ID : {{ $no_surat->kode . '-SID/' . $no_surat->urutan . '/' . $no_surat->bulan . '/' . $no_surat->tahun }}
+                    </p>
+                    <p style="text-align: left;padding:0 10px;">
+                        Berlaku sampai : {{ Carbon::now()->addMonth()->isoFormat('D MMMM YYYY'); }}
+                    </p>
+                </div>
+                <div style="float: right;margin-right: 10px; width: 25%; height: auto;">
+                    <img src="{{ public_path($surat->barcode) }}" alt="">
+                </div>
+            </div>
         @endif
-        <p style="margin:0;margin-top:5px; ">{{ $perbekel->nama  }}</p>
     </div>
 
 </body>

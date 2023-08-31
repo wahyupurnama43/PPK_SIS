@@ -45,7 +45,7 @@
                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">
                     @if (in_array(Auth::user()->id_jabatan, [2, 3, 4]))
                         {{ Auth::user()->penduduk[0]->nama_lengkap }}
-                    @elseif(Auth::user()->id_jabatan === 5)
+                    @elseif(in_array(Auth::user()->id_jabatan, [5, 6]))
                         {{ Auth::user()->username }}
                     @else
                         Admin

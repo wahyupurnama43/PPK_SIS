@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Surat Keterangan Miskin</title>
+    <title>Surat Keterangan</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"
@@ -25,14 +25,14 @@
 
 <body>
 
-    <img src="{{ public_path('kop-surat.png') }}" alt="" style="width: 100%; height: 180px">
+    <img src="{{ public_path('kop-surat.png') }}" alt="" style="width: 100%; height: 200px">
 
     <hr style="height: 4px; background:#333;">
     <center>
-        <h1 style="text-decoration: underline; font-size:25px;margin-bottom:0">SURAT KETERANGAN MISKIN</h1>
+        <h1 style="text-decoration: underline; font-size:25px;margin-bottom:0">SURAT KETERANGAN</h1>
         <h5 style="margin:0; margin-top:3px">Nomor :
             @if ($surat !== 'preview')
-                {{ $no_surat->kode . '-SID/' .  $no_surat->urutan . '/' . $no_surat->bulan . '/' . $no_surat->tahun }}
+                {{ $no_surat->kode . '-SID/' . $no_surat->urutan . '/' . $no_surat->bulan . '/' . $no_surat->tahun }}
             @endif
         </h5>
     </center>
@@ -111,45 +111,17 @@
             </td>
         </tr>
     </table>
+
     <p style="text-indent: 50px">
         @if ($surat !== 'preview')
             {{ $surat->deskripsi }}
         @endif
     </p>
-    @php
-        $datas = json_decode($surat->pendukung);
-        $i = 1;
-    @endphp
-    <table width="100%" border="1px solid #000" style="border-collapse:collapse; text-align:center">
-        <tr>
-            <td>No</td>
-            <td>Nik</td>
-            <td>Nama</td>
-            <td>Tempat Lahir</td>
-            <td>Tanggal Lahir</td>
-        </tr>
-        @foreach ($datas as $km)
-            @php
-                $penduduk = DB::table('penduduk')
-                    ->where('nik', $km)
-                    ->first();
-            @endphp
-            <tr>
-                <td>{{ $i++ }}</td>
-                <td>{{ $penduduk->nik }}</td>
-                <td>{{ Str::title($penduduk->nama_lengkap) }}</td>
-                <td>{{ $penduduk->tempat_lahir }}</td>
-                <td>{{ date('d/m/Y', strtotime($penduduk->tanggal_lahir)) }}</td>
-            </tr>
-        @endforeach
-
-    </table>
 
     <p style="text-indent: 50px">
-        Demikian surat keterangan ini dibuat agar dapat dipergunakan dimana perlunya, dan apabila dikemudian hari
-        pernyataan orang tersebut tidak sesuai dengan kenyataan yang sebenarnya, maka surat ini tidak berlaku serta
-        tidak akan melibatkan Pemerintah Desa Batur Tengah.
+        Demikian surat keterangan ini kami buat dengan sebenarnya, agar dapat dipergunakan sebagaimana
     </p>
+
     <div style="text-align: right">
         @php
             use Carbon\Carbon;
@@ -161,10 +133,7 @@
             // Format tanggal dalam bahasa Indonesia
             $formattedDate = $date->isoFormat('D MMMM YYYY');
         @endphp
-        <p style="margin:5px;margin-top:5px; ">{{ Str::title($surat->verif_kadus->dusun) }}, {{ $formattedDate }}</p>
-        {{-- <p style="margin:5px 0; ">
-            {{ Str::title($surat->verif_kadus->jabatan->nama) . ' ' . Str::title($surat->verif_kadus->dusun) }}
-        </p> --}}
+        <p style="margin:0;margin-top:5px; ">{{ Str::title($surat->verif_kadus->dusun) }}, {{ $formattedDate }}</p>
         @if ($surat !== 'preview')
             <div>
                 <div style="float: right; width: 45%; height: auto; border:1px solid #333;">
