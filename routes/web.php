@@ -37,6 +37,8 @@ Route::middleware(['auth'])->group(function () {
             Route::resource('jabatan', JabatanController::class);
             Route::resource('kadus', KadusController::class);
             Route::resource('pengguna', UserController::class);
+            Route::get('/pengguna', [UserController::class, 'index'])->name('pengguna.index');
+            Route::post('/pengguna/verif/{id}', [UserController::class, 'verif'])->name('pengguna.verif');
         });
     });
     Route::middleware(['jabatan:admin,perbekel desa,kelian banjar dinas,staf'])->group(function () {
