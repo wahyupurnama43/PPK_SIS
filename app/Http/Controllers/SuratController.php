@@ -153,7 +153,7 @@ class SuratController extends Controller
             'tahun'          => $tahun,
         ]);
 
-        $pdfName = 'public/pdf/' . $nomor . $nik . '.pdf';
+        $pdfName = 'public/pdf/' . rand(0, 99) . $nomor . $nik . '.pdf';
 
         $qrname = 'images/qrcode/' . date('m-y-d') . $nomor . $nik . '.svg';
 
@@ -172,27 +172,7 @@ class SuratController extends Controller
             'barcode'        => $qrname,
             'pdf'            => $pdfName
         ]);
-        // dd($surat);
-        // if ($id_jenis_surat === 1) {
-        //     $pdf = PDF::loadview('pages.surat.sku', compact('penduduk', 'perbekel', 'no_surat', 'nik', 'surat', 'host'));
-        //     return $pdf->stream('dompdf_out.pdf');
-        //     // Storage::put($pdfName, $pdf->output());
-        // } else if ($id_jenis_surat === 2) {
-        //     $pdf = PDF::loadview('pages.surat.skm', compact('penduduk', 'perbekel', 'kelian_banjar', 'no_surat', 'nik', 'surat', 'host'));
-        //     return $pdf->stream('dompdf_out.pdf');
-        //     // Storage::put($pdfName, $pdf->output());
-        // } else if ($id_jenis_surat === 4) {
-        //     $pdf = PDF::loadview('pages.surat.sktm', compact('penduduk', 'perbekel', 'kelian_banjar', 'no_surat', 'nik', 'surat', 'host'));
-        //     return $pdf->stream('dompdf_out.pdf');
-        //     // Storage::put($pdfName, $pdf->output());
-        // } else if ($id_jenis_surat === 3) {
-        //     $pdf = PDF::loadview('pages.surat.skd', compact('penduduk', 'perbekel', 'kelian_banjar', 'no_surat', 'nik', 'surat', 'host'));
-        //     return $pdf->stream('dompdf_out.pdf');
-        //     // Storage::put($pdfName, $pdf->output());
-        // }
 
-
-        // return view('pages.surat.sku');
         return redirect()->route('surat.list')->with('success', 'Berhasil Membuat Surat');
     }
 
@@ -246,9 +226,10 @@ class SuratController extends Controller
                     }
                 })
                 ->addColumn('preview', function ($row) {
-                    return '<a href="' .
-                        Storage::url($row->pdf) .
-                        '" target="_blank" class="btn edit btn btn-primary btn-sm update mb-2">
+                    if ($row->verifikasi_kadus !== null && $row->verifikasi_perbekel !== null)
+                        return '<a href="' .
+                            Storage::url($row->pdf) .
+                            '" target="_blank" class="btn edit btn btn-primary btn-sm update mb-2">
                             PDF
                         </a>';
                 })
@@ -275,29 +256,29 @@ class SuratController extends Controller
 
                     // untuk staf,sekre,perbekel
                     if (in_array(Auth()->user()->id_jabatan, [1, 3, 5, 6])) {
-                        if ($row->id_jenis_surat !== 1)
-                            if ($row->verifikasi_perbekel !== 0 && $row->verifikasi_perbekel === null) {
-                                $btn =
-                                    $btn .
-                                    '<a href="' .
-                                    route('surat.verif', [$row->uuid, 'staf']) .
-                                    '" class="btn edit btn btn-primary btn-sm update mb-2 mx-1">
+                        if ($row->verifikasi_perbekel !== 0 && $row->verifikasi_perbekel === null) {
+                            $btn =
+                                $btn .
+                                '<a href="' .
+                                route('surat.verif', [$row->uuid, 'staf']) .
+                                '" class="btn edit btn btn-primary btn-sm update mb-2 mx-1">
                                         Verifikasi Perbekel/staf
                                     </a>';
-                            }
+                        }
                     }
 
                     // untuk kelian banjar
                     if (in_array(Auth()->user()->id_jabatan, [4])) {
-                        if ($row->verifikasi_kadus !== 0 && $row->verifikasi_kadus === null) {
-                            $btn =
-                                $btn .
-                                '<a href="' .
-                                route('surat.verif', [$row->uuid, 'kadus']) .
-                                '" class="btn edit btn btn-primary btn-sm update mb-2 mx-1">
+                        if ($row->id_jenis_surat !== 1)
+                            if ($row->verifikasi_kadus !== 0 && $row->verifikasi_kadus === null) {
+                                $btn =
+                                    $btn .
+                                    '<a href="' .
+                                    route('surat.verif', [$row->uuid, 'kadus']) .
+                                    '" class="btn edit btn btn-primary btn-sm update mb-2 mx-1">
                                     Verifikasi Kadus
                                 </a>';
-                        }
+                            }
                     }
 
                     if ($row->verifikasi_perbekel !== 0  && $row->verifikasi_kadus !== 0) {
@@ -387,7 +368,7 @@ class SuratController extends Controller
                 dd('hubungi developers dan berikan alur errornya');
             }
 
-            $pdfName = 'public/pdf/' . $no_surat->urutan . $nik . '.pdf';
+            $pdfName = $surat->pdf;
             if ($id_jenis_surat === 1) {
                 $pdf = PDF::loadview('pages.surat.sku', compact('penduduk', 'perbekel', 'no_surat', 'nik', 'surat', 'host'));
                 // return $pdf->stream('dompdf_out.pdf');
@@ -406,8 +387,8 @@ class SuratController extends Controller
                 Storage::put($pdfName, $pdf->output());
             } else if ($id_jenis_surat === 5) {
                 $pdf = PDF::loadview('pages.surat.skk', compact('penduduk', 'perbekel', 'kelian_banjar', 'no_surat', 'nik', 'surat', 'host'));
-                return $pdf->stream('dompdf_out.pdf');
-                // Storage::put($pdfName, $pdf->output());
+                // return $pdf->stream('dompdf_out.pdf');
+                Storage::put($pdfName, $pdf->output());
             }
             return redirect()->back()->with('success', 'Surat Berhasil Di Buat');
         } else {
@@ -438,6 +419,7 @@ class SuratController extends Controller
 
         // get data penduduk
         $penduduk = Penduduk::where('nik', $nik)->first();
+
         // note
         // sku = 1
         // skm = 2
@@ -488,7 +470,34 @@ class SuratController extends Controller
 
             $id_kelian_banjar = $kelian_banjar->id;
         } else {
-            dd('tidak');
+
+            $deskripsi = $request->deskripsi;
+            $jb_perbekel = Jabatan::select('*')->where('nama', '=', 'perbekel desa')->first();
+            $perbekel    = Kadus::with('jabatan')->where('id_jabatan', $jb_perbekel->id)->first();
+            if (!$perbekel) {
+                return redirect()->route('surat.index')->with('error', 'Perbekel Tidak Tersedia Pada Wilayah ' . $penduduk->keluarga->dusun . ' Hubungi Kantor Desa');
+            }
+
+            $id_perbekel = $perbekel->id;
+
+            // get jabatan kelian dinas
+            $jb_kb            = Jabatan::select('*')->where('nama', '=', 'kelian banjar dinas')->first();
+
+            $exDusun = explode('br. dinas ', $penduduk->keluarga->dusun);
+            if (count($exDusun) > 1) {
+                $dusunNew = $exDusun[1];
+            } else {
+                $dusunNew = $exDusun[0];
+            }
+
+
+            $kelian_banjar    = Kadus::with('jabatan')->where('id_jabatan', $jb_kb->id)->where('dusun', $dusunNew)->where('desa', strtolower($penduduk->keluarga->desa))->first();
+            // cek apakah kelian banjar ada
+            if (!$kelian_banjar) {
+                return redirect()->route('surat.index')->with('error', 'Kelian Banjar Tidak Tersedia Pada Wilayah ' . $penduduk->keluarga->dusun . ' Hubungi Kantor Desa');
+            }
+
+            $id_kelian_banjar = $kelian_banjar->id;
         }
 
         $tahun     = date('Y');
@@ -497,7 +506,6 @@ class SuratController extends Controller
         $nomor     = str_pad($count, 2, '0', STR_PAD_LEFT);
         $array_bln = [1 => 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
         $bulan     = $array_bln[date('n')];
-
 
         // insert no surat
         $no_surat = NomorSurat::create([
@@ -508,7 +516,8 @@ class SuratController extends Controller
             'bulan'          => $bulan,
             'tahun'          => $tahun,
         ]);
-        $pdfName = 'public/pdf/' . date('m-y-d') . $nomor . $nik . '.pdf';
+
+        $pdfName = 'public/pdf/' . rand(0, 99) . $nomor . $nik . '.pdf';
 
         $qrname = 'images/qrcode/' . date('m-y-d') . $nomor . $nik . '.svg';
 
@@ -525,29 +534,9 @@ class SuratController extends Controller
             'deskripsi'      => $deskripsi,
             'pendukung'      => $pendukung,
             'barcode'        => $qrname,
-            'pdf'            => $pdfName,
+            'pdf'            => $pdfName
         ]);
 
-        if ($id_jenis_surat === 1) {
-            $pdf = PDF::loadview('pages.surat.sku', compact('penduduk', 'perbekel', 'no_surat', 'nik', 'surat', 'host'));
-            // return $pdf->stream('dompdf_out.pdf');
-            Storage::put($pdfName, $pdf->output());
-        } else if ($id_jenis_surat === 2) {
-            $pdf = PDF::loadview('pages.surat.skm', compact('penduduk', 'perbekel', 'kelian_banjar', 'no_surat', 'nik', 'surat', 'host'));
-            // return $pdf->stream('dompdf_out.pdf');
-            Storage::put($pdfName, $pdf->output());
-        } else if ($id_jenis_surat === 4) {
-            $pdf = PDF::loadview('pages.surat.sktm', compact('penduduk', 'perbekel', 'kelian_banjar', 'no_surat', 'nik', 'surat', 'host'));
-            // return $pdf->stream('dompdf_out.pdf');
-            Storage::put($pdfName, $pdf->output());
-        } else if ($id_jenis_surat === 3) {
-            $pdf = PDF::loadview('pages.surat.skd', compact('penduduk', 'perbekel', 'kelian_banjar', 'no_surat', 'nik', 'surat', 'host'));
-            // return $pdf->stream('dompdf_out.pdf');
-            Storage::put($pdfName, $pdf->output());
-        }
-
-
-        // return view('pages.surat.sku');
         return redirect()->route('surat.list')->with('success', 'Berhasil Membuat Surat');
     }
 }

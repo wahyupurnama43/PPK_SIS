@@ -47,9 +47,10 @@
                             </tr>
                         </table>
                         <div class="mt-4">
+                            
                             {{-- @if ($surat->verifikasi_kadus === 1 || ($surat->verifikasi_perbekel === 1 && $surat->verifikasi_perbekel !== 0 && $surat->verifikasi_kadus !== 0))
                                 <button class="btn btn-primary">Preview</button> --}}
-                            @if ($surat->verifikasi_kadus !== '0' && $surat->verifikasi_kadus !== null && $surat->verifikasi_perbekel !== null && $surat->verifikasi_perbekel !== '0')
+                            @if ($surat->verifikasi_kadus !== 0 && $surat->verifikasi_kadus !== null && $surat->verifikasi_perbekel !== null && $surat->verifikasi_perbekel !== 0)
                                 <a href="{{ Storage::url($surat->pdf) }}" target="_blank" class="btn btn-success">Unduh</a>
                             @endif
                             {{-- @elseif($surat->verifikasi_kadus === 0 || $surat->verifikasi_perbekel === 0)

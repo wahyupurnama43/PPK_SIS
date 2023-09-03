@@ -186,7 +186,8 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
         'DataTable' => yajra\Datatables\Datatables::class,
-        'QrCode'    => SimpleSoftwareIO\QrCode\Facades\QrCode::class
+        'QrCode'    => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
+        'Excel'     => Maatwebsite\Excel\Facades\Excel::class,
     ])->toArray(),
 
 ];

@@ -2,7 +2,7 @@
 
 @section('title', 'Surat')
 @section('css')
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <style>
         .select2 {
             width: 100% !important;
@@ -87,7 +87,7 @@
                         <div class="col mr-2">
                             <div class="h5 mb-0 font-weight-bold text-gray-800">Surat Keterangan</div>
                             <div class="text-xs font-weight-bold text-primary text-right mt-3 text-uppercase">
-                                <button class="btn btn-primary">Cetak</button>
+                                <button class="btn btn-primary"  data-toggle="modal" data-target="#skk">Cetak</button>
                             </div>
                         </div>
                     </div>
@@ -95,7 +95,7 @@
             </div>
         </div>
 
-        <!-- Modal -->
+        <!-- Modal keterangan usaha -->
         <div class="modal fade" id="sku" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -114,7 +114,7 @@
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label for="">Nik</label>
-                                        <select name="nik_pembuat" id="nik"  data-placeholder="Pilih Nik"></select>
+                                        <select name="nik_pembuat" id="nik" data-placeholder="Pilih Nik"></select>
                                     </div>
                                 </div>
 
@@ -149,7 +149,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Modal keterangan miskin -->
         <div class="modal fade" id="skm" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -164,15 +164,16 @@
                         @csrf
                         <div class="modal-body">
                             <div class="row">
-                                
+
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label for="">Nik Pembuat Surat</label>
-                                        <select name="nik_pembuat" id="nik_pembuat"  data-placeholder="Pilih Nik Pembuat Surat"></select>
+                                        <select name="nik_pembuat" id="nik_pembuat"
+                                            data-placeholder="Pilih Nik Pembuat Surat"></select>
                                     </div>
                                 </div>
 
-                                
+
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label for="">Keperluan</label>
@@ -217,7 +218,7 @@
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label for="">Nik</label>
-                                        <select name="nik_pembuat" id="nikstm"  data-placeholder="Pilih Nik"></select>
+                                        <select name="nik_pembuat" id="nikstm" data-placeholder="Pilih Nik"></select>
                                     </div>
                                 </div>
 
@@ -237,8 +238,8 @@
             </div>
         </div>
 
-         <!-- Modal keterangan domisili -->
-         <div class="modal fade" id="skd" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <!-- Modal keterangan domisili -->
+        <div class="modal fade" id="skd" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -254,13 +255,56 @@
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label for="">Nik</label>
-                                        <select name="nik_pembuat" id="niksd"  data-placeholder="Pilih Nik"></select>
+                                        <select name="nik_pembuat" id="niksd" data-placeholder="Pilih Nik"></select>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label for="">Keperluan</label>
                                         <input type="text" class="form-control" required name="keperluan">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Download</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        {{-- Modal Keterangan --}}
+
+        <div class="modal fade" id="skk" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Surat Keterangan Domisili</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form method="POST" action="{{ route('admin.storeSuratAdmin', 'surat-domisili') }}">
+                        @csrf
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label for="">Nik</label>
+                                        <select name="nik_pembuat" id="nik_skk" data-placeholder="Pilih Nik"></select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label for="">Keperluan</label>
+                                        <input type="text" class="form-control" required name="keperluan">
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label for="">Isi Surat</label>
+                                        <input type="text" class="form-control" required name="deskripsi">
                                     </div>
                                 </div>
                             </div>
@@ -327,7 +371,7 @@
                 cache: true
             }
         });
-        
+
         $("#niksd").select2({
             dropdownParent: $('#skd'),
             minimumInputLength: 2,
@@ -349,8 +393,8 @@
                 cache: true
             }
         });
-        
-        
+
+
         $("#nikM").select2({
             dropdownParent: $('#skm'),
             minimumInputLength: 2,
@@ -372,7 +416,7 @@
                 cache: true
             }
         });
-        
+
         $("#nik_pembuat").select2({
             dropdownParent: $('#skm'),
             minimumInputLength: 2,
@@ -394,7 +438,29 @@
                 cache: true
             }
         });
-     
+
+        $("#nik_skk").select2({
+            dropdownParent: $('#skk'),
+            minimumInputLength: 2,
+            ajax: {
+                url: "{{ route('api.nik') }}",
+                dataType: 'json',
+                type: "POST",
+                quietMillis: 50,
+                data: function(term) {
+                    return {
+                        term: term,
+                    };
+                },
+                processResults: function(response) {
+                    return {
+                        results: response
+                    };
+                },
+                cache: true
+            }
+        });
+
 
         $(document).ready(function() {
             $('.js-example-basic-multiple').select2();

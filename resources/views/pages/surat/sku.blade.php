@@ -158,7 +158,7 @@
         </p>
         @if ($surat !== 'preview')
             <div>
-                <div style="float: right; width: 45%; height: auto; border:1px solid #333;">
+                <div style="float: right; width: 55%; height: auto; border:1px solid #333;">
                     <p style="text-align: left;padding:0 10px;">
                         Surat ini telah Ditandatangani dan disahkan secara digital oleh pemerintahan Desa Batur Tengah. {{ $surat->verif_kadus->jabatan->nama }} {{ $surat->verif_kadus->dusun }},{{ $surat->verif_kadus->nama }}
                     </p>

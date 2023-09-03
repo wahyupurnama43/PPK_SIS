@@ -23,9 +23,12 @@
         <div class="card-header py-3 d-flex justify-content-between align-content-center align-items-center">
             <h6 class="m-0 font-weight-bold text-primary">Data Penduduk</h6>
             <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#wilayah">
-                Tambah Data
-            </button>
+            <div class="d-flex">
+                <button type="button" class="btn btn-primary mr-3" data-toggle="modal" data-target="#wilayah">
+                    Tambah Data
+                </button>
+                <a href="{{ route('export') }}" class="btn btn-success ">Excel</a>
+            </div>
         </div>
 
         <div class="card-body">

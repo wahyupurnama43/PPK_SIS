@@ -37,6 +37,7 @@ Route::middleware(['auth'])->group(function () {
             Route::resource('jabatan', JabatanController::class);
             Route::resource('kadus', KadusController::class);
             Route::resource('pengguna', UserController::class);
+            Route::get('export', [PendudukController::class, 'export'])->name('export');
         });
     });
     Route::middleware(['jabatan:admin,perbekel desa,kelian banjar dinas,staf,sekretaris'])->group(function () {

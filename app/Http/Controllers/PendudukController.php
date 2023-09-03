@@ -10,9 +10,11 @@ use App\Models\Pekerjaan;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Laravel\Ui\Presets\React;
+use App\Exports\PendudukExports;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Requests\PendudukRequest;
 
 class PendudukController extends Controller
@@ -231,5 +233,10 @@ class PendudukController extends Controller
         } catch (\Throwable $e) {
             return redirect()->route('keluarga.index')->with('error', $e->errorInfo[2]);;
         }
+    }
+
+    public function export()
+    {
+        return Excel::download(new PendudukExports, 'users.xlsx');
     }
 }
