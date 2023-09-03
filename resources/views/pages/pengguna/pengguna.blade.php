@@ -29,6 +29,7 @@
                             <th>No</th>
                             <th>Username</th>
                             <th>Jabatan</th>
+                             <th>status</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -74,6 +75,17 @@
                                         @endforeach
                                     </select>
                                     @error('jabatan')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="no_hp">No Handphone</label>
+                                    <input type="text" class="form-control" id="no_hp" name="no_hp"
+                                        placeholder="Masukan No Handphone" value="{{ old('no_hp') }}">
+                                    @error('no_hp')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -146,6 +158,23 @@
 
                             <div class="col-lg-6">
                                 <div class="form-group">
+                                    <label for="status">Status</label>
+                                    <select name="status" id="statusE" class="form-control">
+                                        <option value="" selected disabled>Pilih Status</option>
+                                        {{--  @foreach ($status as $jb)
+                                            <option value="{{ $jb->uuid }}">
+                                                {{ $jb->nama }}
+                                            </option>
+                                        @endforeach  --}}
+                                    </select>
+                                    @error('status')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="form-group">
                                     <label for="no_hp">No Handphone</label>
                                     <input type="text" class="form-control" id="no_hpE" name="no_hp"
                                         placeholder="Masukan No Handphone" value="{{ old('no_hp') }}">
@@ -184,46 +213,51 @@
 
 @section('js')
 
-        <script src="{{ asset('vendor/datatables/jquery.dataTables.min.js') }}"></script>
-        <script src="{{ asset('vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('vendor/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
 
-        <script>
-            $(document).ready(function() {
+    <script>
+        $(document).ready(function() {
 
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-
-
-                $('#dataTable').DataTable({
-                    processing: true,
-                    serverSide: true,
-                    ajax: "{{ route('pengguna.index') }}",
-                    columns: [{
-                            data: 'DT_RowIndex',
-                            name: 'DT_RowIndex',
-                            orderable: false,
-                            searchable: false
-                        },
-                        {
-                            data: 'username',
-                            name: 'username'
-                        },
-                        {
-                            data: 'jabatan.nama',
-                            name: 'jabatan.nama'
-                        },
-                        {
-                            data: 'action',
-                            name: 'action'
-                        },
-                    ]
-                });
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
             });
-        </script>
 
+
+            $('#dataTable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: "{{ route('pengguna.index') }}",
+                columns: [{
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'username',
+                        name: 'username'
+                    },
+                    {
+                        data: 'jabatan.nama',
+                        name: 'jabatan.nama'
+                    },
+                    {
+                        data: 'status',
+                        name: 'status'
+                    },
+                    {
+                        data: 'action',
+                        name: 'action'
+                    },
+                ]
+            });
+        });
+    </script>
+
+    
     <script>
         $('#generate').click(function() {
             var chars = "0123456789abcdefghijklmnopqrstuvwxyz!@#$%^&*()ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -305,6 +339,25 @@
                     }
                 });
             }
+        });
+
+        $(document).on('click', '.verif', function() {
+            var id = $(this).data('uuid');
+            $.ajax({
+                url: "{{ route('pengguna.verif', '":id"') }}",
+                method: "POST", 
+                data: {
+                    _token: "{{ csrf_token() }}"
+                },
+                success: function(response) {
+                    if (response.success) {
+                        dataTable.ajax.reload();
+                        toastr.success(response.message);
+                    } else {
+                        toastr.error(response.message);
+                    }
+                }
+            });
         });
     </script>
 

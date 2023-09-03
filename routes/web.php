@@ -38,6 +38,8 @@ Route::middleware(['auth'])->group(function () {
             Route::resource('kadus', KadusController::class);
             Route::resource('pengguna', UserController::class);
             Route::get('export', [PendudukController::class, 'export'])->name('export');
+            Route::get('/pengguna', [UserController::class, 'index'])->name('pengguna.index');
+            Route::post('/pengguna/verif/{id}', [UserController::class, 'verif'])->name('pengguna.verif');
         });
     });
     Route::middleware(['jabatan:admin,perbekel desa,kelian banjar dinas,staf,sekretaris'])->group(function () {

@@ -21,28 +21,49 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        if (request()->ajax()) {
+        if ($request->ajax()) {
             $data = User::select('*')->with('jabatan')->orderBy('id_jabatan', 'asc')->get();
             return DataTables::of($data)
+                ->addColumn('status', function ($row) {
+                    if ($row->status === 0) {
+                        return '<span class="badge badge-danger">
+                        Di Tolak
+                        </span>';
+                    } elseif ($row->status === 1) {
+                        return '<span class="badge badge-success">
+                        Verifikasi Berhasil
+                        </span>';
+                    } else {
+                        return '<span class="badge badge-danger">
+                        Pending
+                        </span>';
+                    }
+                })
                 ->addColumn('action', function ($row) {
-                    $btn =
-                        '<button type="button" class="btn edit btn btn-primary btn-sm update" data-url="' .
+                    $btn = '<button type="button" class="btn edit btn btn-primary btn-sm update" data-url="' .
                         route('pengguna.show', $row->uuid) .
                         '" data-send="' .
                         route('pengguna.update', $row->uuid) .
                         '" data-toggle="modal" data-target="#editWilayah">
                     Edit
-                </button>';
-                    $btn = $btn . ' <a href="javascript:void(0)" data-url="' .
+                    </button>';
+
+                    $btn .= ' <a href="javascript:void(0)" data-url="' .
                         route('pengguna.destroy', $row->uuid) .
                         '"  data-id="' . $row->uuid .
                         '" class="btn btn-danger btn-sm deletePost">Delete</a>';
+
+                    if ($row->status === 'pending') {
+                        $btn .= ' <button type="button" class="btn btn-success btn-sm verif" data-url="' . $row->uuid . '">Verifikasi</button>';
+                    }
+
                     return $btn;
                 })
-                ->rawColumns(['action'])
+                ->rawColumns(['status', 'action'])
                 ->addIndexColumn()
                 ->make(true);
         }
+
         $jabatan = Jabatan::all();
         return view('pages.pengguna.pengguna', compact('jabatan'));
     }
@@ -65,6 +86,7 @@ class UserController extends Controller
         $username      = Str::title($request->username);
         $no_hp         = $request->no_hp;
         $password      = $request->password;
+        $status        = $request->status;
 
         $passwordHash = $password ? Hash::make($password) : null;
 
@@ -75,6 +97,7 @@ class UserController extends Controller
                 'username'   => $username,
                 'no_hp'      => $no_hp,
                 'password'   => $passwordHash,
+                'status'     => $status,
             ]);
 
             if ($pengguna) {
@@ -115,6 +138,7 @@ class UserController extends Controller
             "username" => "required",
             "jabatan"  => "required",
             "no_hp"    => "required",
+            "status"   => "required",
         ]);
 
         if ($request->password !== null) {
@@ -128,18 +152,18 @@ class UserController extends Controller
             $password =  $pengguna->password;
         }
 
-
-
         $jb        = Jabatan::where('uuid', $request->jabatan)->first();
         $jabatan   = $jb->id;
         $no_hp     = $request->no_hp;
         $username  = $request->username;
+        $status    = $request->status;
 
         try {
             $pengguna->username   = $username;
             $pengguna->id_jabatan = $jabatan;
             $pengguna->no_hp      = $no_hp;
             $pengguna->password   = $password;
+            $pengguna->status     = $status;
             $pengguna->save();
 
             return redirect()->route('pengguna.index')->with('success', 'Berhasil Diupdate');
@@ -147,6 +171,24 @@ class UserController extends Controller
             return redirect()->route('pengguna.index')->with('error', $e->errorInfo[2]);
         }
     }
+
+    public function verif(Request $request, $uuid)
+    {
+        $pengguna = User::where('uuid', $uuid)->first();
+        $pengguna->status = 1;
+
+        $cek = $pengguna->save();
+        if ($cek) {
+            return redirect()
+                ->route('pengguna.verif')
+                ->with('success', 'Berhasil Verifikasi');
+        } else {
+            return redirect()
+                ->route('pengguna.verif')
+                ->with('error', 'Mohon Hubungi Admin');
+        }
+    }
+
 
     /**
      * Remove the specified resource from storage.
