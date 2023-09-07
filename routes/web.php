@@ -24,7 +24,7 @@ use App\Http\Controllers\UserController;
 |
 */
 
-Route::get('/', [HomeController::class, 'index']);
+Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index']);
@@ -38,6 +38,7 @@ Route::middleware(['auth'])->group(function () {
             Route::resource('kadus', KadusController::class);
             Route::resource('pengguna', UserController::class);
             Route::get('export', [PendudukController::class, 'export'])->name('export');
+            Route::post('import', [PendudukController::class, 'import'])->name('import');
             Route::get('/pengguna', [UserController::class, 'index'])->name('pengguna.index');
             Route::post('/pengguna/verif/{id}', [UserController::class, 'verif'])->name('pengguna.verif');
         });

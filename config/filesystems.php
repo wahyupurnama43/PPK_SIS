@@ -39,7 +39,15 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
+            'url' => env('APP_URL') . '/storage',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
+
+        'excel' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/ImportExcel'),
+            'url' => env('APP_URL') . '/storage/ImportExcel',
             'visibility' => 'public',
             'throw' => false,
         ],

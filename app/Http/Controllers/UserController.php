@@ -39,6 +39,9 @@ class UserController extends Controller
                         </span>';
                     }
                 })
+                ->addColumn('phone', function ($row) {
+                    return '<a target="_blank" href="https://api.whatsapp.com/send?phone=' . $row->no_hp . '" class="">' . $row->no_hp . '</a>';
+                })
                 ->addColumn('action', function ($row) {
                     $btn = '<button type="button" class="btn edit btn btn-primary btn-sm update" data-url="' .
                         route('pengguna.show', $row->uuid) .
@@ -59,7 +62,7 @@ class UserController extends Controller
 
                     return $btn;
                 })
-                ->rawColumns(['status', 'action'])
+                ->rawColumns(['status', 'action', 'phone'])
                 ->addIndexColumn()
                 ->make(true);
         }

@@ -29,7 +29,8 @@
                             <th>No</th>
                             <th>Username</th>
                             <th>Jabatan</th>
-                             <th>status</th>
+                            <th>Phone</th>
+                            <th>status</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -161,11 +162,8 @@
                                     <label for="status">Status</label>
                                     <select name="status" id="statusE" class="form-control">
                                         <option value="" selected disabled>Pilih Status</option>
-                                        {{--  @foreach ($status as $jb)
-                                            <option value="{{ $jb->uuid }}">
-                                                {{ $jb->nama }}
-                                            </option>
-                                        @endforeach  --}}
+                                        <option value="1">Verifikasi</option>
+                                        <option value="0">Tolak Verifikasi</option>
                                     </select>
                                     @error('status')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -245,6 +243,10 @@
                         name: 'jabatan.nama'
                     },
                     {
+                        data: 'phone',
+                        name: 'phone'
+                    },
+                    {
                         data: 'status',
                         name: 'status'
                     },
@@ -306,6 +308,7 @@
                     $('#usernameE').val(res.username);
                     $('#jabatanE').val(res.jabatan.uuid);
                     $('#no_hpE').val(res.no_hp);
+                    $('#statusE').val(res.status);
                     $('#passwordE').val('');
                     $('#generateEdit').prop('disabled', false); 
                     $('#copyEdit').prop('disabled', false); 
@@ -363,7 +366,7 @@
 
     <script type="text/javascript">
         @if (count($errors) > 0)
-            $('#wilayah').modal('show');
+            $('#editWilayah').modal('show');
         @endif
     </script>
 

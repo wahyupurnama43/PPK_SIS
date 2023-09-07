@@ -27,7 +27,9 @@
                 <button type="button" class="btn btn-primary mr-3" data-toggle="modal" data-target="#wilayah">
                     Tambah Data
                 </button>
-                <a href="{{ route('export') }}" class="btn btn-success ">Excel</a>
+                <a href="{{ route('export') }}" class="btn btn-success mr-3">Export Excel</a>
+                <button type="button" class="btn btn-success " data-toggle="modal" data-target="#export">Import
+                    Excel</button>
             </div>
         </div>
 
@@ -336,6 +338,27 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="export" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <form action="{{ route('import') }}" enctype="multipart/form-data" method="post">
+                    @csrf
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modal Import</h5>
+                    </div>
+                    <div class="modal-body">
+                        <input type="file" name="excel" class="form-control">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 
 
 @endsection

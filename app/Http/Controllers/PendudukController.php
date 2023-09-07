@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Requests\PendudukRequest;
+use App\Imports\ImportPenduduk;
 
 class PendudukController extends Controller
 {
@@ -238,5 +239,13 @@ class PendudukController extends Controller
     public function export()
     {
         return Excel::download(new PendudukExports, 'users.xlsx');
+    }
+
+    public function import()
+    {
+        $name = date('YmdHis') . request()->file('excel')->getClientOriginalName();
+        Excel::import(new ImportPenduduk, request()->file('excel'), 'public');
+        Excel::store(new ImportPenduduk,  $name, 'excel');
+        return back()->with('success', 'Berhasil Import Data Baru');
     }
 }
