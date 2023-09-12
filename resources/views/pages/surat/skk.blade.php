@@ -29,7 +29,7 @@
 
     <hr style="height: 4px; background:#333;">
     <center>
-        <h1 style="text-decoration: underline; font-size:25px;margin-bottom:0">SURAT KETERANGAN</h1>
+        <h1 style="text-decoration: underline; font-size:25px;margin-bottom:0">SURAT KETERANGAN {{ strtoupper($surat->pendukung) }}</h1>
         <h5 style="margin:0; margin-top:3px">Nomor :
             @if ($surat !== 'preview')
                 {{ $no_surat->kode . '-SID/' . $no_surat->urutan . '/' . $no_surat->bulan . '/' . $no_surat->tahun }}

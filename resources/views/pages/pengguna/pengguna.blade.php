@@ -345,20 +345,32 @@
         });
 
         $(document).on('click', '.verif', function() {
-            var id = $(this).data('uuid');
+            var id = $(this).data('url');
             $.ajax({
-                url: "{{ route('pengguna.verif', '":id"') }}",
+                url: "{{ route('pengguna.verif', '') }}/" + id,
                 method: "POST", 
                 data: {
                     _token: "{{ csrf_token() }}"
                 },
                 success: function(response) {
-                    if (response.success) {
-                        dataTable.ajax.reload();
-                        toastr.success(response.message);
+                    if (response) {
+                        Toastify({
+                                text: 'Data Berhasil Diverifikasi',
+                                className: "success",
+                                style: {
+                                    background: "#00b09b",
+                                }
+                            }).showToast();
                     } else {
-                        toastr.error(response.message);
+                        Toastify({
+                                text: 'Data Gagal Diverifikasi',
+                                className: "error",
+                                style: {
+                                    background: "#00b09b",
+                                }
+                            }).showToast();
                     }
+                    location.reload();
                 }
             });
         });

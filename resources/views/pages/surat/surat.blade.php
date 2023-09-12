@@ -260,6 +260,13 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="form-group">
+                                        <label for="">Judul</label>
+                                        <input type="text" class="form-control" required name="judul">
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12">
+                                    <div class="form-group">
                                         <label for="">Keperluan</label>
                                         <input type="text" class="form-control" required name="keperluan">
                                     </div>
@@ -268,15 +275,69 @@
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label for="">Isi Surat</label>
-                                        <input type="text" class="form-control" required name="deskripsi">
+                                        <textarea name="deskripsi" id=""  class="form-control"  cols="30" rows="5" required></textarea>
                                     </div>
+                                    <label for="">NB: Silakan mengisi surat sesuai dengan kebutuhan Anda, dengan menggunakan kalimat yang baik dan benar.</label>
                                 </div>
+                                <div class="col-6">
+                                    <button class="btn btn-info mr-2 mb-2" type="button" data-toggle="modal" data-target="#view">Contoh Keterangan Bekerja</button>
+                                </div>
+                                <div class="col-6">
+                                    <button class="btn btn-info mr-2 mb-2" type="button" data-toggle="modal" data-target="#view2">Contoh Keterangan Belum Kawin</button>
+                                </div> 
+                                <div class="col-6">
+                                    <button class="btn btn-info mr-2 mb-2" type="button" data-toggle="modal" data-target="#view3">Contoh Keterangan Penghasilan</button>
+                                </div> 
                             </div>
                         </div>
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary">Download</button>
                         </div>
                     </form>
+                </div>
+            </div>
+        </div>
+
+
+        {{-- modal view surat --}}
+        <div class="modal fade" id="view" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered  modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Surat Keterangan Bekerja</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                   <img src="{{ asset('images/surat-keterangan/sk-1.jpg') }}" alt="" width="100%" height="auto" style="padding: 50px">
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="view2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered  modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Surat Keterangan Belum Kawin</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                   <img src="{{ asset('images/surat-keterangan/sk-2.jpg') }}" alt="" width="100%" height="auto" style="padding: 50px">
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="view3" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered  modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Surat Keterangan Penghasilan</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                   <img src="{{ asset('images/surat-keterangan/sk-3.jpg') }}" alt="" width="100%" height="auto" style="padding: 50px">
                 </div>
             </div>
         </div>

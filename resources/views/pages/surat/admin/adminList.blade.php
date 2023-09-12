@@ -20,6 +20,7 @@
                             <th>No</th>
                             <th>Nama Pengaju</th>
                             <th>Nomor Surat</th>
+                            <th>Wilayah</th>
                             <th>Jenis Surat</th>
                             <th>Verifikasi Kadus</th>
                             <th>Verifikasi Perbekel</th>
@@ -68,6 +69,10 @@
                     {
                         data: 'nomor_surat',
                         name: 'nomor_surat'
+                    },
+                    {
+                        data: 'dusun',
+                        name: 'dusun'
                     },
                     {
                         data: 'jenis_surat.nama',

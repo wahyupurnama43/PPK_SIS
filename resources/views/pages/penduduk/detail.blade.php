@@ -283,6 +283,14 @@
                             @enderror
                         </div>
                     </div>
+
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label for="pekerjaan">Alamat</label>
+                            <br>
+                            <input class="form-control" type="text" disabled value="{{ Str::title($penduduk->keluarga->alamat) . ', ' . Str::title($penduduk->keluarga->dusun) . ", " . Str::title($penduduk->keluarga->desa) . ", ". Str::title($penduduk->keluarga->kecamatan)}}">
+                        </div>
+                    </div>
                 </div>
             </div>
         </form>

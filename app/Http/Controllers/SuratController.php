@@ -106,7 +106,7 @@ class SuratController extends Controller
 
             $id_kelian_banjar = $kelian_banjar->id;
         } else {
-
+            $pendukung = $request->judul;
             $deskripsi = $request->deskripsi;
             $jb_perbekel = Jabatan::select('*')->where('nama', '=', 'perbekel desa')->first();
             $perbekel    = Kadus::with('jabatan')->where('id_jabatan', $jb_perbekel->id)->first();
@@ -202,12 +202,20 @@ class SuratController extends Controller
                     ->with(['penduduk', 'no_surat', 'jenis_surat', 'kadus'])
                     ->where('id_kadus', $kadus->id)
                     ->orderBy('created_at', 'desc')
-                    ->get();
+                    ->get()
+                    ->map(function ($d) {
+                        $d->dusun = Str::title($d->penduduk->keluarga->dusun);
+                        return $d;
+                    });
             } else {
                 $data = Surat::select('*')
                     ->with(['penduduk', 'no_surat', 'jenis_surat', 'kadus'])
                     ->orderBy('created_at', 'desc')
-                    ->get();
+                    ->get()
+                    ->map(function ($d) {
+                        $d->dusun = Str::title($d->penduduk->keluarga->dusun);
+                        return $d;
+                    });
             }
             return DataTables::of($data)
                 ->addColumn('verifikasi_kadus', function ($row) {
@@ -372,6 +380,7 @@ class SuratController extends Controller
             if ($id_jenis_surat === 1) {
                 $pdf = PDF::loadview('pages.surat.sku', compact('penduduk', 'perbekel', 'no_surat', 'nik', 'surat', 'host'));
                 // return $pdf->stream('dompdf_out.pdf');
+                $pdf->setPaper(array(0, 0, 609.4488, 935.433), 'portrait');
                 Storage::put($pdfName, $pdf->output());
             } else if ($id_jenis_surat === 2) {
                 $pdf = PDF::loadview('pages.surat.skm', compact('penduduk', 'perbekel', 'kelian_banjar', 'no_surat', 'nik', 'surat', 'host'));
@@ -470,7 +479,7 @@ class SuratController extends Controller
 
             $id_kelian_banjar = $kelian_banjar->id;
         } else {
-
+            $pendukung = $request->judul;
             $deskripsi = $request->deskripsi;
             $jb_perbekel = Jabatan::select('*')->where('nama', '=', 'perbekel desa')->first();
             $perbekel    = Kadus::with('jabatan')->where('id_jabatan', $jb_perbekel->id)->first();

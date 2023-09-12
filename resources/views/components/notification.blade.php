@@ -25,37 +25,37 @@
 </div>
 <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
 <script>
-    $(document).ready(function() {
-        setInterval(() => {
-            $.ajax({
-                url: "{{ route('api.notify') }}",
-                // return the result
-                success: function(res) {
-                    let html = '';
-                    $('#total').html(res.length);
-                    res.forEach(e => {
-                        let date = new Date(e.created_at).toLocaleDateString('id', {  day: '2-digit', month: 'long', year: 'numeric' });
+    // $(document).ready(function() {
+    //     setInterval(() => {
+    //         $.ajax({
+    //             url: "{{ route('api.notify') }}",
+    //             // return the result
+    //             success: function(res) {
+    //                 let html = '';
+    //                 $('#total').html(res.length);
+    //                 res.forEach(e => {
+    //                     let date = new Date(e.created_at).toLocaleDateString('id', {  day: '2-digit', month: 'long', year: 'numeric' });
                         
-                        html = html + ` <a class="dropdown-item d-flex align-items-center" href="{{ route('surat.Adminlist') }}">
-                                <div class="mr-3">
-                                    <div class="icon-circle bg-primary">
-                                        <i class="fas fa-file-alt text-white"></i>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="small text-gray-500">` + date + `</div>
-                                    <span class="font-weight-bold">` + e.penduduk.nama_lengkap + `</span>
-                                    <br>
-                                    <span class="font-weight-bold">( ` + e.jenis_surat.nama + ` )</span>
-                                </div>
-                            </a>`;
-                    });
+    //                     html = html + ` <a class="dropdown-item d-flex align-items-center" href="{{ route('surat.Adminlist') }}">
+    //                             <div class="mr-3">
+    //                                 <div class="icon-circle bg-primary">
+    //                                     <i class="fas fa-file-alt text-white"></i>
+    //                                 </div>
+    //                             </div>
+    //                             <div>
+    //                                 <div class="small text-gray-500">` + date + `</div>
+    //                                 <span class="font-weight-bold">` + e.penduduk.nama_lengkap + `</span>
+    //                                 <br>
+    //                                 <span class="font-weight-bold">( ` + e.jenis_surat.nama + ` )</span>
+    //                             </div>
+    //                         </a>`;
+    //                 });
 
-                    $('#notif').html(html);
+    //                 $('#notif').html(html);
 
-                },
-            })
-        }, 1000);
+    //             },
+    //         })
+    //     }, 1000);
 
-    })
+    // })
 </script>

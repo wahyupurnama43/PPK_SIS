@@ -25,7 +25,7 @@ class UserController extends Controller
             $data = User::select('*')->with('jabatan')->orderBy('id_jabatan', 'asc')->get();
             return DataTables::of($data)
                 ->addColumn('status', function ($row) {
-                    if ($row->status === 0) {
+                    if ($row->status === 2) {
                         return '<span class="badge badge-danger">
                         Di Tolak
                         </span>';
@@ -34,7 +34,7 @@ class UserController extends Controller
                         Verifikasi Berhasil
                         </span>';
                     } else {
-                        return '<span class="badge badge-danger">
+                        return '<span class="badge badge-warning">
                         Pending
                         </span>';
                     }
@@ -56,7 +56,7 @@ class UserController extends Controller
                         '"  data-id="' . $row->uuid .
                         '" class="btn btn-danger btn-sm deletePost">Delete</a>';
 
-                    if ($row->status === 'pending') {
+                    if ($row->status === 0) {
                         $btn .= ' <button type="button" class="btn btn-success btn-sm verif" data-url="' . $row->uuid . '">Verifikasi</button>';
                     }
 
@@ -177,18 +177,15 @@ class UserController extends Controller
 
     public function verif(Request $request, $uuid)
     {
+
         $pengguna = User::where('uuid', $uuid)->first();
         $pengguna->status = 1;
 
         $cek = $pengguna->save();
         if ($cek) {
-            return redirect()
-                ->route('pengguna.verif')
-                ->with('success', 'Berhasil Verifikasi');
+            return true;
         } else {
-            return redirect()
-                ->route('pengguna.verif')
-                ->with('error', 'Mohon Hubungi Admin');
+            return false;
         }
     }
 
