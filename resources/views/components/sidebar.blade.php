@@ -125,6 +125,16 @@
             Fitur Admin Surat
         </div>
 
+          <!-- Nav Item - Pages Collapse Menu -->
+          <li class="nav-item {{ request()->is('profile') ? 'active' : '' }}">
+            <a class="nav-link collapsed " href="{{ route('profile') }}">
+                <i class="far fa-user"></i>
+                <span>Profile</span>
+            </a>
+        </li>
+
+
+
         <li class="nav-item {{ request()->is('admin/Adminlist*') ? 'active' : '' }}">
             <a class="nav-link collapsed " href="{{ route('surat.Adminlist') }}">
                 <i class="fas fa-file"></i>

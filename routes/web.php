@@ -29,6 +29,8 @@ Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index']);
+    Route::get('/pengguna', [UserController::class, 'index'])->name('pengguna.index');
+    Route::post('/pengguna/verif/{id}', [UserController::class, 'verif'])->name('pengguna.verif');
     Route::middleware(['jabatan:admin'])->group(function () {
         Route::prefix('admin')->group(function () {
             Route::resource('wilayah', WilayahController::class);
@@ -40,10 +42,10 @@ Route::middleware(['auth'])->group(function () {
             Route::resource('pengguna', UserController::class);
             Route::get('export', [PendudukController::class, 'export'])->name('export');
             Route::post('import', [PendudukController::class, 'import'])->name('import');
-            Route::get('/pengguna', [UserController::class, 'index'])->name('pengguna.index');
-            Route::post('/pengguna/verif/{id}', [UserController::class, 'verif'])->name('pengguna.verif');
         });
     });
+
+
     Route::middleware(['jabatan:admin,perbekel desa,kelian banjar dinas,staf,sekretaris'])->group(function () {
         Route::get('list/surat', [SuratController::class, 'Adminlist'])->name('surat.Adminlist');
         Route::prefix('admin')->group(function () {
@@ -51,11 +53,11 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/surat', [SuratController::class, 'suratAdmin'])->name('admin.suratAdmin');
             Route::get('/surat/list', [SuratController::class, 'list'])->name('admin.list');
             Route::post('/surat/{slug}', [SuratController::class, 'storeSuratAdmin'])->name('admin.storeSuratAdmin');
+            Route::get('profile', [ProfileController::class, 'index'])->name('profile');
+            Route::post('profile/update', [ProfileController::class, 'update'])->name('profile.updatePassword');
         });
     });
     Route::middleware(['jabatan:masyarakat'])->group(function () {
-        Route::get('profile', [ProfileController::class, 'index'])->name('profile');
-        Route::post('profile/update', [ProfileController::class, 'update'])->name('profile.updatePassword');
         Route::name('surat.')->group(function () {
             Route::get('/surat', [SuratController::class, 'index'])->name('index');
             Route::post('/surat', [SuratController::class, 'index'])->name('update');
