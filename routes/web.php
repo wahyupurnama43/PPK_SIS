@@ -11,6 +11,7 @@ use App\Http\Controllers\KeluargaController;
 use App\Http\Controllers\PendudukController;
 use App\Http\Controllers\AktaKawinController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 
 /*
@@ -53,6 +54,8 @@ Route::middleware(['auth'])->group(function () {
         });
     });
     Route::middleware(['jabatan:masyarakat'])->group(function () {
+        Route::get('profile', [ProfileController::class, 'index'])->name('profile');
+        Route::post('profile/update', [ProfileController::class, 'update'])->name('profile.updatePassword');
         Route::name('surat.')->group(function () {
             Route::get('/surat', [SuratController::class, 'index'])->name('index');
             Route::post('/surat', [SuratController::class, 'index'])->name('update');

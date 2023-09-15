@@ -31,9 +31,15 @@
 
 <body>
     <div class="container my-auto">
+
+        <div class="text-center my-5">
+            <img src="{{ asset('images/logo.png') }}" alt="" width="100px">
+            <h1 class="mt-2">Selamat Datang di Desa Batur</h1>
+        </div>
+
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <div class="card mt-5">
+                <div class="card ">
                     <div class="card-header">{{ __('Register') }}</div>
 
                     <div class="card-body">
@@ -77,7 +83,7 @@
 
                                     @if (Route::has('login'))
                                         <a class="btn btn-link" href="{{ route('login') }}">
-                                            {{ __('Have Account?') }}
+                                            {{ __('Sudah Punya Akun?') }}
                                         </a>
                                     @endif
 

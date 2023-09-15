@@ -31,10 +31,16 @@
 
 <body>
     <div class="container my-auto">
+
+        <div class="text-center my-5">
+            <img src="{{ asset('images/logo.png') }}" alt="" width="100px">
+            <h1 class="mt-2">Selamat Datang di Desa Batur</h1>
+        </div>
+
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">{{ __('Login') }}</div>
+                    <div class="card-header">{{ __('Masuk') }}</div>
 
                     <div class="card-body">
                         <form method="POST" action="{{ route('login') }}">
@@ -42,12 +48,12 @@
 
                             <div class="row mb-3">
                                 <label for="username"
-                                    class="col-md-4 col-form-label text-md-end">{{ __('username Address') }}</label>
+                                    class="col-md-4 col-form-label text-md-end">{{ __('Username/NIK') }}</label>
 
                                 <div class="col-md-6">
                                     <input id="username" type="text"
                                         class="form-control @error('username') is-invalid @enderror" name="username"
-                                        value="{{ old('email') }}" required autocomplete="email" autofocus>
+                                        value="{{ old('username') }}" required autocomplete="username" autofocus>
 
                                     @error('username')
                                         <span class="invalid-feedback" role="alert">
@@ -74,7 +80,7 @@
                                 </div>
                             </div>
 
-                            <div class="row mb-3">
+                            {{-- <div class="row mb-3">
                                 <div class="col-md-6 offset-md-4">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" name="remember" id="remember"
@@ -85,7 +91,7 @@
                                         </label>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
 
                             <div class="row mb-0">
                                 <div class="col-md-8 offset-md-4">
@@ -93,11 +99,9 @@
                                         {{ __('Login') }}
                                     </button>
 
-                                    @if (Route::has('password.request'))
-                                        <a class="btn btn-link" href="{{ route('password.request') }}">
-                                            {{ __('Forgot Your Password?') }}
+                                        <a class="btn btn-link" href="{{ route('register') }}">
+                                            {{ __('Belum Punya Akun?') }}
                                         </a>
-                                    @endif
                                 </div>
                             </div>
                         </form>

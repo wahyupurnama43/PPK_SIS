@@ -33,8 +33,18 @@ class PendudukExports implements FromCollection, WithHeadings
             } else if ($row->agama == "Kh") {
                 $row->agama = "Khonghucu";
             }
+            $row->nik = "'" . $row->nik;
+            $row->kk = "'" . $row->kk;
         }
         return $penduduk;
+    }
+
+    public function columnFormats(): array
+    {
+        return [
+            // F is the column
+            'F' => '0'
+        ];
     }
 
     public function headings(): array

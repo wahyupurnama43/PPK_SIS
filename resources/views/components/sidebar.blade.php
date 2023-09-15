@@ -120,7 +120,7 @@
     {{-- 3 => kelian banjar --}}
     {{-- 4 => Perbekel --}}
     {{-- 5 => Staf --}}
-    @if (in_array(Auth()->user()->id_jabatan, [3,4,5,6]))
+    @if (in_array(Auth()->user()->id_jabatan, [3, 4, 5, 6]))
         <div class="sidebar-heading">
             Fitur Admin Surat
         </div>
@@ -155,6 +155,15 @@
         <div class="sidebar-heading">
             Fitur User
         </div>
+
+        <!-- Nav Item - Pages Collapse Menu -->
+        <li class="nav-item {{ request()->is('profile') ? 'active' : '' }}">
+            <a class="nav-link collapsed " href="{{ route('profile') }}">
+                <i class="far fa-user"></i>
+                <span>Profile</span>
+            </a>
+        </li>
+
 
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item {{ request()->is('surat') ? 'active' : '' }}">
