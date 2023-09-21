@@ -57,7 +57,7 @@ class UserController extends Controller
                         '" class="btn btn-danger btn-sm deletePost">Delete</a>';
 
                     if ($row->status === 0) {
-                        $btn .= ' <button type="button" class="btn btn-success btn-sm verif" data-url="' . $row->uuid . '">Verifikasi</button>';
+                        $btn .= ' <button type="button" class="btn btn-success btn-sm verif" style="display: none; data-url="' . $row->uuid . '">Verifikasi</button>';
                     }
 
                     return $btn;
