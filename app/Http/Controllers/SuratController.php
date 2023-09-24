@@ -90,7 +90,7 @@ class SuratController extends Controller
             // get jabatan kelian dinas
             $jb_kb            = Jabatan::select('*')->where('nama', '=', 'kelian banjar dinas')->first();
 
-            $exDusun = explode('br. dinas ', $penduduk->keluarga->dusun);
+            $exDusun = explode('Br. Dinas ', $penduduk->keluarga->dusun);
             if (count($exDusun) > 1) {
                 $dusunNew = $exDusun[1];
             } else {
@@ -119,7 +119,7 @@ class SuratController extends Controller
             // get jabatan kelian dinas
             $jb_kb            = Jabatan::select('*')->where('nama', '=', 'kelian banjar dinas')->first();
 
-            $exDusun = explode('br. dinas ', $penduduk->keluarga->dusun);
+            $exDusun = explode('Br. Dinas ', $penduduk->keluarga->dusun);
             if (count($exDusun) > 1) {
                 $dusunNew = $exDusun[1];
             } else {
@@ -358,7 +358,7 @@ class SuratController extends Controller
                 // get jabatan kelian dinas
                 $jb_kb            = Jabatan::select('*')->where('nama', '=', 'kelian banjar dinas')->first();
 
-                $exDusun = explode('br. dinas ', $penduduk->keluarga->dusun);
+                $exDusun = explode('Br. Dinas ', $penduduk->keluarga->dusun);
                 if (count($exDusun) > 1) {
                     $dusunNew = $exDusun[1];
                 } else {

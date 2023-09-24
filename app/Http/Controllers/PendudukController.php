@@ -238,7 +238,7 @@ class PendudukController extends Controller
 
     public function export()
     {
-        return Excel::download(new PendudukExports, 'users.xlsx');
+        return Excel::download(new PendudukExports, 'Penduduk-' . date('Y-m-d H:i:s') . '.xlsx');
     }
 
     public function import()

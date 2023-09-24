@@ -66,20 +66,25 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        try {
+            //code...
 
-        $pengguna = User::create([
-            'uuid'       => Uuid::uuid4(),
-            'username'   => $data['username'],
-            'no_hp'      => $data['no_hp'],
-            'id_jabatan' => 2,
-            'password'   => '',
-            'status'     => 0
-        ]);
+            $pengguna = User::create([
+                'uuid'       => Uuid::uuid4(),
+                'username'   => $data['username'],
+                'no_hp'      => $data['no_hp'],
+                'id_jabatan' => 2,
+                'password'   => '',
+                'status'     => 0
+            ]);
 
-        if ($pengguna) {
-            return Redirect::route('login')->with('success', 'Registrasi berhasil! Silakan menunggu verifikasi dari Admin');
-        } else {
-            return Redirect::back()->with('error', 'Terjadi kesalahan saat melakukan registrasi. Mohon coba lagi.');
+            if ($pengguna) {
+                return Redirect::route('login')->with('success', 'Registrasi berhasil! Silakan menunggu verifikasi dari Admin');
+            } else {
+                return Redirect::back()->with('error', 'Terjadi kesalahan saat melakukan registrasi. Mohon coba lagi.');
+            }
+        } catch (\Throwable $th) {
+            return Redirect::back()->with('error', 'Mohon Maaf NIK Anda sudah terdaftar');
         }
     }
 }

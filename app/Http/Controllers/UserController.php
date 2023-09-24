@@ -104,8 +104,8 @@ class UserController extends Controller
             ]);
 
             if ($pengguna) {
-                Auth::login($pengguna);
-                return Redirect::route('login')->with('success', 'Registrasi berhasil! Silakan menunggu verifikasi dari Admin');
+                // Auth::login($pengguna);
+                return Redirect::back()->with('success', 'Registrasi berhasil! Silakan menunggu verifikasi dari Admin');
             } else {
                 return Redirect::back()->with('error', 'Terjadi kesalahan saat melakukan registrasi. Mohon coba lagi.');
             }

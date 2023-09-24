@@ -83,6 +83,20 @@
 
                             <div class="col-lg-6">
                                 <div class="form-group">
+                                    <label for="status">Status</label>
+                                    <select name="status" class="form-control">
+                                        <option value="" selected disabled>Pilih Status</option>
+                                        <option value="1">Verifikasi</option>
+                                        <option value="0">Tolak Verifikasi</option>
+                                    </select>
+                                    @error('status')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="form-group">
                                     <label for="no_hp">No Handphone</label>
                                     <input type="text" class="form-control" id="no_hp" name="no_hp"
                                         placeholder="Masukan No Handphone" value="{{ old('no_hp') }}">
