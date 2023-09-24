@@ -13,7 +13,7 @@ class AktaKawin extends Model
     protected $table = 'akta_kawin';
     protected $hidden = ['id'];
     protected $fillable = [
-        'uuid', //
+        'uuid',
         'no_akta_kawin',
         'id_pengguna'
     ];

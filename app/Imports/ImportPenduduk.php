@@ -2,11 +2,15 @@
 
 namespace App\Imports;
 
-use App\Models\AktaKawin;
 use App\Models\Keluarga;
-use App\Models\Pekerjaan;
 use App\Models\Penduduk;
+use App\Models\AktaKawin;
+use App\Models\Pekerjaan;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\ToModel;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
 use Maatwebsite\Excel\Concerns\WithStartRow;
 
 class ImportPenduduk implements ToModel, WithStartRow
@@ -20,29 +24,51 @@ class ImportPenduduk implements ToModel, WithStartRow
     public function model(array $row)
     {
         // Cari data berdasarkan kriteria tertentu, misalnya ID atau kolom unik
-        $dataPenduduk = Penduduk::where('nik', $row['0'])->first();
-        $kk           = Keluarga::select('id')->where('no_kk', $row['1'])->first();
+        $nik          = str_replace(["'", chr(1), "‘"], "", $row['0']);
+        $rowkk        = str_replace(["'", chr(1)], "", $row['1']);
+        $dataPenduduk = Penduduk::where('nik', $nik)->first();
+        $kk           = Keluarga::select('id')->where('no_kk', $rowkk)->first();
         $aktaKawin    = AktaKawin::select('id')->where('no_akta_kawin', $row['2'])->first();
-        $pekerjaan    = Pekerjaan::select('id')->where('pekerjaan', $row['10'])->first();
+        $pekerjaan    = Pekerjaan::select('id')->where('pekerjaan', Str::title(($row['10'])))->first();
 
-        if ($row[7] == "Hindu") {
+        if (Str::title($row[7]) == "Hindu") {
             $row[7] = "H";
-        } else if ($row[7] == "Islam") {
+        } else if (Str::title($row[7]) == "Islam") {
             $row[7] = "I";
-        } else if ($row[7] == "Protestan") {
+        } else if (Str::title($row[7]) == "Protestan") {
             $row[7] = "P";
-        } else if ($row[7] == "Katolik") {
+        } else if (Str::title($row[7]) == "Katolik") {
             $row[7] = "KA";
-        } else if ($row[7] == "Budha") {
+        } else if (Str::title($row[7]) == "Budha") {
             $row[7] = "B";
-        } else if ($row[7] == "Khonghucu") {
+        } else if (Str::title($row[7]) == "Khonghucu") {
             $row[7] = "Kh";
+        }
+        if ($aktaKawin === null && $row[2] !== null) {
+            $aktaKawin = AktaKawin::create([
+                'uuid'          => (string) Str::uuid(),
+                'id_pengguna'   => Auth::user()->id,
+                'no_akta_kawin' => $row['2'],
+            ]);
+        }
+
+        if ($kk === null && $row[11] !== null) {
+            $kk = Keluarga::create([
+                'uuid'                 => (string) Str::uuid(),
+                'no_kk'                => $rowkk,
+                'id_pengguna'          => Auth::user()->id,
+                'nama_kepala_keluarga' => Str::title($row[16]),
+                'alamat'               => Str::title($row[17]),
+                'dusun'                => Str::title($row[18]),
+                'desa'                 => Str::title($row[19]),
+                'kecamatan'            => Str::title($row[20]),
+            ]);
         }
 
         if ($dataPenduduk) {
             // Jika data sudah ada, update data yang ada
             $dataPenduduk->update([
-                "nik"                   => $row[0],
+                "nik"                   => $nik,
                 "no_kk"                 => $kk ? $kk->id : $dataPenduduk->no_kk,
                 "no_akta_kawin"         => $aktaKawin ? $aktaKawin->id : $dataPenduduk->no_akta_kawin,
                 "id_pekerjaan"          => $pekerjaan ? $pekerjaan->id  : $dataPenduduk->id_pekerjaan,
@@ -61,24 +87,36 @@ class ImportPenduduk implements ToModel, WithStartRow
             ]);
             $dataPenduduk->save();
         } else {
+            if (Str::title($row[4]) == 'Laki-Laki') {
+                $row[4] = 'L';
+            } else
+            if (Str::title($row[4]) == 'Perempuan') {
+                $row[4] = 'P';
+            } else {
+                $row[4] = '';
+            }
+
+            $timestamp = Date::excelToTimestamp($row[6]);
+            $row[6] = date('Y/m/d', $timestamp);
+
             // Jika data belum ada, buat data baru
-            Penduduk::create([
-                "nik"                   => $row[0],
+            $penduduk = Penduduk::create([
+                "nik"                   => $nik,
                 "no_kk"                 => $kk ? $kk->id : '',
                 "no_akta_kawin"         => $aktaKawin ? $aktaKawin->id : '',
                 "id_pekerjaan"          => $pekerjaan ? $pekerjaan->id  : '',
-                "nama_lengkap"          => $row[3],
-                "jenis_kelamin"         => $row[4],
-                "tempat_lahir"          => $row[5],
-                "tanggal_lahir"         => $row[6],
-                "agama"                 => $row[7] ? $row[7]  : '',
-                "golongan_darah"        => $row[8],
-                "pendidikan"            => $row[9],
-                "status_dalam_keluarga" => $row[11],
-                "status_kawin"          => $row[12],
-                "no_akta_lahir"         => $row[13] ? $row[13] : '',
-                "nama_lengkap_ayah"     => $row[14] ? $row[14] : '',
-                "nama_lengkap_ibu"      => $row[15] ? $row[15] : '',
+                "nama_lengkap"          => Str::title($row[3]),
+                "jenis_kelamin"         => Str::title($row[4]),
+                "tempat_lahir"          => Str::title($row[5]),
+                "tanggal_lahir"         => Str::title($row[6]),
+                "agama"                 => Str::title($row[7]) ? Str::title($row[7])  : '',
+                "golongan_darah"        => Str::title($row[8]),
+                "pendidikan"            => Str::title($row[9]),
+                "status_dalam_keluarga" => Str::title($row[11]),
+                "status_kawin"          => Str::title($row[12]),
+                "no_akta_lahir"         => Str::title($row[13]) ? Str::title($row[13]) : '',
+                "nama_lengkap_ayah"     => Str::title($row[14]) ? Str::title($row[14]) : '',
+                "nama_lengkap_ibu"      => Str::title($row[15]) ? Str::title($row[15]) : '',
             ]);
         }
 

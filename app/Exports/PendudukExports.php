@@ -13,7 +13,7 @@ class PendudukExports implements FromCollection, WithHeadings
      */
     public function collection()
     {
-        $penduduk = Penduduk::select('nik', 'keluarga.no_kk as kk', 'akta_kawin.no_akta_kawin as aktaKawin', 'nama_lengkap', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'agama', 'golongan_darah', 'pendidikan', 'pekerjaan', 'status_dalam_keluarga', 'status_kawin', 'no_akta_lahir', 'nama_lengkap_ayah', 'nama_lengkap_ibu')
+        $penduduk = Penduduk::select('nik', 'keluarga.no_kk as kk', 'akta_kawin.no_akta_kawin as aktaKawin', 'nama_lengkap', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'agama', 'golongan_darah', 'pendidikan', 'pekerjaan', 'status_dalam_keluarga', 'status_kawin', 'no_akta_lahir', 'nama_lengkap_ayah', 'nama_lengkap_ibu', "keluarga.nama_kepala_keluarga", "keluarga.alamat", "keluarga.dusun", "keluarga.desa", "keluarga.kecamatan")
             ->leftjoin('keluarga', 'keluarga.id', '=', 'penduduk.no_kk')
             ->leftjoin('akta_kawin', 'akta_kawin.id', '=', 'penduduk.no_akta_kawin')
             ->leftjoin('pekerjaan', 'pekerjaan.id', '=', 'penduduk.id_pekerjaan')
@@ -49,6 +49,8 @@ class PendudukExports implements FromCollection, WithHeadings
 
     public function headings(): array
     {
-        return ["Nik", "NO KK", "Akta Kawin", "Nama Lengkap", "Jenis Kelamin", "Tempat Lahir", "Tanggal Lahir", "Agama", "Golongan Darah", "Pendidikan", "Pekerjaan", "Status Dalam Keluarga", "Status Kawin", "No Akta Lahir", "Nama Lengkap Ayah", "Nama Lengkap Ibu"];
+        return [
+            "Nik", "NO KK", "Akta Kawin", "Nama Lengkap", "Jenis Kelamin", "Tempat Lahir", "Tanggal Lahir", "Agama", "Golongan Darah", "Pendidikan", "Pekerjaan", "Status Dalam Keluarga", "Status Kawin", "No Akta Lahir", "Nama Lengkap Ayah", "Nama Lengkap Ibu", "Nama Kepala Keluarga", "Alamat",    "Dusun",    "Desa",    "Kecamatan"
+        ];
     }
 }
