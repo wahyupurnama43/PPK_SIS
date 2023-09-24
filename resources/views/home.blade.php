@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="{{ asset('homepage/assets/css/slick-slider/slick.css') }}" type="text/css" />
     <link rel="stylesheet" type="text/css" href="{{ asset('homepage/assets/css/custom.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('homepage/assets/css/media-query.css') }}" />
+    
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"

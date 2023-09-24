@@ -29,8 +29,8 @@ Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index']);
-    Route::get('/pengguna', [UserController::class, 'index'])->name('pengguna.index');
-    Route::post('/pengguna/verif/{id}', [UserController::class, 'verif'])->name('pengguna.verif');
+    Route::get('profile', [ProfileController::class, 'index'])->name('profile');
+    Route::post('profile/update', [ProfileController::class, 'update'])->name('profile.updatePassword');
     Route::middleware(['jabatan:admin'])->group(function () {
         Route::prefix('admin')->group(function () {
             Route::resource('wilayah', WilayahController::class);
@@ -53,8 +53,8 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/surat', [SuratController::class, 'suratAdmin'])->name('admin.suratAdmin');
             Route::get('/surat/list', [SuratController::class, 'list'])->name('admin.list');
             Route::post('/surat/{slug}', [SuratController::class, 'storeSuratAdmin'])->name('admin.storeSuratAdmin');
-            Route::get('profile', [ProfileController::class, 'index'])->name('profile');
-            Route::post('profile/update', [ProfileController::class, 'update'])->name('profile.updatePassword');
+            Route::get('/pengguna', [UserController::class, 'index'])->name('pengguna.index');
+            Route::post('/pengguna/verif/{id}', [UserController::class, 'verif'])->name('pengguna.verif');
         });
     });
     Route::middleware(['jabatan:masyarakat'])->group(function () {

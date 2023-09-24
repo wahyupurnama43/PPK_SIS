@@ -379,8 +379,8 @@ class SuratController extends Controller
             $pdfName = $surat->pdf;
             if ($id_jenis_surat === 1) {
                 $pdf = PDF::loadview('pages.surat.sku', compact('penduduk', 'perbekel', 'no_surat', 'nik', 'surat', 'host'));
-                // return $pdf->stream('dompdf_out.pdf');
                 $pdf->setPaper(array(0, 0, 609.4488, 935.433), 'portrait');
+                // return $pdf->stream('dompdf_out.pdf');
                 Storage::put($pdfName, $pdf->output());
             } else if ($id_jenis_surat === 2) {
                 $pdf = PDF::loadview('pages.surat.skm', compact('penduduk', 'perbekel', 'kelian_banjar', 'no_surat', 'nik', 'surat', 'host'));

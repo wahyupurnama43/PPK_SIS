@@ -39,7 +39,7 @@
 
     <p>Yang bertanda tangan dibawah ini :</p>
 
-    <table>
+    <table  style="margin-left:20px;">
         <tr>
             <td width="100px">Nama &nbsp;&nbsp;&nbsp;</td>
             <td>:</td>
@@ -54,7 +54,7 @@
 
     <p>Dengan ini menerangkan bahwa :</p>
 
-    <table>
+    <table  style="margin-left:20px;">
         <tr>
             <td width="100px">Nama &nbsp;&nbsp;&nbsp;</td>
             <td>:</td>
